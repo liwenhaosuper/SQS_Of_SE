@@ -1,0 +1,37 @@
+\documentclass[a4paper,12pt]{article}
+% define the title
+\title{Semester Project: SQS}
+\author{5090379001, Li Tingting\and 
+        5090379085, Wang Jiajun\and 
+        5090379107, Ban Yunmeng\and 
+        5090379175, Li Wenhao}
+\date{April 21, 2012}
+\begin{document}
+% generates the title
+\maketitle
+% insert the table of contents
+% \tableofcontents
+\section{Biref introduction and Preliminary design}
+In this project, we'll develop a simple queue service much like Amazon SQS. The SQS service offers a reliable and scalable mechanism for distributed applications to communicate with each other. In particular, the applications now don't need to worry about possible message loss or the availability of queue service.
+
+We will use several redundant machines as the server of SQS in consideration of availability. Thus, through the downtime of one server there will be other machine providing the service to the clients. We currently consider backuping all the messages on all machines for simplicity. This method might cause the poor performance and may be changed in further realization.
+
+We now tend to use cpp as our language and using event-driven programming to implement our project.
+\section{Task division}
+Wang Jiajun and Li Wenhao will focus on the realization of the SQS. Meanwhile, Li Tingting and Ban Yunmeng will work on the testing part, including designing the test cases and the program for testing the functionality and the performance of our project.
+\section{Timeline}
+There are 6 weeks to finish the project from now on. And the timeline are given in two parts: implementation and testing.
+\paragraph{Implementation part}
+\begin{itemize}
+ \item Apr. 23 to Apr. 29: Discuss the specification of the project in depth, including which programming language to use, which libraries will benefit us.
+ \item Apr. 30 to May 9: Coding and preparing for the demo of our SQS system.
+ \item May 10 to May 20: All the feature should be done till now.
+ \item May 21 to May 27: Bugfix and evaluate the performance of our system.
+ \item May 28 to Jun. 1: Prepare for the final illustration.
+\end{itemize}
+\paragraph{Testing part}
+\begin{itemize}
+ \item Apr. 30 to May 10: Design several test cases on how to evaluate the performance and the functionality.
+ \item May 11 to May 20: Write the testing program.
+\end{itemize}
+\end{document}
