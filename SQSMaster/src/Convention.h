@@ -18,23 +18,32 @@ using namespace std;
   /*Convention for client handling*/
 string		 		masterIp_ForClient = "127.0.0.1";
 int 				masterPort_ForClient = 1200;
-
-string				GET_AVAILABLE_HOST = "/getavailablehost";
-
-string				CREATE_QUEUE_REQ = "/createQueue?queueName=%s";
-string				LIST_QUEUES = "/listQueues";
-string				SEND_MESSAGE = "/?queueName=%s&opt=put&dataLength=%s&data=%s";//data content will be followed
-string				GET_MESSAGE = "/?queueName=%s&opt=get";
-string				DELETE_MESSAGE = "/?queueName=%s&opt=del&mId=%s";
-string				DeleteQUEUE = "/deleteQueue?queueName=%s";
-
-   /*Convention for data node handling*/
 string				masterIP_ForDataNode = "127.0.0.1";
 int					masterPort_ForDataNode = 1300;
 
-string				RECOVERY_MESSAGE = "/recovery?logid=%s";  /*a data node should first get into the cecovery mode before starting to accept request*/
-string				NORMAL_JOIN = "/join?ip=%s&port=%s";  /* a data node should tell the master to start process data after finishing recovery*/
+//url path
+const string				GET_AVAILABLE_HOST = "/getavailablehost"; /* A client should first call this url to get the available data node to connect*/
+const string				CREATE_QUEUE = "/createQueue";
+const string				LIST_QUEUES = "/listQueues";
+const string				DEL_QUEUE = "/deleteQueue";
+const string				PUT_MSG = "/putMessage";
+const string				GET_MSG = "/getMessage";
+const string				DELETE_MSG = "/deleteMessage";
+const string				EMPTY_PATH = "/";
+const string				RECOVERY = "/recovery";
+const string				JOIN_TEAM = "/join";
 
+
+
+//queue operation
+
+const string				NODE_NAME = "nodeName";
+const string				NODE_PORT = "nodePort";
+
+const string				QUEUE_NAME = "queueName";
+const string				MSG_ID = "mId";
+const string				MSG_LENGTH = "mLength";
+const string				MSG_CONTENT = "mData";
 
 
 
