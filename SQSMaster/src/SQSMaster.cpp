@@ -97,7 +97,7 @@ struct evhttp_request* HeartBeat::doRequest(std::string dataNode,int port){
 		return NULL;
 	}
 	struct evhttp_request *req = evhttp_request_new(request_callback, rsp);
-	evhttp_make_request(cn,req,EVHTTP_REQ_GET,"/Heartbeat");
+	evhttp_make_request(cn,req,EVHTTP_REQ_GET,HEARTBEAT.c_str());
 	event_base_dispatch(base);
 	return rsp;
 }
@@ -156,6 +156,21 @@ void DataNodeCallBack(struct evhttp_request* req, void* arg){
 	obj->onDataNodeRecv(req);
 }
 
+void dispatchMsgCallBack(struct evhttp_request* req, void* arg){
+	event_base_loopbreak((struct event_base*)arg);
+}
+
+void SQSMaster::dispatchMessage(std::string remoteNode,int remotePort,std::string request){
+	struct event_base *base = event_base_new();
+	struct evhttp_connection *cn = evhttp_connection_base_new(
+			base, NULL,
+			remoteNode.c_str(),
+			remotePort);
+	struct evhttp_request *req = evhttp_request_new(request_callback, base);
+	evhttp_make_request(cn,req,EVHTTP_REQ_GET,request.c_str());
+	event_base_dispatch(base);
+}
+
 void SQSMaster::onDataNodeRecv (struct evhttp_request* req) {
 	cout<<"Receive msg from data node..."<<endl;
 	struct evbuffer *buf;
@@ -192,9 +207,8 @@ void SQSMaster::onDataNodeRecv (struct evhttp_request* req) {
 		evbuffer_free(buf);
 		return;
 	}
-
+	/*create queue*/
 	if(strcmp(url_path,CREATE_QUEUE.c_str())==0){
-		//TODO: create queue
 		const char* queueName = evhttp_find_header(url_parameters,QUEUE_NAME.c_str());
 		if(queueName==NULL){
 			evbuffer_add_printf(buf, "%s", "Empty queueName to create? Are you joking?");
@@ -202,7 +216,27 @@ void SQSMaster::onDataNodeRecv (struct evhttp_request* req) {
 			evbuffer_free(buf);
 			return;
 		}
-	}else if(strcmp(url_path,DEL_QUEUE.c_str())==0){
+		// add log
+		string command = CREATE_QUEUE;
+		command+="?"+QUEUE_NAME+"="+queueName;
+		logger->addLog(command);
+		//dispatch message
+		for(vector<DataNode>::iterator iter = mDataNodes.begin();iter!=mDataNodes.end();iter++){
+			if(!pBeat->IsNodeAlive(*iter)){
+				 iter = mDataNodes.erase(iter);
+				 if(iter==mDataNodes.end()){
+					 break;
+				 }
+			}
+			if(strcmp(nodeName,(iter)->getNodeNameFormaster().c_str())!=0&&atoi(nodePort)!=(iter)->getNodePortFormaster()){
+				dispatchMessage((iter)->getNodeNameFormaster(),(iter)->getNodePortFormaster(),command);
+			}
+		}
+		evbuffer_add_printf(buf, "%s", "Create Queue Request?Roger that");
+		evhttp_send_reply(req, HTTP_OK, "OK", buf);
+		evbuffer_free(buf);
+		return;
+	}else if(strcmp(url_path,DEL_QUEUE.c_str())==0){/*delete queue*/
 		//TODO: delete queue
 		const char* queueName = evhttp_find_header(url_parameters,QUEUE_NAME.c_str());
 		if(queueName==NULL){
@@ -211,6 +245,26 @@ void SQSMaster::onDataNodeRecv (struct evhttp_request* req) {
 			evbuffer_free(buf);
 			return;
 		}
+		// add log
+		string command = DEL_QUEUE;
+		command+="?"+QUEUE_NAME+"="+queueName;
+		logger->addLog(command);
+		//dispatch message
+		for(vector<DataNode>::iterator iter = mDataNodes.begin();iter!=mDataNodes.end();iter++){
+			if(!pBeat->IsNodeAlive(*iter)){
+				 iter = mDataNodes.erase(iter);
+				 if(iter==mDataNodes.end()){
+					 break;
+				 }
+			}
+			if(strcmp(nodeName,(iter)->getNodeNameFormaster().c_str())!=0&&atoi(nodePort)!=(iter)->getNodePortFormaster()){
+				dispatchMessage((iter)->getNodeNameFormaster(),(iter)->getNodePortFormaster(),command);
+			}
+		}
+		evbuffer_add_printf(buf, "%s", "Delete Queue Request?Roger that");
+		evhttp_send_reply(req, HTTP_OK, "OK", buf);
+		evbuffer_free(buf);
+		return;
 	}else if(strcmp(url_path,LIST_QUEUES.c_str())==0){
 		//TODO:list queues, well, it will not reach here
 		evbuffer_add_printf(buf, "%s", "Do not let me list queues, ok?");
@@ -233,8 +287,57 @@ void SQSMaster::onDataNodeRecv (struct evhttp_request* req) {
 			evbuffer_free(buf);
 			return;
 		}
+		//add log
+		string command = PUT_MSG;
+		command+="?"+QUEUE_NAME+"="+queueName+"&"+MSG+"="+msg+"&"+MSG_ID+"="+msgId;
+		logger->addLog(command);
+		//dispatch message
+		for(vector<DataNode>::iterator iter = mDataNodes.begin();iter!=mDataNodes.end();iter++){
+			if(!pBeat->IsNodeAlive(*iter)){
+				 iter = mDataNodes.erase(iter);
+				 if(iter==mDataNodes.end()){
+					 break;
+				 }
+			}
+			if(strcmp(nodeName,(iter)->getNodeNameFormaster().c_str())!=0&&atoi(nodePort)!=(iter)->getNodePortFormaster()){
+				dispatchMessage((iter)->getNodeNameFormaster(),(iter)->getNodePortFormaster(),command);
+			}
+		}
+		evbuffer_add_printf(buf, "%s", "Delete Queue Request?Roger that");
+		evhttp_send_reply(req, HTTP_OK, "OK", buf);
+		evbuffer_free(buf);
+		return;
 	}else if(strcmp(url_path,DELETE_MSG.c_str())==0){
 		//TODO:delete message
+		const char* queueName = evhttp_find_header(url_parameters,QUEUE_NAME.c_str());
+		if(queueName==NULL){
+			evbuffer_add_printf(buf, "%s", "Empty queueName and delete a message? Are you joking?");
+			evhttp_send_reply(req, HTTP_OK, "OK", buf);
+			evbuffer_free(buf);
+			return;
+		}
+		const char* msgId = evhttp_find_header(url_parameters,MSG_ID.c_str());
+		if(msgId==NULL){
+			cout<<"Empty msgId to delete?"<<endl;
+			evbuffer_free(buf);
+			return;
+		}
+		//add log
+		string command = DELETE_MSG;
+		command+="?"+QUEUE_NAME+"="+queueName+"&"+MSG_ID+"="+msgId;
+		logger->addLog(command);
+		//dispatch message
+		for(vector<DataNode>::iterator iter = mDataNodes.begin();iter!=mDataNodes.end();iter++){
+			if(!pBeat->IsNodeAlive(*iter)){
+				 iter = mDataNodes.erase(iter);
+				 if(iter==mDataNodes.end()){
+					 break;
+				 }
+			}
+			if(strcmp(nodeName,(iter)->getNodeNameFormaster().c_str())!=0&&atoi(nodePort)!=(iter)->getNodePortFormaster()){
+				dispatchMessage((iter)->getNodeNameFormaster(),(iter)->getNodePortFormaster(),command);
+			}
+		}
 		evbuffer_add_printf(buf, "%s", "Delete Msg order is in action!");
 		evhttp_send_reply(req, HTTP_OK, "OK", buf);
 		evbuffer_free(buf);
@@ -242,29 +345,52 @@ void SQSMaster::onDataNodeRecv (struct evhttp_request* req) {
 
 	}else if(strcmp(url_path,GET_MSG.c_str())==0){
 		//TODO:get message
-		evbuffer_add_printf(buf, "%s", "get Msg order is in action!");
+		const char* queueName = evhttp_find_header(url_parameters,QUEUE_NAME.c_str());
+		if(queueName==NULL){
+			evbuffer_add_printf(buf, "%s", "Empty queueName and get a message? Are you joking?");
+			evhttp_send_reply(req, HTTP_OK, "OK", buf);
+			evbuffer_free(buf);
+			return;
+		}
+		const char* msgId = evhttp_find_header(url_parameters,MSG_ID.c_str());
+		if(pLock->Lock(queueName,atoi(msgId))){
+			evbuffer_add_printf(buf, "%s", "Success");
+		}else{
+			evbuffer_add_printf(buf, "%s", "Fail");
+		}
 		evhttp_send_reply(req, HTTP_OK, "OK", buf);
 		evbuffer_free(buf);
 		return;
-
+	}else if(strcmp(url_path,RECOVERY.c_str())==0){ /* recovery*/
+		const char* logsize = evhttp_find_header(url_parameters,LOG_SIZE.c_str());
+		int sz = logger->count()-atoi(logsize);
+		vector<string> datas =  logger->tailList(sz);
+		for(vector<string>::iterator iter = datas.begin();iter!=datas.end();iter++){
+			dispatchMessage(nodeName,atoi(nodePort),*iter);
+		}
+	}else if(strcmp(url_path,JOIN_TEAM.c_str())==0){/*  join*/
+		const char* publicNodeName = evhttp_find_header(url_parameters,PUBLIC_NODE_NAME.c_str());
+		const char* publicNodePort = evhttp_find_header(url_parameters,PUBLIC_NODE_PORT.c_str());
+		if(publicNodeName==NULL||publicNodePort==NULL){
+			evbuffer_add_printf(buf, "%s", "public node name or port is NULL?");
+			evhttp_send_reply(req, HTTP_OK, "NO", buf);
+			evbuffer_free(buf);
+			return;
+		}
+		DataNode* dNode = new DataNode(publicNodeName,atoi(publicNodePort),nodeName,atoi(nodePort),10000);
+		mDataNodes.push_back(*dNode);
+		pBeat->AddDataNode(*dNode);
+		evbuffer_add_printf(buf, "%s", "Welcome to join us!");
+		evhttp_send_reply(req, HTTP_OK, "OK", buf);
+		evbuffer_free(buf);
+		return;
 	}else if(strcmp(url_path,EMPTY_PATH.c_str())==0){
 		//TODO:other opt
 		evbuffer_add_printf(buf, "%s", "No other opts, sorry, my dear hacker!");
 		evhttp_send_reply(req, HTTP_OK, "OK", buf);
 		evbuffer_free(buf);
 		return;
-	}else if(url_path,RECOVERY.c_str()==0){
-		//TODO: recovery mode
-		evbuffer_add_printf(buf, "%s", "Recovery mode is launching!");
-		evhttp_send_reply(req, HTTP_OK, "OK", buf);
-		evbuffer_free(buf);
-	}else if(url_path,JOIN_TEAM.c_str()==0){
-		//TODO: data node join
-		evbuffer_add_printf(buf, "%s", "Welcome to join us!");
-		evhttp_send_reply(req, HTTP_OK, "OK", buf);
-		evbuffer_free(buf);
-	}
-	else{
+	}else{
 		//TODO: hacker?
 		evbuffer_add_printf(buf, "%s", "What is it?my dear hacker!");
 		evhttp_send_reply(req, HTTP_OK, "OK", buf);

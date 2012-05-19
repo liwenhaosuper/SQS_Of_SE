@@ -4,16 +4,19 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/Logger.cpp \
 ../src/MsgLock.cpp \
 ../src/SQSMaster.cpp \
 ../src/main.cpp 
 
 OBJS += \
+./src/Logger.o \
 ./src/MsgLock.o \
 ./src/SQSMaster.o \
 ./src/main.o 
 
 CPP_DEPS += \
+./src/Logger.d \
 ./src/MsgLock.d \
 ./src/SQSMaster.d \
 ./src/main.d 

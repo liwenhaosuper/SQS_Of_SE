@@ -14,6 +14,7 @@
 #include <string>
 #include <vector>
 #include "MsgLock.h"
+#include "Logger.h"
 
 class DataNode{
 private:
@@ -89,10 +90,14 @@ private:
 	MsgLock* pLock;
 	long defaultTmout;
 	std::vector<DataNode> mDataNodes;
+	Logger* logger;
+	HeartBeat* pBeat;
 public:
-	SQSMaster():clientPort(1200),dataNodePort(1300),connectionTimeout(6),pLock(new MsgLock(5000)){}
+	SQSMaster():clientPort(1200),dataNodePort(1300),connectionTimeout(6),pLock(new MsgLock(5000)),
+		logger(new Logger("SQS.log")),pBeat(new HeartBeat(3000)){}
 	SQSMaster(int client,int dataNode,int connTimeout,int msgTimeout):clientPort(client),dataNodePort(dataNode),connectionTimeout(connTimeout)
-		,pLock(new MsgLock(msgTimeout)){}
+		,pLock(new MsgLock(msgTimeout)),logger(new Logger("SQS.log")),pBeat(new HeartBeat(3000)){}
+	void dispatchMessage(std::string remoteNode,int remotePort,std::string request);
 	virtual ~SQSMaster(){if(pLock) delete pLock;};
 	bool init();
 	void start();
