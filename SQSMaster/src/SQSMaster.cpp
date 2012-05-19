@@ -15,6 +15,9 @@
 #include <sys/time.h>
 #include "Convention.h"
 #include <string.h>
+
+
+#include <cstdlib>
 using namespace std;
 
 
@@ -47,18 +50,56 @@ void* RegularCheck(void* arg){
 	if(instance==NULL){
 		cout<<"instance is null"<<endl;
 	}
+	int cnt = 0;
 	while(true){
-		//TODO: send request
 
+		struct evhttp_request *rsp = instance->doRequest(node->getNodeNameFormaster(),node->getNodePortFormaster());
+		//TODO: parse the response
+		if(rsp==NULL){
+			cout<<"Rsp is NULL..."<<endl;
+			cnt++;
+		}else if(rsp->response_code==0){
+			cnt++;
+		}else{
+			cnt = 0;
+		}
+		if(cnt>5){
+			instance->CancelDataNode(*node);
+			break;
+		}
 		if(node==NULL||node->IsCancel()){
 			cout<<"node is null or canceled"<<endl;
 			break;
 		}
-		cout<<"Heart beat recv..."<<endl;
-		node->Recycle();
+		if(cnt==0){
+			cout<<"Heart beat recv..."<<endl;
+			node->Recycle();
+		}
 		sleep(instance->cycle/1000);
 	}
 	return (void*)0;
+}
+
+void request_callback(struct evhttp_request *req, void *rsp){
+	memcpy(rsp,req,sizeof(struct evhttp_request*));
+}
+
+struct evhttp_request* HeartBeat::doRequest(std::string dataNode,int port){
+	struct event_base *base = event_base_new();
+	struct evhttp_connection *cn = evhttp_connection_base_new(
+	        base, NULL,
+	        dataNode.c_str(),
+	        port);
+	struct evhttp_request *rsp = NULL;
+	/* Allocate request structure */
+	if ((rsp = (struct evhttp_request *)malloc(sizeof(struct evhttp_request))) == NULL) {
+		cout<<"Error allocating rsp structure"<<endl;
+		return NULL;
+	}
+	struct evhttp_request *req = evhttp_request_new(request_callback, rsp);
+	evhttp_make_request(cn,req,EVHTTP_REQ_GET,"/Heartbeat");
+	event_base_dispatch(base);
+	return rsp;
 }
 
 void HeartBeat::AddDataNode(DataNode node){
