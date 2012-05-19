@@ -46,6 +46,18 @@ public:
 				instance.nodePort_formaster==nodePort_formaster&&
 				instance.nodePort_public==nodePort_public;
 	}
+	std::string getNodeNameFormaster() const {
+		return nodeName_formaster;
+	}
+	std::string getNodeNamePublic() const {
+		return nodeName_public;
+	}
+	int getNodePortFormaster() const {
+		return nodePort_formaster;
+	}
+	int getNodePortPublic() const {
+		return nodePort_public;
+	}
 };
 
 
@@ -53,6 +65,8 @@ class HeartBeat{
 private:
 	long cycle;//in millisecond
 	std::vector<DataNode*> clients;
+	/* construct a simple socket and return its descriptor, return -1 if fails */
+	struct evhttp_request *doRequest(std::string dataNode,int port);
 public:
 	HeartBeat(long scheTime):cycle(scheTime){}
 	void AddDataNode(DataNode node);

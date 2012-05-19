@@ -11,6 +11,13 @@
 #include "event.h"
 #include "evhttp.h"
 #include "SQSMaster.h"
+#include <string>
+
+
+#include <event2/event.h>
+#include <event2/http.h>
+#include <event2/buffer.h>
+#include <event2/http_struct.h>
 
 using namespace std;
 
@@ -77,26 +84,49 @@ void callback(void* arg,string name="",int msgId=2){
 //}
 
 //test heart beat
-int main(){
-	cout<<"...Testing heart beat..."<<endl;
-	HeartBeat* beat = new HeartBeat(1000);
-	DataNode* node1 = new DataNode("0.0.0.0",1400,"1.1.1.1",1500,5000);
-	beat->AddDataNode(*node1);
-	sleep(3);
-	beat->CancelDataNode(*node1);
-	//DataNode* node2 = new DataNode("0.0.0.0",1400,"1.1.1.1",1500,5000);
-	//beat->AddDataNode(*node2);
-	sleep(60);
-	return 0;
-}
+//int main(){
+//	cout<<"...Testing heart beat..."<<endl;
+//	HeartBeat* beat = new HeartBeat(1000);
+//	DataNode* node1 = new DataNode("0.0.0.0",1400,"1.1.1.1",1500,5000);
+//	beat->AddDataNode(*node1);
+//	sleep(3);
+//	beat->CancelDataNode(*node1);
+//	sleep(60);
+//	return 0;
+//}
+
+
+//void req_callback(struct evhttp_request *req, void *arg){
+//	struct evbuffer *buffer = evbuffer_new();
+//	evbuffer_add_buffer(buffer, req->input_buffer);
+//	cout<<"Request recv..."<<evbuffer_get_length(req->output_buffer)<<endl;
+//	cout<<req->uri<<":"<<req->body_size<<":"<<req->response_code<<endl;
+//}
+//void create(){
+//	struct event_base *base = event_base_new();
+//	struct evhttp_connection *cn = evhttp_connection_base_new(
+//	        base, NULL,
+//	        "localhost",
+//	        1300);
+//	struct evhttp_request *req = evhttp_request_new(req_callback, NULL);
+//	evhttp_make_request(cn,req,EVHTTP_REQ_GET,"/join");
+//	event_base_dispatch(base);
+//	cout<<"Bye"<<endl;
+//}
+//int main(){
+//	cout<<"Testing heart beat socket..."<<endl;
+//	create();
+//	return 0;
+//}
+
 
 /* start service */
-//int main() {
-//	SQSMaster* master = new SQSMaster(1200,1300,5,5000);
-//	if(master->init()){
-//		cout << "SQSMaster is started." << endl;
-//		master->start();
-//	}else{
-//		cout<<"Fail to start service. Bye"<<endl;
-//	}
-//}
+int main() {
+	SQSMaster* master = new SQSMaster(1200,1300,5,5000);
+	if(master->init()){
+		cout << "SQSMaster is started." << endl;
+		master->start();
+	}else{
+		cout<<"Fail to start service. Bye"<<endl;
+	}
+}
