@@ -1,9 +1,9 @@
 #include "Logger.h"
 
+#include <cstdlib>
 #include <cstdio>
 #include <string>
 #include <vector>
-#include <cstdlib>
 
 using namespace std;
 
@@ -23,20 +23,10 @@ Logger::~Logger()
 {
 }
 
-bool Logger::addLog(Logger::Type type, const string &queue, const string &msg)
+bool Logger::addLog(const string& operation)
 {
 	char cmd[128];
-	switch (type) {
-	case Logger::Create:
-		sprintf(cmd, "echo 'c %s' >> %s", queue.c_str(), m_filename.c_str());
-		break;
-	case Logger::Write:
-		sprintf(cmd, "echo 'w %s:%s' >> %s", queue.c_str(), msg.c_str(), m_filename.c_str());
-		break;
-	case Logger::Delete:
-		sprintf(cmd, "echo 'd %s:%s' >> %s", queue.c_str(), msg.c_str(), m_filename.c_str());
-		break;
-	}
+	sprintf(cmd, "echo '%s' >> %s", operation.c_str(), m_filename.c_str());
 
 	int result = system(cmd);
 	return result ? false : true;
@@ -68,7 +58,6 @@ vector<string> Logger::tailList(int n)
 		resultVec.push_back(line);
 	}
 	free(line);
-	//delete line;
 	pclose(pipe);
 	return resultVec;
 }
