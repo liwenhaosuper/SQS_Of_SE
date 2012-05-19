@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <string>
 #include <vector>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -66,7 +67,8 @@ vector<string> Logger::tailList(int n)
 	while ((read = getline(&line, &len, pipe)) != -1) {
 		resultVec.push_back(line);
 	}
-	free(line);
+	//free(line);
+	delete line;
 	pclose(pipe);
 	return resultVec;
 }
