@@ -12,9 +12,98 @@
 #include "event.h"
 #include "evhttp.h"
 
+#include <sys/time.h>
 #include "Convention.h"
 #include <string.h>
 using namespace std;
+
+
+void DataNode::Recycle(){
+	time_t cur;
+	time(&cur);
+	startTime = 1000*((long)cur);
+}
+bool DataNode::IsAlive(){
+	time_t cur;
+	time(&cur);
+	if(1000*((long)cur)<(startTime+defaultTimeout)){
+		return true;
+	}
+	return false;
+}
+
+void* RegularCheck(void* arg){
+	cout<<"Heart beat start..."<<endl;
+	if(arg==NULL){
+		cout<<"arg is null..."<<endl;
+		return (void*)0;
+	}
+	Param* param = (Param*) arg;
+	if(param==NULL){
+		cout<<"param is null"<<endl;
+	}
+	HeartBeat* instance = (HeartBeat*)param->instance;
+	DataNode* node = param->node;
+	if(instance==NULL){
+		cout<<"instance is null"<<endl;
+	}
+	while(true){
+		//TODO: send request
+
+		if(node==NULL||node->IsCancel()){
+			cout<<"node is null or canceled"<<endl;
+			break;
+		}
+		cout<<"Heart beat recv..."<<endl;
+		node->Recycle();
+		sleep(instance->cycle/1000);
+	}
+	return (void*)0;
+}
+
+void HeartBeat::AddDataNode(DataNode node){
+	for(vector<DataNode*>::iterator iter = clients.begin();iter!=clients.end();iter++){
+		if(node==(**iter)){
+			CancelDataNode(**iter);
+			break;
+		}
+	}
+	DataNode* newNode = new DataNode(node);
+	newNode->Recycle();
+	clients.push_back(newNode);
+
+	Param* param = new Param;
+	param->instance = this;
+	param->node = newNode;
+	pthread_t pid;
+	if(pthread_create(&pid,NULL,RegularCheck,param)!=0){
+		cout<<"Error in starting heart beat..."<<endl;
+	}
+}
+bool HeartBeat::IsNodeAlive(DataNode node){
+	for(vector<DataNode*>::iterator iter = clients.begin();iter!=clients.end();iter++){
+		if(node==(**iter)){
+			if((*iter)->IsAlive()){
+				return true;
+			}
+			CancelDataNode(**iter);
+			return false;
+		}
+	}
+	return false;
+}
+void HeartBeat::CancelDataNode(DataNode node){
+	for(vector<DataNode*>::iterator iter = clients.begin();iter!=clients.end();iter++){
+			if(node==(**iter)){
+				cout<<"Cancelling data node..."<<endl;
+				(*iter)->Cancel();
+				clients.erase(iter);
+				cout<<"Cancelled data node..."<<endl;
+				break;
+			}
+	}
+}
+
 
 void ClientCallBack(struct evhttp_request* req, void* arg){
 	SQSMaster* obj = (SQSMaster*)arg;

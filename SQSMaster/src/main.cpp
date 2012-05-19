@@ -76,13 +76,27 @@ void callback(void* arg,string name="",int msgId=2){
 //	cout<<lock->Lock("hi",3)<<endl;
 //}
 
-/* start service */
-int main() {
-	SQSMaster* master = new SQSMaster(1200,1300,5,5000);
-	if(master->init()){
-		cout << "SQSMaster is started." << endl;
-		master->start();
-	}else{
-		cout<<"Fail to start service. Bye"<<endl;
-	}
+//test heart beat
+int main(){
+	cout<<"...Testing heart beat..."<<endl;
+	HeartBeat* beat = new HeartBeat(1000);
+	DataNode* node1 = new DataNode("0.0.0.0",1400,"1.1.1.1",1500,5000);
+	beat->AddDataNode(*node1);
+	sleep(3);
+	beat->CancelDataNode(*node1);
+	//DataNode* node2 = new DataNode("0.0.0.0",1400,"1.1.1.1",1500,5000);
+	//beat->AddDataNode(*node2);
+	sleep(60);
+	return 0;
 }
+
+/* start service */
+//int main() {
+//	SQSMaster* master = new SQSMaster(1200,1300,5,5000);
+//	if(master->init()){
+//		cout << "SQSMaster is started." << endl;
+//		master->start();
+//	}else{
+//		cout<<"Fail to start service. Bye"<<endl;
+//	}
+//}
