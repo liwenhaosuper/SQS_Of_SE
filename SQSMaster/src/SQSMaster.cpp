@@ -59,6 +59,7 @@ void* RegularCheck(void* arg){
 			cout<<"Rsp is NULL..."<<endl;
 			cnt++;
 		}else if(rsp->response_code==0){
+			cout<<"response code is 0"<<endl;
 			cnt++;
 		}else{
 			cnt = 0;
@@ -80,8 +81,21 @@ void* RegularCheck(void* arg){
 	return (void*)0;
 }
 
-void request_callback(struct evhttp_request *req, void *rsp){
-	memcpy(rsp,req,sizeof(struct evhttp_request*));
+void heartbeat_callback(struct evhttp_request *req, void *rsp){
+//	cout<<"heartbeat callback"<<":rsp body size:"<<req->body_size<<":rsp code line:"<<req->response_code_line<<":"<<
+//			"rsp header size:"<<req->headers_size<<endl;
+//	cout<<rsp<<endl;
+	/**
+	 * well, it takes me a long time to find you,bug!
+	 * so there is one question: if the pointer is modified by another thread,how could
+	 * the original thread get the newest value? seems using keyword 'volatile' doesn't work
+	 */
+	memcpy(rsp,req,sizeof(struct evhttp_request));
+	//rsp = req;
+//	cout<<rsp<<endl;
+//	cout<<":rsp body size:"<<((struct evhttp_request *)rsp)->body_size
+//			<<":rsp code line:"<<((struct evhttp_request *)rsp)->response_code_line
+//			<<":rsp header size:"<<((struct evhttp_request *)rsp)->headers_size<<endl;
 }
 
 struct evhttp_request* HeartBeat::doRequest(std::string dataNode,int port){
@@ -96,10 +110,15 @@ struct evhttp_request* HeartBeat::doRequest(std::string dataNode,int port){
 		cout<<"Error allocating rsp structure"<<endl;
 		return NULL;
 	}
-	struct evhttp_request *req = evhttp_request_new(request_callback, rsp);
+	//cout<<"original rsp:"<<rsp<<endl;
+	struct evhttp_request *req = evhttp_request_new(heartbeat_callback,rsp);
 	evhttp_make_request(cn,req,EVHTTP_REQ_GET,HEARTBEAT.c_str());
 	event_base_dispatch(base);
-	return rsp;
+//	cout<<"sent heart beat:"<<rsp<<endl;
+//	cout<<"rsp::::rsp body size:"<<((struct evhttp_request *)rsp)->body_size
+//			<<":rsp code line:"<<((struct evhttp_request *)rsp)->response_code_line
+//			<<":rsp header size:"<<((struct evhttp_request *)rsp)->headers_size<<endl;
+	return (struct evhttp_request *)rsp;
 }
 
 void HeartBeat::AddDataNode(DataNode node){
@@ -157,17 +176,21 @@ void DataNodeCallBack(struct evhttp_request* req, void* arg){
 }
 
 void dispatchMsgCallBack(struct evhttp_request* req, void* arg){
-	event_base_loopbreak((struct event_base*)arg);
+	//event_base_loopbreak((struct event_base*)arg);
+	cout<<"dispatchMsgCallBack:Care about nothing!"<<endl;
 }
-
+//FIXME and IMPORTANT: there is a bug. It will block for a long time sometimes
 void SQSMaster::dispatchMessage(std::string remoteNode,int remotePort,std::string request){
 	struct event_base *base = event_base_new();
 	struct evhttp_connection *cn = evhttp_connection_base_new(
 			base, NULL,
 			remoteNode.c_str(),
 			remotePort);
-	struct evhttp_request *req = evhttp_request_new(request_callback, base);
-	evhttp_make_request(cn,req,EVHTTP_REQ_GET,request.c_str());
+	cout<<"Make request."<<remoteNode<<":"<<remotePort<<":"<<request<<endl;
+	struct evhttp_request *req = evhttp_request_new(dispatchMsgCallBack, base);
+	if(evhttp_make_request(cn,req,EVHTTP_REQ_GET,request.c_str())==-1){
+		cout<<"Make request fail..."<<endl;
+	}
 	event_base_dispatch(base);
 }
 
@@ -249,6 +272,7 @@ void SQSMaster::onDataNodeRecv (struct evhttp_request* req) {
 		string command = DEL_QUEUE;
 		command+="?"+QUEUE_NAME+"="+queueName;
 		logger->addLog(command);
+		cout<<"log added..."<<endl;
 		//dispatch message
 		for(vector<DataNode>::iterator iter = mDataNodes.begin();iter!=mDataNodes.end();iter++){
 			if(!pBeat->IsNodeAlive(*iter)){
@@ -257,7 +281,9 @@ void SQSMaster::onDataNodeRecv (struct evhttp_request* req) {
 					 break;
 				 }
 			}
+
 			if(strcmp(nodeName,(iter)->getNodeNameFormaster().c_str())!=0&&atoi(nodePort)!=(iter)->getNodePortFormaster()){
+				cout<<"dispatchMessage"<<endl;
 				dispatchMessage((iter)->getNodeNameFormaster(),(iter)->getNodePortFormaster(),command);
 			}
 		}
@@ -368,6 +394,10 @@ void SQSMaster::onDataNodeRecv (struct evhttp_request* req) {
 		for(vector<string>::iterator iter = datas.begin();iter!=datas.end();iter++){
 			dispatchMessage(nodeName,atoi(nodePort),*iter);
 		}
+		evbuffer_add_printf(buf, "%s", "Recovery is completed!");
+		evhttp_send_reply(req, HTTP_OK, "OK", buf);
+		evbuffer_free(buf);
+		return;
 	}else if(strcmp(url_path,JOIN_TEAM.c_str())==0){/*  join*/
 		const char* publicNodeName = evhttp_find_header(url_parameters,PUBLIC_NODE_NAME.c_str());
 		const char* publicNodePort = evhttp_find_header(url_parameters,PUBLIC_NODE_PORT.c_str());
@@ -411,8 +441,23 @@ void SQSMaster::onClientReqRecv (struct evhttp_request* req) {
 	if(strcmp(url_path,GET_AVAILABLE_HOST.c_str())==0){
 		cout<<"Client request recv..."<<endl;
 		//TODO: get one available host and send back.
-		evbuffer_add_printf(buf, "%s", "Correct request......");
-		evhttp_send_reply(req, HTTP_OK, "OK", buf);
+		int cnt = mDataNodes.size();
+		if(cnt>0){
+			int index = rand()%cnt;
+			string res = "nodeName:"+mDataNodes.at(index).getNodeNamePublic()+"\r\n";
+			char* tmp = new char[8];
+			memset(tmp,0,sizeof(tmp));
+			sprintf(tmp,"%d",mDataNodes.at(index).getNodePortPublic());
+			res+="nodePort:";
+			res+=tmp;
+			res+="\r\n";
+			evbuffer_add_printf(buf, "%s",res.c_str());
+			evhttp_send_reply(req, HTTP_OK, "OK", buf);
+		}else{
+			evbuffer_add_printf(buf, "%s", "No Data Node available...");
+			evhttp_send_reply(req, HTTP_OK, "OK", buf);
+		}
+
 	}else{
 		evbuffer_add_printf(buf, "%s", "Unrecognized request......");
 		evhttp_send_reply(req, HTTP_BADREQUEST, "NO", buf);

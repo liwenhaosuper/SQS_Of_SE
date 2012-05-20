@@ -106,10 +106,10 @@ void callback(void* arg,string name="",int msgId=2){
 //	struct event_base *base = event_base_new();
 //	struct evhttp_connection *cn = evhttp_connection_base_new(
 //	        base, NULL,
-//	        "localhost",
-//	        1300);
-//	struct evhttp_request *req = evhttp_request_new(req_callback, NULL);
-//	evhttp_make_request(cn,req,EVHTTP_REQ_GET,"/join");
+//	        "127.0.0.1",
+//	        8080);
+//	struct evhttp_request *req = evhttp_request_new(req_callback, base);
+//	evhttp_make_request(cn,req,EVHTTP_REQ_GET,"/Album");
 //	event_base_dispatch(base);
 //	cout<<"Bye"<<endl;
 //}
@@ -130,3 +130,42 @@ int main() {
 		cout<<"Fail to start service. Bye"<<endl;
 	}
 }
+
+/**
+ * Test for getting client's request
+ *
+ * Get request from client:
+ * case 1.
+ * 			http://localhost:1200/getavailablehost
+ * return:	No Data Node available...
+ *
+ * case 2.
+ * 			http://localhost:1200/ahah
+ * return:	Unrecognized request......
+ *
+ *
+ *Get request from data node:
+ *case 1.
+ *			http://localhost:1300/createQueue?nodeName=node1&nodePort=10086&queueName=hi
+ * return:  Create Queue Request?Roger that
+ *
+ *case 2.
+ *			http://localhost:1300/recovery?nodeName=node1&nodePort=1100&logSize=1000
+ *return:	Recovery is completed!
+ *
+ *case 3.
+ *			http://localhost:1300/join?nodeName=node2&nodePort=1100&publicNodeName=master&publicNodePort=23
+ *return:	Welcome to join us!
+ *
+ *case 4.
+ *			http://localhost:1300/deleteQueue?nodeName=node1&nodePort=1111&queueName=queue
+ *return && FIXME:   crash when trying to send message to an invalid node.
+ *			http://localhost:1300/deleteQueue?nodeName=node1&nodePort=1111&queueName=queue
+ *return:	Delete Queue Request?Roger that
+ *
+ *case 5.
+ *			http://localhost:1300/join?nodeName=localhost&nodePort=1200&publicNodeName=master&publicNodePort=23
+ *			http://localhost:1300/deleteQueue?nodeName=node1&nodePort=1111&queueName=queue
+ *return:&& FIXME: crash when sending http request
+ *
+ */
