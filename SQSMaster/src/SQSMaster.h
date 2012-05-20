@@ -16,21 +16,38 @@
 #include "MsgLock.h"
 #include "Logger.h"
 
+/**
+ * DataNode object
+ * A data node object has two public ports, one for client communication, one for master communication
+ */
 class DataNode{
 private:
-	std::string nodeName_public;
-	int nodePort_public;
-	std::string nodeName_formaster;
-	int nodePort_formaster;
-	long defaultTimeout;//in mill-seconds
-	long startTime;
-	bool cancel;
+	std::string nodeName_public; /* node name for client connection*/
+	int nodePort_public;   /*node port for client connection*/
+	std::string nodeName_formaster; /* node name for communication with the master*/
+	int nodePort_formaster; /* node port for communication with the master*/
+	long defaultTimeout;//default time out for the data node, in milliseconds
+	long startTime;   // the time it joins the data node list, in milliseconds
+	bool cancel;      //whether it has been cancel or not.
 public:
 	DataNode(std::string nm,int port,std::string masterNM,int masterPort,long timeout):cancel(false),
 		nodeName_public(nm),nodePort_public(port),nodeName_formaster(masterNM),nodePort_formaster(masterPort),defaultTimeout(timeout){}
+	/**
+	 * refresh the startTime to the current time stamp
+	 */
 	void Recycle();
+	/*
+	 * tell whether this data node is still alive or not
+	 * A data node is alive only if it is not time out
+	 */
 	bool IsAlive();
+	/**
+	 * whether it has been canceled or not
+	 */
 	bool IsCancel(){return cancel;}
+	/**
+	 * cancel the data node
+	 */
 	void Cancel(){ cancel = true; }
 	DataNode(const DataNode& node){
 		this->defaultTimeout = node.defaultTimeout;
@@ -61,47 +78,181 @@ public:
 	}
 };
 
-
+/**
+ * heart beat handling class with the data nodes
+ */
 class HeartBeat{
 private:
-	long cycle;//in millisecond
-	std::vector<DataNode*> clients;
-	/* construct a simple socket and return its descriptor, return -1 if fails */
+	long cycle;//the heart beat cycle in millisecond
+	std::vector<DataNode*> clients;// data node list
+	/*
+	 * send a simple http heart beat request to the giving data node and
+	 * return its response. return NULL if lack of memory
+	 * */
 	struct evhttp_request *doRequest(std::string dataNode,int port);
 public:
 	HeartBeat(long scheTime):cycle(scheTime){}
+	virtual ~HeartBeat(){
+		for(vector<DataNode*>::iterator iter = clients.begin();iter!=clients.end();iter++){
+			DataNode* node = *iter;
+			delete node;
+			*iter=NULL;
+		}
+		clients.clear();
+	}
+	/**
+	 * add a data node the the data node list and start regular heart beat
+	 */
 	void AddDataNode(DataNode node);
+	/**
+	 * cancel the data node and remove it from the data node list
+	 */
 	void CancelDataNode(DataNode node);
+	/**
+	 * tell whether the data node is still alive
+	 * if it is no longer alive, this method will remove it from the data node list
+	 */
 	bool IsNodeAlive(DataNode node);
+	/**
+	 * do the regular check for a giving data node
+	 * @param arg the Param object, containing the heart beat instance and the data node object to be processed
+	 */
 	friend void* RegularCheck(void* arg);
 };
-
+/**
+ * helper class to transfer parameters
+ */
 class Param{
 public:
 	HeartBeat* instance;
 	DataNode* node;
 };
 
+/**
+ * the main class for the master server
+ */
 class SQSMaster{
 private:
-	int clientPort;
-	int dataNodePort;
-	int connectionTimeout;
-	MsgLock* pLock;
-	long defaultTmout;
-	std::vector<DataNode> mDataNodes;
-	Logger* logger;
-	HeartBeat* pBeat;
+	int clientPort; /*port number for the client connection*/
+	int dataNodePort; /*port number for the data node connection*/
+	int connectionTimeout;/*default connection time out*/
+	MsgLock* pLock;   /*lock for message*/
+	std::vector<DataNode> mDataNodes; /*all available data nodes*/
+	Logger* logger;   /*logger for message processing*/
+	HeartBeat* pBeat;  /*Heart beat checker*/
 public:
 	SQSMaster():clientPort(1200),dataNodePort(1300),connectionTimeout(6),pLock(new MsgLock(5000)),
 		logger(new Logger("SQS.log")),pBeat(new HeartBeat(3000)){}
 	SQSMaster(int client,int dataNode,int connTimeout,int msgTimeout):clientPort(client),dataNodePort(dataNode),connectionTimeout(connTimeout)
 		,pLock(new MsgLock(msgTimeout)),logger(new Logger("SQS.log")),pBeat(new HeartBeat(3000)){}
+
+	/**
+	 * dispatch the giving request to the remote node.
+	 * @param remoteNode the remote node name
+	 * @param remotePort the remote port
+	 * @param request the url path that containing all the datas, i.e. '/createQueue?queueName=queue1'
+	 * FIXME and IMPORTANT: there is a bug. It will block for a long time sometimes on some circumstances
+	 */
 	void dispatchMessage(std::string remoteNode,int remotePort,std::string request);
-	virtual ~SQSMaster(){if(pLock) delete pLock;};
+
+	virtual ~SQSMaster(){
+		if(pLock){
+			pLock->Stop();
+			delete pLock;
+		}
+	}
+	/**
+	 * do all the necessary things to start the master
+	 * returns true if every goes fine, otherwise false
+	 */
 	bool init();
+	/**
+	 *start listening on master.
+	 *Make sure you have called init() and init() returns true before
+	 *you can call this method
+	 */
 	void start();
-	void onDataNodeRecv (struct evhttp_request *req);/* invoke when a request from data node recv */
+	/*
+	 * invoke when a request from data node received
+	 * The request url should be this kind:
+	 * 		http:hostName:hostPort/operation?param1=value1&param2=value2
+	 *
+	 *NOTE1: All the requests should contain its node name and node port which is used to
+	 *communicate with the master, i.e.
+	 *		http:hostName:hostPort/operation?nodeName=value1&nodePort=value2.
+	 *
+	 *NODE2: The redirect message is the same with the log message
+	 *
+	 *1.
+	 *To create a queue, the uri should be:
+	 *		http:hostName:hostPort/createQueue?nodeName=value1&nodePort=value2&queueName=value3.
+	 *The log and redirect message will be: /createQueue?queueName=value1
+	 *If succeeds, the return message is "Create Queue Request Accepted!"
+	 *
+	 *2.
+	 *To delete a queue, the uri should be:
+	 *		http:hostName:hostPort/deleteQueue?nodeName=value1&nodePort=value2&queueName=value3.
+	 *The log and redirect message will be: /deleteQueue?queueName=value1
+	 *If succeeds, the return message is "Delete Queue Request Accepted!"
+	 *
+	 *3.
+	 *To put a message, the url should be:
+	 *		http:hostName:hostPort/putMessage?nodeName=value1&nodePort=value2&queueName=value3&message=value4&mId=value5.
+	 *The log and redirect message will be: /putMessage?queueName=value1&message=value2&mId=value3
+	 *If succeeds, the return message is "Put message Request Accepted!"
+	 *
+	 *4.
+	 *To delete a message, the url should be:
+	 *		http:hostName:hostPort/deleteMessage?nodeName=value1&nodePort=value2&queueName=value3&mId=value5.
+	 *The log and redirect message will be: /deleteMessage?queueName=value1&mId=value3
+	 *If succeeds, the return message is "Delete message Request Accepted!"
+	 *
+	 *
+	 *5.
+	 *To get a message, the url should be:
+	 *		http:hostName:hostPort/getMessage?nodeName=value1&nodePort=value2&queueName=value3&mId=value5.
+	 *If succeeds, the return message is "Success", otherwise "Fail".
+	 *
+	 *
+	 *6.
+	 *To get a recovery mode, the url should be:
+	 *		http:hostName:hostPort/recovery?nodeName=value1&nodePort=value2&logsize=val4.
+	 *If succeeds, the return message is the log messages.
+	 *
+	 *
+	 *7.
+	 *To join it, the url should be:
+	 *		http:hostName:hostPort/join?nodeName=value1&nodePort=value2&publicNodeName=val3&publicNodePort=val4.
+	 *If succeeds, the return message is "Welcome to join us!".
+	 *
+	 *
+	 *
+	 * @param req the object containing all the necessary messages
+	 *
+	 * FIXME:
+	 * 	if adds "delete url_path;delete url_query;", it will tell me double free the memory.
+	 * 	So I do not free it. But who does this job?
+	 */
+	void onDataNodeRecv (struct evhttp_request *req);
+
+	/*
+	 * TODO: You can change the return messages!
+	 *
+	 * invoke when a request from client received
+	 * if the request's path is '/getavailablehost', it will check the
+	 * available data nodes and return one, i.e.
+	 *"
+	 *nodeName: localhost
+	 *nodePort: 8080
+	 *"
+	 *if no data nodes available, it will return a message:
+	 *"No Data Node available..."
+	 *
+	 *all the other request are  unrecognizable and will return a message:
+	 *"Unrecognized request......"
+	 *
+	 * @param req the object containing all the necessary messages
+	 */
 	void onClientReqRecv (struct evhttp_request *req);/* invoke when a request from client recv */
 };
 

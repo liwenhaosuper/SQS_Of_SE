@@ -124,7 +124,7 @@ void callback(void* arg,string name="",int msgId=2){
 int main() {
 	SQSMaster* master = new SQSMaster(1200,1300,5,5000);
 	if(master->init()){
-		cout << "SQSMaster is started." << endl;
+		cout << "<<<<<<<<<SQSMaster is started>>>>>>>>>>" << endl;
 		master->start();
 	}else{
 		cout<<"Fail to start service. Bye"<<endl;
@@ -162,10 +162,14 @@ int main() {
  *return && FIXME:   crash when trying to send message to an invalid node.
  *			http://localhost:1300/deleteQueue?nodeName=node1&nodePort=1111&queueName=queue
  *return:	Delete Queue Request?Roger that
+ *FIX	:	Fixed!
  *
  *case 5.
  *			http://localhost:1300/join?nodeName=localhost&nodePort=1200&publicNodeName=master&publicNodePort=23
  *			http://localhost:1300/deleteQueue?nodeName=node1&nodePort=1111&queueName=queue
  *return:&& FIXME: crash when sending http request
+ *FIX	:	Fixed!
+ *
+ *
  *
  */
