@@ -1,0 +1,280 @@
+\hypertarget{classEventChain}{\section{\-Event\-Chain \-Class \-Reference}
+\label{df/dd4/classEventChain}\index{\-Event\-Chain@{\-Event\-Chain}}
+}
+
+
+timeout chain class -\/ the timeout process core  
+
+
+
+
+{\ttfamily \#include $<$\-Msg\-Lock.\-h$>$}
+
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classEventChain_ada7e8a70f9a8d1401ae8688d1c229c48}{\-Event\-Chain} ()
+\item 
+virtual \hyperlink{classEventChain_a236195bf33b701dbc51aed3f2626a3ce}{$\sim$\-Event\-Chain} ()
+\item 
+void \hyperlink{classEventChain_a5946605e94f28745049b188436d1b4d9}{\-Run} ()
+\begin{DoxyCompactList}\small\item\em start handling event chain, please do not call it directly, call \hyperlink{classEventChain_a16e7a78c2ed7f99f317bd3e07af1d8f9}{\-Start()} instead \end{DoxyCompactList}\item 
+bool \hyperlink{classEventChain_a16e7a78c2ed7f99f317bd3e07af1d8f9}{\-Start} ()
+\begin{DoxyCompactList}\small\item\em call it to start process event chain \end{DoxyCompactList}\item 
+bool \hyperlink{classEventChain_aa1291ec4c607b26362ce57269f90e7cb}{\-Stop} ()
+\begin{DoxyCompactList}\small\item\em call it to stop process event chain. \end{DoxyCompactList}\item 
+void \hyperlink{classEventChain_ac986b5d2267157e6e8bb6deadef8b973}{\-Schedule} (\hyperlink{classEvent}{\-Event} $\ast$e)
+\begin{DoxyCompactList}\small\item\em schedule a new event \end{DoxyCompactList}\item 
+void \hyperlink{classEventChain_af62373dcc9dd1b677eb957f8ba2c46c5}{\-Cancel} (\hyperlink{classEvent}{\-Event} $\ast$e)
+\begin{DoxyCompactList}\small\item\em cancel an event \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Private \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classEvent}{\-Event} $\ast$ \hyperlink{classEventChain_ae1a1e5817ae1441dd667bf8cc61d2189}{head}
+\begin{DoxyCompactList}\small\item\em head event in the chain \end{DoxyCompactList}\item 
+pthread\-\_\-t \hyperlink{classEventChain_a18d260ab11be32921c0048f9baee010f}{pid}
+\begin{DoxyCompactList}\small\item\em the thread id the do the event process \end{DoxyCompactList}\item 
+pthread\-\_\-cond\-\_\-t \hyperlink{classEventChain_a07bb206a91428aa03e3167760357bc57}{qready}
+\begin{DoxyCompactList}\small\item\em condition var to avoid overhead loop \end{DoxyCompactList}\item 
+pthread\-\_\-mutex\-\_\-t \hyperlink{classEventChain_ade765e56690d9ed14ade46e379a52680}{qlock}
+\begin{DoxyCompactList}\small\item\em mutex to avoid racing \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Friends}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classEventChain_a009f6fec4bfd5adc7c28c7c6acc8d317}{\-Cleanup} (void $\ast$arg)
+\begin{DoxyCompactList}\small\item\em helper method to deal with dead lock. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+timeout chain class -\/ the timeout process core 
+
+\-Definition at line 72 of file \-Msg\-Lock.\-h.
+
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{classEventChain_ada7e8a70f9a8d1401ae8688d1c229c48}{\index{\-Event\-Chain@{\-Event\-Chain}!\-Event\-Chain@{\-Event\-Chain}}
+\index{\-Event\-Chain@{\-Event\-Chain}!EventChain@{\-Event\-Chain}}
+\subsubsection[{\-Event\-Chain}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Event\-Chain\-::\-Event\-Chain} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{df/dd4/classEventChain_ada7e8a70f9a8d1401ae8688d1c229c48}
+
+
+\-Definition at line 95 of file \-Msg\-Lock.\-h.
+
+\hypertarget{classEventChain_a236195bf33b701dbc51aed3f2626a3ce}{\index{\-Event\-Chain@{\-Event\-Chain}!$\sim$\-Event\-Chain@{$\sim$\-Event\-Chain}}
+\index{$\sim$\-Event\-Chain@{$\sim$\-Event\-Chain}!EventChain@{\-Event\-Chain}}
+\subsubsection[{$\sim$\-Event\-Chain}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf \-Event\-Chain\-::$\sim$\-Event\-Chain} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, virtual\mbox{]}}}}\label{df/dd4/classEventChain_a236195bf33b701dbc51aed3f2626a3ce}
+
+
+\-Definition at line 97 of file \-Msg\-Lock.\-h.
+
+
+
+\-References head, and \-Event\-::next.
+
+
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{classEventChain_af62373dcc9dd1b677eb957f8ba2c46c5}{\index{\-Event\-Chain@{\-Event\-Chain}!\-Cancel@{\-Cancel}}
+\index{\-Cancel@{\-Cancel}!EventChain@{\-Event\-Chain}}
+\subsubsection[{\-Cancel}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Event\-Chain\-::\-Cancel} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-Event} $\ast$}]{e}
+\end{DoxyParamCaption}
+)}}\label{df/dd4/classEventChain_af62373dcc9dd1b677eb957f8ba2c46c5}
+
+
+cancel an event 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em e} & the event to be canceled\\
+\hline
+\end{DoxyParams}
+if event not found, just free the parameter e else free both the parameter e and the matching event 
+
+\-Definition at line 28 of file \-Msg\-Lock.\-cpp.
+
+
+
+\-References \-Event\-::next.
+
+\hypertarget{classEventChain_a5946605e94f28745049b188436d1b4d9}{\index{\-Event\-Chain@{\-Event\-Chain}!\-Run@{\-Run}}
+\index{\-Run@{\-Run}!EventChain@{\-Event\-Chain}}
+\subsubsection[{\-Run}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Event\-Chain\-::\-Run} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{df/dd4/classEventChain_a5946605e94f28745049b188436d1b4d9}
+
+
+start handling event chain, please do not call it directly, call \hyperlink{classEventChain_a16e7a78c2ed7f99f317bd3e07af1d8f9}{\-Start()} instead 
+
+
+
+\-Definition at line 127 of file \-Msg\-Lock.\-cpp.
+
+
+
+\-References \-Cleanup().
+
+
+
+\-Referenced by start\-Thread().
+
+\hypertarget{classEventChain_ac986b5d2267157e6e8bb6deadef8b973}{\index{\-Event\-Chain@{\-Event\-Chain}!\-Schedule@{\-Schedule}}
+\index{\-Schedule@{\-Schedule}!EventChain@{\-Event\-Chain}}
+\subsubsection[{\-Schedule}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Event\-Chain\-::\-Schedule} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-Event} $\ast$}]{e}
+\end{DoxyParamCaption}
+)}}\label{df/dd4/classEventChain_ac986b5d2267157e6e8bb6deadef8b973}
+
+
+schedule a new event 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em e} & the event to be scheduled \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 83 of file \-Msg\-Lock.\-cpp.
+
+
+
+\-References \-Event\-::join\-\_\-time, \-Event\-::next, and \-Event\-::sched\-\_\-time.
+
+\hypertarget{classEventChain_a16e7a78c2ed7f99f317bd3e07af1d8f9}{\index{\-Event\-Chain@{\-Event\-Chain}!\-Start@{\-Start}}
+\index{\-Start@{\-Start}!EventChain@{\-Event\-Chain}}
+\subsubsection[{\-Start}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Event\-Chain\-::\-Start} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{df/dd4/classEventChain_a16e7a78c2ed7f99f317bd3e07af1d8f9}
+
+
+call it to start process event chain 
+
+\begin{DoxyReturn}{\-Returns}
+true if successfully start otherwise false 
+\end{DoxyReturn}
+
+
+\-Definition at line 57 of file \-Msg\-Lock.\-cpp.
+
+
+
+\-References start\-Thread().
+
+\hypertarget{classEventChain_aa1291ec4c607b26362ce57269f90e7cb}{\index{\-Event\-Chain@{\-Event\-Chain}!\-Stop@{\-Stop}}
+\index{\-Stop@{\-Stop}!EventChain@{\-Event\-Chain}}
+\subsubsection[{\-Stop}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Event\-Chain\-::\-Stop} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{df/dd4/classEventChain_aa1291ec4c607b26362ce57269f90e7cb}
+
+
+call it to stop process event chain. 
+
+\-Please keep it in mind that you call this method only on condition you have to or on terminate for it will not only stop the event chain, but also free the chain list.
+
+\begin{DoxyReturn}{\-Returns}
+true if successfully stop otherwise false 
+\end{DoxyReturn}
+
+
+\-Definition at line 66 of file \-Msg\-Lock.\-cpp.
+
+
+
+\-References \-Event\-::next.
+
+
+
+\subsection{\-Friends \-And \-Related \-Function \-Documentation}
+\hypertarget{classEventChain_a009f6fec4bfd5adc7c28c7c6acc8d317}{\index{\-Event\-Chain@{\-Event\-Chain}!\-Cleanup@{\-Cleanup}}
+\index{\-Cleanup@{\-Cleanup}!EventChain@{\-Event\-Chain}}
+\subsubsection[{\-Cleanup}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Cleanup} (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}friend\mbox{]}}}}\label{df/dd4/classEventChain_a009f6fec4bfd5adc7c28c7c6acc8d317}
+
+
+helper method to deal with dead lock. 
+
+\-It just unlock the mutex 
+
+\-Definition at line 120 of file \-Msg\-Lock.\-cpp.
+
+
+
+\subsection{\-Member \-Data \-Documentation}
+\hypertarget{classEventChain_ae1a1e5817ae1441dd667bf8cc61d2189}{\index{\-Event\-Chain@{\-Event\-Chain}!head@{head}}
+\index{head@{head}!EventChain@{\-Event\-Chain}}
+\subsubsection[{head}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Event}$\ast$ {\bf \-Event\-Chain\-::head}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{df/dd4/classEventChain_ae1a1e5817ae1441dd667bf8cc61d2189}
+
+
+head event in the chain 
+
+
+
+\-Definition at line 77 of file \-Msg\-Lock.\-h.
+
+
+
+\-Referenced by $\sim$\-Event\-Chain().
+
+\hypertarget{classEventChain_a18d260ab11be32921c0048f9baee010f}{\index{\-Event\-Chain@{\-Event\-Chain}!pid@{pid}}
+\index{pid@{pid}!EventChain@{\-Event\-Chain}}
+\subsubsection[{pid}]{\setlength{\rightskip}{0pt plus 5cm}pthread\-\_\-t {\bf \-Event\-Chain\-::pid}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{df/dd4/classEventChain_a18d260ab11be32921c0048f9baee010f}
+
+
+the thread id the do the event process 
+
+
+
+\-Definition at line 81 of file \-Msg\-Lock.\-h.
+
+\hypertarget{classEventChain_ade765e56690d9ed14ade46e379a52680}{\index{\-Event\-Chain@{\-Event\-Chain}!qlock@{qlock}}
+\index{qlock@{qlock}!EventChain@{\-Event\-Chain}}
+\subsubsection[{qlock}]{\setlength{\rightskip}{0pt plus 5cm}pthread\-\_\-mutex\-\_\-t {\bf \-Event\-Chain\-::qlock}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{df/dd4/classEventChain_ade765e56690d9ed14ade46e379a52680}
+
+
+mutex to avoid racing 
+
+
+
+\-Definition at line 89 of file \-Msg\-Lock.\-h.
+
+
+
+\-Referenced by \-Cleanup().
+
+\hypertarget{classEventChain_a07bb206a91428aa03e3167760357bc57}{\index{\-Event\-Chain@{\-Event\-Chain}!qready@{qready}}
+\index{qready@{qready}!EventChain@{\-Event\-Chain}}
+\subsubsection[{qready}]{\setlength{\rightskip}{0pt plus 5cm}pthread\-\_\-cond\-\_\-t {\bf \-Event\-Chain\-::qready}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{df/dd4/classEventChain_a07bb206a91428aa03e3167760357bc57}
+
+
+condition var to avoid overhead loop 
+
+
+
+\-Definition at line 85 of file \-Msg\-Lock.\-h.
+
+
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{MsgLock_8h}{\-Msg\-Lock.\-h}\item 
+src/\hyperlink{MsgLock_8cpp}{\-Msg\-Lock.\-cpp}\end{DoxyCompactItemize}

@@ -1,0 +1,220 @@
+\hypertarget{classHeartBeat}{\section{\-Heart\-Beat \-Class \-Reference}
+\label{d7/d28/classHeartBeat}\index{\-Heart\-Beat@{\-Heart\-Beat}}
+}
+
+
+heart beat handling class with the data nodes  
+
+
+
+
+{\ttfamily \#include $<$\-S\-Q\-S\-Master.\-h$>$}
+
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classHeartBeat_ab0b77e6af31793da01b8a6d99ac4999e}{\-Heart\-Beat} (long sche\-Time)
+\item 
+virtual \hyperlink{classHeartBeat_a8c6852870c1654cdd14af4d21362ade0}{$\sim$\-Heart\-Beat} ()
+\item 
+void \hyperlink{classHeartBeat_acd7815d9c021dac972ddd6e670cefcb8}{\-Add\-Data\-Node} (\hyperlink{classDataNode}{\-Data\-Node} node)
+\begin{DoxyCompactList}\small\item\em add a data node the the data node list and start regular heart beat \end{DoxyCompactList}\item 
+void \hyperlink{classHeartBeat_aeef6d5b3263f58fcd80f34570758a8c0}{\-Cancel\-Data\-Node} (\hyperlink{classDataNode}{\-Data\-Node} node)
+\begin{DoxyCompactList}\small\item\em cancel the data node and remove it from the data node list \end{DoxyCompactList}\item 
+bool \hyperlink{classHeartBeat_afaece774c2a5046dbb45fff2e452628b}{\-Is\-Node\-Alive} (\hyperlink{classDataNode}{\-Data\-Node} node)
+\begin{DoxyCompactList}\small\item\em tell whether the data node is still alive if it is no longer alive, this method will remove it from the data node list \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Private \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct evhttp\-\_\-request $\ast$ \hyperlink{classHeartBeat_a214003a874871f9757b62afeac63c504}{do\-Request} (std\-::string data\-Node, int port)
+\begin{DoxyCompactList}\small\item\em send a simple http heart beat request to the giving data node and return its response. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Private \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+long \hyperlink{classHeartBeat_aa0384e810d6db72a57bea95a74a262db}{cycle}
+\begin{DoxyCompactList}\small\item\em the heart beat cycle in millisecond \end{DoxyCompactList}\item 
+std\-::vector$<$ \hyperlink{classDataNode}{\-Data\-Node} $\ast$ $>$ \hyperlink{classHeartBeat_a6a52caa433708eae3b8dfd315c7f3f70}{clients}
+\begin{DoxyCompactList}\small\item\em data node list \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Friends}
+\begin{DoxyCompactItemize}
+\item 
+void $\ast$ \hyperlink{classHeartBeat_a2c909906a58712999c27391cb2c17f11}{\-Regular\-Check} (void $\ast$arg)
+\begin{DoxyCompactList}\small\item\em do the regular check for a giving data node \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+heart beat handling class with the data nodes 
+
+\-Definition at line 109 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{classHeartBeat_ab0b77e6af31793da01b8a6d99ac4999e}{\index{\-Heart\-Beat@{\-Heart\-Beat}!\-Heart\-Beat@{\-Heart\-Beat}}
+\index{\-Heart\-Beat@{\-Heart\-Beat}!HeartBeat@{\-Heart\-Beat}}
+\subsubsection[{\-Heart\-Beat}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Heart\-Beat\-::\-Heart\-Beat} (
+\begin{DoxyParamCaption}
+\item[{long}]{sche\-Time}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{d7/d28/classHeartBeat_ab0b77e6af31793da01b8a6d99ac4999e}
+
+
+\-Definition at line 126 of file \-S\-Q\-S\-Master.\-h.
+
+\hypertarget{classHeartBeat_a8c6852870c1654cdd14af4d21362ade0}{\index{\-Heart\-Beat@{\-Heart\-Beat}!$\sim$\-Heart\-Beat@{$\sim$\-Heart\-Beat}}
+\index{$\sim$\-Heart\-Beat@{$\sim$\-Heart\-Beat}!HeartBeat@{\-Heart\-Beat}}
+\subsubsection[{$\sim$\-Heart\-Beat}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf \-Heart\-Beat\-::$\sim$\-Heart\-Beat} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, virtual\mbox{]}}}}\label{d7/d28/classHeartBeat_a8c6852870c1654cdd14af4d21362ade0}
+
+
+\-Definition at line 127 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-References clients.
+
+
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{classHeartBeat_acd7815d9c021dac972ddd6e670cefcb8}{\index{\-Heart\-Beat@{\-Heart\-Beat}!\-Add\-Data\-Node@{\-Add\-Data\-Node}}
+\index{\-Add\-Data\-Node@{\-Add\-Data\-Node}!HeartBeat@{\-Heart\-Beat}}
+\subsubsection[{\-Add\-Data\-Node}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Heart\-Beat\-::\-Add\-Data\-Node} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-Data\-Node}}]{node}
+\end{DoxyParamCaption}
+)}}\label{d7/d28/classHeartBeat_acd7815d9c021dac972ddd6e670cefcb8}
+
+
+add a data node the the data node list and start regular heart beat 
+
+
+
+\-Definition at line 118 of file \-S\-Q\-S\-Master.\-cpp.
+
+
+
+\-References \-Param\-::instance, \-Param\-::node, \-Data\-Node\-::\-Recycle(), and \-Regular\-Check().
+
+\hypertarget{classHeartBeat_aeef6d5b3263f58fcd80f34570758a8c0}{\index{\-Heart\-Beat@{\-Heart\-Beat}!\-Cancel\-Data\-Node@{\-Cancel\-Data\-Node}}
+\index{\-Cancel\-Data\-Node@{\-Cancel\-Data\-Node}!HeartBeat@{\-Heart\-Beat}}
+\subsubsection[{\-Cancel\-Data\-Node}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Heart\-Beat\-::\-Cancel\-Data\-Node} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-Data\-Node}}]{node}
+\end{DoxyParamCaption}
+)}}\label{d7/d28/classHeartBeat_aeef6d5b3263f58fcd80f34570758a8c0}
+
+
+cancel the data node and remove it from the data node list 
+
+
+
+\-Definition at line 150 of file \-S\-Q\-S\-Master.\-cpp.
+
+
+
+\-Referenced by \-Regular\-Check().
+
+\hypertarget{classHeartBeat_a214003a874871f9757b62afeac63c504}{\index{\-Heart\-Beat@{\-Heart\-Beat}!do\-Request@{do\-Request}}
+\index{do\-Request@{do\-Request}!HeartBeat@{\-Heart\-Beat}}
+\subsubsection[{do\-Request}]{\setlength{\rightskip}{0pt plus 5cm}struct evhttp\-\_\-request $\ast$ {\bf \-Heart\-Beat\-::do\-Request} (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{data\-Node, }
+\item[{int}]{port}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}read, private\mbox{]}}}}\label{d7/d28/classHeartBeat_a214003a874871f9757b62afeac63c504}
+
+
+send a simple http heart beat request to the giving data node and return its response. 
+
+return \-N\-U\-L\-L if lack of memory 
+
+\-Definition at line 95 of file \-S\-Q\-S\-Master.\-cpp.
+
+
+
+\-References \-H\-E\-A\-R\-T\-B\-E\-A\-T, and heartbeat\-\_\-callback().
+
+
+
+\-Referenced by \-Regular\-Check().
+
+\hypertarget{classHeartBeat_afaece774c2a5046dbb45fff2e452628b}{\index{\-Heart\-Beat@{\-Heart\-Beat}!\-Is\-Node\-Alive@{\-Is\-Node\-Alive}}
+\index{\-Is\-Node\-Alive@{\-Is\-Node\-Alive}!HeartBeat@{\-Heart\-Beat}}
+\subsubsection[{\-Is\-Node\-Alive}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Heart\-Beat\-::\-Is\-Node\-Alive} (
+\begin{DoxyParamCaption}
+\item[{{\bf \-Data\-Node}}]{node}
+\end{DoxyParamCaption}
+)}}\label{d7/d28/classHeartBeat_afaece774c2a5046dbb45fff2e452628b}
+
+
+tell whether the data node is still alive if it is no longer alive, this method will remove it from the data node list 
+
+
+
+\-Definition at line 138 of file \-S\-Q\-S\-Master.\-cpp.
+
+
+
+\subsection{\-Friends \-And \-Related \-Function \-Documentation}
+\hypertarget{classHeartBeat_a2c909906a58712999c27391cb2c17f11}{\index{\-Heart\-Beat@{\-Heart\-Beat}!\-Regular\-Check@{\-Regular\-Check}}
+\index{\-Regular\-Check@{\-Regular\-Check}!HeartBeat@{\-Heart\-Beat}}
+\subsubsection[{\-Regular\-Check}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ {\bf \-Regular\-Check} (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}friend\mbox{]}}}}\label{d7/d28/classHeartBeat_a2c909906a58712999c27391cb2c17f11}
+
+
+do the regular check for a giving data node 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em arg} & the \hyperlink{classParam}{\-Param} object, containing the heart beat instance and the data node object to be processed \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 38 of file \-S\-Q\-S\-Master.\-cpp.
+
+
+
+\subsection{\-Member \-Data \-Documentation}
+\hypertarget{classHeartBeat_a6a52caa433708eae3b8dfd315c7f3f70}{\index{\-Heart\-Beat@{\-Heart\-Beat}!clients@{clients}}
+\index{clients@{clients}!HeartBeat@{\-Heart\-Beat}}
+\subsubsection[{clients}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<${\bf \-Data\-Node}$\ast$$>$ {\bf \-Heart\-Beat\-::clients}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{d7/d28/classHeartBeat_a6a52caa433708eae3b8dfd315c7f3f70}
+
+
+data node list 
+
+
+
+\-Definition at line 118 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-Referenced by $\sim$\-Heart\-Beat().
+
+\hypertarget{classHeartBeat_aa0384e810d6db72a57bea95a74a262db}{\index{\-Heart\-Beat@{\-Heart\-Beat}!cycle@{cycle}}
+\index{cycle@{cycle}!HeartBeat@{\-Heart\-Beat}}
+\subsubsection[{cycle}]{\setlength{\rightskip}{0pt plus 5cm}long {\bf \-Heart\-Beat\-::cycle}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{d7/d28/classHeartBeat_aa0384e810d6db72a57bea95a74a262db}
+
+
+the heart beat cycle in millisecond 
+
+
+
+\-Definition at line 114 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-Referenced by \-Regular\-Check().
+
+
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{SQSMaster_8h}{\-S\-Q\-S\-Master.\-h}\item 
+src/\hyperlink{SQSMaster_8cpp}{\-S\-Q\-S\-Master.\-cpp}\end{DoxyCompactItemize}

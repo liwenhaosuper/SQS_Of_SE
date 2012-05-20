@@ -1,0 +1,324 @@
+\hypertarget{Convention_8h}{\section{src/\-Convention.h \-File \-Reference}
+\label{dc/d0d/Convention_8h}\index{src/\-Convention.\-h@{src/\-Convention.\-h}}
+}
+{\ttfamily \#include $<$string$>$}\*
+{\ttfamily \#include $<$stdio.\-h$>$}\*
+\subsection*{\-Variables}
+\begin{DoxyCompactItemize}
+\item 
+string \hyperlink{Convention_8h_a71e05348b49518de386c4f9ce71d4460}{master\-Ip\-\_\-\-For\-Client} = \char`\"{}127.\-0.\-0.\-1\char`\"{}
+\begin{DoxyCompactList}\small\item\em \-Convention for client handling. \end{DoxyCompactList}\item 
+int \hyperlink{Convention_8h_a760fc5aa7c79d793c8bb27717d0fa390}{master\-Port\-\_\-\-For\-Client} = 1200
+\item 
+string \hyperlink{Convention_8h_a08771afcc7567862e9c7986838c79b19}{master\-I\-P\-\_\-\-For\-Data\-Node} = \char`\"{}127.\-0.\-0.\-1\char`\"{}
+\item 
+int \hyperlink{Convention_8h_a66637814f7566b32d1e5f130edcb2535}{master\-Port\-\_\-\-For\-Data\-Node} = 1300
+\item 
+const string \hyperlink{Convention_8h_ac5254192c606741ffea5f509e58fd3fe}{\-G\-E\-T\-\_\-\-A\-V\-A\-I\-L\-A\-B\-L\-E\-\_\-\-H\-O\-S\-T} = \char`\"{}/getavailablehost\char`\"{}
+\begin{DoxyCompactList}\small\item\em \-Url path\-: \hyperlink{classDataNode}{\-Data\-Node} to \-Master localhost\-:1200/operaion?param=?\&param2=? recovery\-: localhost\-:1300/recovery?node\-Name=s\&node\-Port=s\&log\-Size=s join\-: localhost\-:1300/join?node\-Name=s\&node\-Port=s\&node\-Name\-Master=s\&node\-Port\-Master=s create\-Message\-: localhost\-:1300/put\-Message?node\-Name=s\&node\-Port=s\&node\-Name\-Master=s\&node\-Port\-Master=s\&queue\-Name=s\&message=s\&message\-Id=s delete\-Message" localhost\-:1300/delete\-Message?node\-Name=s\&node\-Port=s\&node\-Name\-Master=s\&node\-Port\-Master=s\&queue\-Name=s\&message\-Id=s. \end{DoxyCompactList}\item 
+const string \hyperlink{Convention_8h_adc1d9ec732e2b90dc4b825201bdf58ca}{\-C\-R\-E\-A\-T\-E\-\_\-\-Q\-U\-E\-U\-E} = \char`\"{}/create\-Queue\char`\"{}
+\begin{DoxyCompactList}\small\item\em \-A client should first call this url to get the available data node to connect. \end{DoxyCompactList}\item 
+const string \hyperlink{Convention_8h_aa7fd01fdd6ac886c2daec2da0f7cb2b7}{\-L\-I\-S\-T\-\_\-\-Q\-U\-E\-U\-E\-S} = \char`\"{}/list\-Queues\char`\"{}
+\item 
+const string \hyperlink{Convention_8h_a9d2f3ddbc2ed1567324bc09ac63f8365}{\-D\-E\-L\-\_\-\-Q\-U\-E\-U\-E} = \char`\"{}/delete\-Queue\char`\"{}
+\item 
+const string \hyperlink{Convention_8h_a0ae245189df75fbdb3ff9dc49d9feed4}{\-P\-U\-T\-\_\-\-M\-S\-G} = \char`\"{}/put\-Message\char`\"{}
+\item 
+const string \hyperlink{Convention_8h_ab38976c5a0354a77f40204cbc40f72b4}{\-G\-E\-T\-\_\-\-M\-S\-G} = \char`\"{}/get\-Message\char`\"{}
+\item 
+const string \hyperlink{Convention_8h_a53ddae6ce9433e7e3243e4b2b042ea02}{\-D\-E\-L\-E\-T\-E\-\_\-\-M\-S\-G} = \char`\"{}/delete\-Message\char`\"{}
+\item 
+const string \hyperlink{Convention_8h_afa2ce2c723c13dc76832067599718db7}{\-E\-M\-P\-T\-Y\-\_\-\-P\-A\-T\-H} = \char`\"{}/\char`\"{}
+\item 
+const string \hyperlink{Convention_8h_ad392178bccf781650dc8bd6eb3aaed27}{\-R\-E\-C\-O\-V\-E\-R\-Y} = \char`\"{}/recovery\char`\"{}
+\item 
+const string \hyperlink{Convention_8h_ac797d68d9f4a9f40d6ed9c4f1694dbe1}{\-J\-O\-I\-N\-\_\-\-T\-E\-A\-M} = \char`\"{}/join\char`\"{}
+\item 
+const string \hyperlink{Convention_8h_a89d4b6fa1eab82d4ceb201c3592a75c1}{\-H\-E\-A\-R\-T\-B\-E\-A\-T} = \char`\"{}/heartbeat\char`\"{}
+\item 
+const string \hyperlink{Convention_8h_a004c151ed2ae054a858ddc89d9f6b0ea}{\-N\-O\-D\-E\-\_\-\-N\-A\-M\-E} = \char`\"{}node\-Name\char`\"{}
+\begin{DoxyCompactList}\small\item\em queue operation \end{DoxyCompactList}\item 
+const string \hyperlink{Convention_8h_aaa42bceac4a20349613b0bfac112bd03}{\-N\-O\-D\-E\-\_\-\-P\-O\-R\-T} = \char`\"{}node\-Port\char`\"{}
+\item 
+const string \hyperlink{Convention_8h_ad9fc9b69bc33c8b644f023fb0945ff3f}{\-P\-U\-B\-L\-I\-C\-\_\-\-N\-O\-D\-E\-\_\-\-N\-A\-M\-E} = \char`\"{}public\-Node\-Name\char`\"{}
+\item 
+const string \hyperlink{Convention_8h_ac7fbe6a60882e762f8bbc79872ed41a7}{\-P\-U\-B\-L\-I\-C\-\_\-\-N\-O\-D\-E\-\_\-\-P\-O\-R\-T} = \char`\"{}public\-Node\-Port\char`\"{}
+\item 
+const string \hyperlink{Convention_8h_afb2787ee4ffee2e63ff77af2860d4be9}{\-Q\-U\-E\-U\-E\-\_\-\-N\-A\-M\-E} = \char`\"{}queue\-Name\char`\"{}
+\item 
+const string \hyperlink{Convention_8h_a792929c00204a00e9731b091e95c90ce}{\-M\-S\-G\-\_\-\-I\-D} = \char`\"{}m\-Id\char`\"{}
+\item 
+const string \hyperlink{Convention_8h_a939896f36ee6ba81bc88b4ed4709762f}{\-M\-S\-G\-\_\-\-L\-E\-N\-G\-T\-H} = \char`\"{}m\-Length\char`\"{}
+\item 
+const string \hyperlink{Convention_8h_abeb843cc08b65705ec0cefde0696b988}{\-M\-S\-G\-\_\-\-C\-O\-N\-T\-E\-N\-T} = \char`\"{}m\-Data\char`\"{}
+\item 
+const string \hyperlink{Convention_8h_acbccba60dac98884dc208f29d544533a}{\-M\-S\-G} = \char`\"{}message\char`\"{}
+\item 
+const string \hyperlink{Convention_8h_a8fe30e137a34f40cae21efadb9f6c0b7}{\-L\-O\-G\-\_\-\-S\-I\-Z\-E} = \char`\"{}logsize\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Variable \-Documentation}
+\hypertarget{Convention_8h_adc1d9ec732e2b90dc4b825201bdf58ca}{\index{\-Convention.\-h@{\-Convention.\-h}!\-C\-R\-E\-A\-T\-E\-\_\-\-Q\-U\-E\-U\-E@{\-C\-R\-E\-A\-T\-E\-\_\-\-Q\-U\-E\-U\-E}}
+\index{\-C\-R\-E\-A\-T\-E\-\_\-\-Q\-U\-E\-U\-E@{\-C\-R\-E\-A\-T\-E\-\_\-\-Q\-U\-E\-U\-E}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-C\-R\-E\-A\-T\-E\-\_\-\-Q\-U\-E\-U\-E}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-C\-R\-E\-A\-T\-E\-\_\-\-Q\-U\-E\-U\-E} = \char`\"{}/create\-Queue\char`\"{}}}\label{dc/d0d/Convention_8h_adc1d9ec732e2b90dc4b825201bdf58ca}
+
+
+\-A client should first call this url to get the available data node to connect. 
+
+
+
+\-Definition at line 62 of file \-Convention.\-h.
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::on\-Data\-Node\-Recv().
+
+\hypertarget{Convention_8h_a9d2f3ddbc2ed1567324bc09ac63f8365}{\index{\-Convention.\-h@{\-Convention.\-h}!\-D\-E\-L\-\_\-\-Q\-U\-E\-U\-E@{\-D\-E\-L\-\_\-\-Q\-U\-E\-U\-E}}
+\index{\-D\-E\-L\-\_\-\-Q\-U\-E\-U\-E@{\-D\-E\-L\-\_\-\-Q\-U\-E\-U\-E}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-D\-E\-L\-\_\-\-Q\-U\-E\-U\-E}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-D\-E\-L\-\_\-\-Q\-U\-E\-U\-E} = \char`\"{}/delete\-Queue\char`\"{}}}\label{dc/d0d/Convention_8h_a9d2f3ddbc2ed1567324bc09ac63f8365}
+
+
+\-Definition at line 64 of file \-Convention.\-h.
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::on\-Data\-Node\-Recv().
+
+\hypertarget{Convention_8h_a53ddae6ce9433e7e3243e4b2b042ea02}{\index{\-Convention.\-h@{\-Convention.\-h}!\-D\-E\-L\-E\-T\-E\-\_\-\-M\-S\-G@{\-D\-E\-L\-E\-T\-E\-\_\-\-M\-S\-G}}
+\index{\-D\-E\-L\-E\-T\-E\-\_\-\-M\-S\-G@{\-D\-E\-L\-E\-T\-E\-\_\-\-M\-S\-G}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-D\-E\-L\-E\-T\-E\-\_\-\-M\-S\-G}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-D\-E\-L\-E\-T\-E\-\_\-\-M\-S\-G} = \char`\"{}/delete\-Message\char`\"{}}}\label{dc/d0d/Convention_8h_a53ddae6ce9433e7e3243e4b2b042ea02}
+
+
+\-Definition at line 67 of file \-Convention.\-h.
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::on\-Data\-Node\-Recv().
+
+\hypertarget{Convention_8h_afa2ce2c723c13dc76832067599718db7}{\index{\-Convention.\-h@{\-Convention.\-h}!\-E\-M\-P\-T\-Y\-\_\-\-P\-A\-T\-H@{\-E\-M\-P\-T\-Y\-\_\-\-P\-A\-T\-H}}
+\index{\-E\-M\-P\-T\-Y\-\_\-\-P\-A\-T\-H@{\-E\-M\-P\-T\-Y\-\_\-\-P\-A\-T\-H}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-E\-M\-P\-T\-Y\-\_\-\-P\-A\-T\-H}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-E\-M\-P\-T\-Y\-\_\-\-P\-A\-T\-H} = \char`\"{}/\char`\"{}}}\label{dc/d0d/Convention_8h_afa2ce2c723c13dc76832067599718db7}
+
+
+\-Definition at line 68 of file \-Convention.\-h.
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::on\-Data\-Node\-Recv().
+
+\hypertarget{Convention_8h_ac5254192c606741ffea5f509e58fd3fe}{\index{\-Convention.\-h@{\-Convention.\-h}!\-G\-E\-T\-\_\-\-A\-V\-A\-I\-L\-A\-B\-L\-E\-\_\-\-H\-O\-S\-T@{\-G\-E\-T\-\_\-\-A\-V\-A\-I\-L\-A\-B\-L\-E\-\_\-\-H\-O\-S\-T}}
+\index{\-G\-E\-T\-\_\-\-A\-V\-A\-I\-L\-A\-B\-L\-E\-\_\-\-H\-O\-S\-T@{\-G\-E\-T\-\_\-\-A\-V\-A\-I\-L\-A\-B\-L\-E\-\_\-\-H\-O\-S\-T}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-G\-E\-T\-\_\-\-A\-V\-A\-I\-L\-A\-B\-L\-E\-\_\-\-H\-O\-S\-T}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-G\-E\-T\-\_\-\-A\-V\-A\-I\-L\-A\-B\-L\-E\-\_\-\-H\-O\-S\-T} = \char`\"{}/getavailablehost\char`\"{}}}\label{dc/d0d/Convention_8h_ac5254192c606741ffea5f509e58fd3fe}
+
+
+\-Url path\-: \hyperlink{classDataNode}{\-Data\-Node} to \-Master localhost\-:1200/operaion?param=?\&param2=? recovery\-: localhost\-:1300/recovery?node\-Name=s\&node\-Port=s\&log\-Size=s join\-: localhost\-:1300/join?node\-Name=s\&node\-Port=s\&node\-Name\-Master=s\&node\-Port\-Master=s create\-Message\-: localhost\-:1300/put\-Message?node\-Name=s\&node\-Port=s\&node\-Name\-Master=s\&node\-Port\-Master=s\&queue\-Name=s\&message=s\&message\-Id=s delete\-Message" localhost\-:1300/delete\-Message?node\-Name=s\&node\-Port=s\&node\-Name\-Master=s\&node\-Port\-Master=s\&queue\-Name=s\&message\-Id=s. 
+
+\-Client to master put message localhost\-:1300/put\-Message?queue\-Name=s\&message=s delete message localhost\-:1300/delete\-Message?queue\-Name=s\&message\-Id=s get message localhost\-:1300/delete\-Message?queue\-Name=s\&message\-Id=s create queue\-: localhost\-:1300/delete\-Message?queue\-Name=s delete queue\-: localhost\-:1300/delete\-Message?queue\-Name=surl path 
+
+\-Definition at line 61 of file \-Convention.\-h.
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::on\-Client\-Req\-Recv().
+
+\hypertarget{Convention_8h_ab38976c5a0354a77f40204cbc40f72b4}{\index{\-Convention.\-h@{\-Convention.\-h}!\-G\-E\-T\-\_\-\-M\-S\-G@{\-G\-E\-T\-\_\-\-M\-S\-G}}
+\index{\-G\-E\-T\-\_\-\-M\-S\-G@{\-G\-E\-T\-\_\-\-M\-S\-G}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-G\-E\-T\-\_\-\-M\-S\-G}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-G\-E\-T\-\_\-\-M\-S\-G} = \char`\"{}/get\-Message\char`\"{}}}\label{dc/d0d/Convention_8h_ab38976c5a0354a77f40204cbc40f72b4}
+
+
+\-Definition at line 66 of file \-Convention.\-h.
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::on\-Data\-Node\-Recv().
+
+\hypertarget{Convention_8h_a89d4b6fa1eab82d4ceb201c3592a75c1}{\index{\-Convention.\-h@{\-Convention.\-h}!\-H\-E\-A\-R\-T\-B\-E\-A\-T@{\-H\-E\-A\-R\-T\-B\-E\-A\-T}}
+\index{\-H\-E\-A\-R\-T\-B\-E\-A\-T@{\-H\-E\-A\-R\-T\-B\-E\-A\-T}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-H\-E\-A\-R\-T\-B\-E\-A\-T}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-H\-E\-A\-R\-T\-B\-E\-A\-T} = \char`\"{}/heartbeat\char`\"{}}}\label{dc/d0d/Convention_8h_a89d4b6fa1eab82d4ceb201c3592a75c1}
+
+
+\-Definition at line 71 of file \-Convention.\-h.
+
+
+
+\-Referenced by \-Heart\-Beat\-::do\-Request().
+
+\hypertarget{Convention_8h_ac797d68d9f4a9f40d6ed9c4f1694dbe1}{\index{\-Convention.\-h@{\-Convention.\-h}!\-J\-O\-I\-N\-\_\-\-T\-E\-A\-M@{\-J\-O\-I\-N\-\_\-\-T\-E\-A\-M}}
+\index{\-J\-O\-I\-N\-\_\-\-T\-E\-A\-M@{\-J\-O\-I\-N\-\_\-\-T\-E\-A\-M}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-J\-O\-I\-N\-\_\-\-T\-E\-A\-M}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-J\-O\-I\-N\-\_\-\-T\-E\-A\-M} = \char`\"{}/join\char`\"{}}}\label{dc/d0d/Convention_8h_ac797d68d9f4a9f40d6ed9c4f1694dbe1}
+
+
+\-Definition at line 70 of file \-Convention.\-h.
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::on\-Data\-Node\-Recv().
+
+\hypertarget{Convention_8h_aa7fd01fdd6ac886c2daec2da0f7cb2b7}{\index{\-Convention.\-h@{\-Convention.\-h}!\-L\-I\-S\-T\-\_\-\-Q\-U\-E\-U\-E\-S@{\-L\-I\-S\-T\-\_\-\-Q\-U\-E\-U\-E\-S}}
+\index{\-L\-I\-S\-T\-\_\-\-Q\-U\-E\-U\-E\-S@{\-L\-I\-S\-T\-\_\-\-Q\-U\-E\-U\-E\-S}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-L\-I\-S\-T\-\_\-\-Q\-U\-E\-U\-E\-S}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-L\-I\-S\-T\-\_\-\-Q\-U\-E\-U\-E\-S} = \char`\"{}/list\-Queues\char`\"{}}}\label{dc/d0d/Convention_8h_aa7fd01fdd6ac886c2daec2da0f7cb2b7}
+
+
+\-Definition at line 63 of file \-Convention.\-h.
+
+\hypertarget{Convention_8h_a8fe30e137a34f40cae21efadb9f6c0b7}{\index{\-Convention.\-h@{\-Convention.\-h}!\-L\-O\-G\-\_\-\-S\-I\-Z\-E@{\-L\-O\-G\-\_\-\-S\-I\-Z\-E}}
+\index{\-L\-O\-G\-\_\-\-S\-I\-Z\-E@{\-L\-O\-G\-\_\-\-S\-I\-Z\-E}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-L\-O\-G\-\_\-\-S\-I\-Z\-E}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-L\-O\-G\-\_\-\-S\-I\-Z\-E} = \char`\"{}logsize\char`\"{}}}\label{dc/d0d/Convention_8h_a8fe30e137a34f40cae21efadb9f6c0b7}
+
+
+\-Definition at line 86 of file \-Convention.\-h.
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::on\-Data\-Node\-Recv().
+
+\hypertarget{Convention_8h_a71e05348b49518de386c4f9ce71d4460}{\index{\-Convention.\-h@{\-Convention.\-h}!master\-Ip\-\_\-\-For\-Client@{master\-Ip\-\_\-\-For\-Client}}
+\index{master\-Ip\-\_\-\-For\-Client@{master\-Ip\-\_\-\-For\-Client}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{master\-Ip\-\_\-\-For\-Client}]{\setlength{\rightskip}{0pt plus 5cm}string {\bf master\-Ip\-\_\-\-For\-Client} = \char`\"{}127.\-0.\-0.\-1\char`\"{}}}\label{dc/d0d/Convention_8h_a71e05348b49518de386c4f9ce71d4460}
+
+
+\-Convention for client handling. 
+
+
+
+\-Definition at line 22 of file \-Convention.\-h.
+
+\hypertarget{Convention_8h_a08771afcc7567862e9c7986838c79b19}{\index{\-Convention.\-h@{\-Convention.\-h}!master\-I\-P\-\_\-\-For\-Data\-Node@{master\-I\-P\-\_\-\-For\-Data\-Node}}
+\index{master\-I\-P\-\_\-\-For\-Data\-Node@{master\-I\-P\-\_\-\-For\-Data\-Node}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{master\-I\-P\-\_\-\-For\-Data\-Node}]{\setlength{\rightskip}{0pt plus 5cm}string {\bf master\-I\-P\-\_\-\-For\-Data\-Node} = \char`\"{}127.\-0.\-0.\-1\char`\"{}}}\label{dc/d0d/Convention_8h_a08771afcc7567862e9c7986838c79b19}
+
+
+\-Definition at line 24 of file \-Convention.\-h.
+
+\hypertarget{Convention_8h_a760fc5aa7c79d793c8bb27717d0fa390}{\index{\-Convention.\-h@{\-Convention.\-h}!master\-Port\-\_\-\-For\-Client@{master\-Port\-\_\-\-For\-Client}}
+\index{master\-Port\-\_\-\-For\-Client@{master\-Port\-\_\-\-For\-Client}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{master\-Port\-\_\-\-For\-Client}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf master\-Port\-\_\-\-For\-Client} = 1200}}\label{dc/d0d/Convention_8h_a760fc5aa7c79d793c8bb27717d0fa390}
+
+
+\-Definition at line 23 of file \-Convention.\-h.
+
+\hypertarget{Convention_8h_a66637814f7566b32d1e5f130edcb2535}{\index{\-Convention.\-h@{\-Convention.\-h}!master\-Port\-\_\-\-For\-Data\-Node@{master\-Port\-\_\-\-For\-Data\-Node}}
+\index{master\-Port\-\_\-\-For\-Data\-Node@{master\-Port\-\_\-\-For\-Data\-Node}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{master\-Port\-\_\-\-For\-Data\-Node}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf master\-Port\-\_\-\-For\-Data\-Node} = 1300}}\label{dc/d0d/Convention_8h_a66637814f7566b32d1e5f130edcb2535}
+
+
+\-Definition at line 25 of file \-Convention.\-h.
+
+\hypertarget{Convention_8h_acbccba60dac98884dc208f29d544533a}{\index{\-Convention.\-h@{\-Convention.\-h}!\-M\-S\-G@{\-M\-S\-G}}
+\index{\-M\-S\-G@{\-M\-S\-G}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-M\-S\-G}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-M\-S\-G} = \char`\"{}message\char`\"{}}}\label{dc/d0d/Convention_8h_acbccba60dac98884dc208f29d544533a}
+
+
+\-Definition at line 85 of file \-Convention.\-h.
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::on\-Data\-Node\-Recv().
+
+\hypertarget{Convention_8h_abeb843cc08b65705ec0cefde0696b988}{\index{\-Convention.\-h@{\-Convention.\-h}!\-M\-S\-G\-\_\-\-C\-O\-N\-T\-E\-N\-T@{\-M\-S\-G\-\_\-\-C\-O\-N\-T\-E\-N\-T}}
+\index{\-M\-S\-G\-\_\-\-C\-O\-N\-T\-E\-N\-T@{\-M\-S\-G\-\_\-\-C\-O\-N\-T\-E\-N\-T}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-M\-S\-G\-\_\-\-C\-O\-N\-T\-E\-N\-T}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-M\-S\-G\-\_\-\-C\-O\-N\-T\-E\-N\-T} = \char`\"{}m\-Data\char`\"{}}}\label{dc/d0d/Convention_8h_abeb843cc08b65705ec0cefde0696b988}
+
+
+\-Definition at line 84 of file \-Convention.\-h.
+
+\hypertarget{Convention_8h_a792929c00204a00e9731b091e95c90ce}{\index{\-Convention.\-h@{\-Convention.\-h}!\-M\-S\-G\-\_\-\-I\-D@{\-M\-S\-G\-\_\-\-I\-D}}
+\index{\-M\-S\-G\-\_\-\-I\-D@{\-M\-S\-G\-\_\-\-I\-D}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-M\-S\-G\-\_\-\-I\-D}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-M\-S\-G\-\_\-\-I\-D} = \char`\"{}m\-Id\char`\"{}}}\label{dc/d0d/Convention_8h_a792929c00204a00e9731b091e95c90ce}
+
+
+\-Definition at line 82 of file \-Convention.\-h.
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::on\-Data\-Node\-Recv().
+
+\hypertarget{Convention_8h_a939896f36ee6ba81bc88b4ed4709762f}{\index{\-Convention.\-h@{\-Convention.\-h}!\-M\-S\-G\-\_\-\-L\-E\-N\-G\-T\-H@{\-M\-S\-G\-\_\-\-L\-E\-N\-G\-T\-H}}
+\index{\-M\-S\-G\-\_\-\-L\-E\-N\-G\-T\-H@{\-M\-S\-G\-\_\-\-L\-E\-N\-G\-T\-H}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-M\-S\-G\-\_\-\-L\-E\-N\-G\-T\-H}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-M\-S\-G\-\_\-\-L\-E\-N\-G\-T\-H} = \char`\"{}m\-Length\char`\"{}}}\label{dc/d0d/Convention_8h_a939896f36ee6ba81bc88b4ed4709762f}
+
+
+\-Definition at line 83 of file \-Convention.\-h.
+
+\hypertarget{Convention_8h_a004c151ed2ae054a858ddc89d9f6b0ea}{\index{\-Convention.\-h@{\-Convention.\-h}!\-N\-O\-D\-E\-\_\-\-N\-A\-M\-E@{\-N\-O\-D\-E\-\_\-\-N\-A\-M\-E}}
+\index{\-N\-O\-D\-E\-\_\-\-N\-A\-M\-E@{\-N\-O\-D\-E\-\_\-\-N\-A\-M\-E}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-N\-O\-D\-E\-\_\-\-N\-A\-M\-E}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-N\-O\-D\-E\-\_\-\-N\-A\-M\-E} = \char`\"{}node\-Name\char`\"{}}}\label{dc/d0d/Convention_8h_a004c151ed2ae054a858ddc89d9f6b0ea}
+
+
+queue operation 
+
+
+
+\-Definition at line 75 of file \-Convention.\-h.
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::on\-Data\-Node\-Recv().
+
+\hypertarget{Convention_8h_aaa42bceac4a20349613b0bfac112bd03}{\index{\-Convention.\-h@{\-Convention.\-h}!\-N\-O\-D\-E\-\_\-\-P\-O\-R\-T@{\-N\-O\-D\-E\-\_\-\-P\-O\-R\-T}}
+\index{\-N\-O\-D\-E\-\_\-\-P\-O\-R\-T@{\-N\-O\-D\-E\-\_\-\-P\-O\-R\-T}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-N\-O\-D\-E\-\_\-\-P\-O\-R\-T}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-N\-O\-D\-E\-\_\-\-P\-O\-R\-T} = \char`\"{}node\-Port\char`\"{}}}\label{dc/d0d/Convention_8h_aaa42bceac4a20349613b0bfac112bd03}
+
+
+\-Definition at line 76 of file \-Convention.\-h.
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::on\-Data\-Node\-Recv().
+
+\hypertarget{Convention_8h_ad9fc9b69bc33c8b644f023fb0945ff3f}{\index{\-Convention.\-h@{\-Convention.\-h}!\-P\-U\-B\-L\-I\-C\-\_\-\-N\-O\-D\-E\-\_\-\-N\-A\-M\-E@{\-P\-U\-B\-L\-I\-C\-\_\-\-N\-O\-D\-E\-\_\-\-N\-A\-M\-E}}
+\index{\-P\-U\-B\-L\-I\-C\-\_\-\-N\-O\-D\-E\-\_\-\-N\-A\-M\-E@{\-P\-U\-B\-L\-I\-C\-\_\-\-N\-O\-D\-E\-\_\-\-N\-A\-M\-E}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-P\-U\-B\-L\-I\-C\-\_\-\-N\-O\-D\-E\-\_\-\-N\-A\-M\-E}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-P\-U\-B\-L\-I\-C\-\_\-\-N\-O\-D\-E\-\_\-\-N\-A\-M\-E} = \char`\"{}public\-Node\-Name\char`\"{}}}\label{dc/d0d/Convention_8h_ad9fc9b69bc33c8b644f023fb0945ff3f}
+
+
+\-Definition at line 78 of file \-Convention.\-h.
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::on\-Data\-Node\-Recv().
+
+\hypertarget{Convention_8h_ac7fbe6a60882e762f8bbc79872ed41a7}{\index{\-Convention.\-h@{\-Convention.\-h}!\-P\-U\-B\-L\-I\-C\-\_\-\-N\-O\-D\-E\-\_\-\-P\-O\-R\-T@{\-P\-U\-B\-L\-I\-C\-\_\-\-N\-O\-D\-E\-\_\-\-P\-O\-R\-T}}
+\index{\-P\-U\-B\-L\-I\-C\-\_\-\-N\-O\-D\-E\-\_\-\-P\-O\-R\-T@{\-P\-U\-B\-L\-I\-C\-\_\-\-N\-O\-D\-E\-\_\-\-P\-O\-R\-T}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-P\-U\-B\-L\-I\-C\-\_\-\-N\-O\-D\-E\-\_\-\-P\-O\-R\-T}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-P\-U\-B\-L\-I\-C\-\_\-\-N\-O\-D\-E\-\_\-\-P\-O\-R\-T} = \char`\"{}public\-Node\-Port\char`\"{}}}\label{dc/d0d/Convention_8h_ac7fbe6a60882e762f8bbc79872ed41a7}
+
+
+\-Definition at line 79 of file \-Convention.\-h.
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::on\-Data\-Node\-Recv().
+
+\hypertarget{Convention_8h_a0ae245189df75fbdb3ff9dc49d9feed4}{\index{\-Convention.\-h@{\-Convention.\-h}!\-P\-U\-T\-\_\-\-M\-S\-G@{\-P\-U\-T\-\_\-\-M\-S\-G}}
+\index{\-P\-U\-T\-\_\-\-M\-S\-G@{\-P\-U\-T\-\_\-\-M\-S\-G}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-P\-U\-T\-\_\-\-M\-S\-G}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-P\-U\-T\-\_\-\-M\-S\-G} = \char`\"{}/put\-Message\char`\"{}}}\label{dc/d0d/Convention_8h_a0ae245189df75fbdb3ff9dc49d9feed4}
+
+
+\-Definition at line 65 of file \-Convention.\-h.
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::on\-Data\-Node\-Recv().
+
+\hypertarget{Convention_8h_afb2787ee4ffee2e63ff77af2860d4be9}{\index{\-Convention.\-h@{\-Convention.\-h}!\-Q\-U\-E\-U\-E\-\_\-\-N\-A\-M\-E@{\-Q\-U\-E\-U\-E\-\_\-\-N\-A\-M\-E}}
+\index{\-Q\-U\-E\-U\-E\-\_\-\-N\-A\-M\-E@{\-Q\-U\-E\-U\-E\-\_\-\-N\-A\-M\-E}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-Q\-U\-E\-U\-E\-\_\-\-N\-A\-M\-E}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-Q\-U\-E\-U\-E\-\_\-\-N\-A\-M\-E} = \char`\"{}queue\-Name\char`\"{}}}\label{dc/d0d/Convention_8h_afb2787ee4ffee2e63ff77af2860d4be9}
+
+
+\-Definition at line 81 of file \-Convention.\-h.
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::on\-Data\-Node\-Recv().
+
+\hypertarget{Convention_8h_ad392178bccf781650dc8bd6eb3aaed27}{\index{\-Convention.\-h@{\-Convention.\-h}!\-R\-E\-C\-O\-V\-E\-R\-Y@{\-R\-E\-C\-O\-V\-E\-R\-Y}}
+\index{\-R\-E\-C\-O\-V\-E\-R\-Y@{\-R\-E\-C\-O\-V\-E\-R\-Y}!Convention.h@{\-Convention.\-h}}
+\subsubsection[{\-R\-E\-C\-O\-V\-E\-R\-Y}]{\setlength{\rightskip}{0pt plus 5cm}const string {\bf \-R\-E\-C\-O\-V\-E\-R\-Y} = \char`\"{}/recovery\char`\"{}}}\label{dc/d0d/Convention_8h_ad392178bccf781650dc8bd6eb3aaed27}
+
+
+\-Definition at line 69 of file \-Convention.\-h.
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::on\-Data\-Node\-Recv().
+

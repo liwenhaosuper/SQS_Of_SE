@@ -1,0 +1,244 @@
+\hypertarget{classEvent}{\section{\-Event \-Class \-Reference}
+\label{d5/da5/classEvent}\index{\-Event@{\-Event}}
+}
+
+
+\hyperlink{MsgLock_8h}{\-Msg\-Lock.\-h}.  
+
+
+
+
+{\ttfamily \#include $<$\-Msg\-Lock.\-h$>$}
+
+\subsection*{\-Public \-Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef void($\ast$ \hyperlink{classEvent_a8e493c850490cee46d90c553eec37a1c}{do\-\_\-schedule} )(void $\ast$\hyperlink{classEvent_ae7c4ba85ebe5cb4c29ba9659c475f269}{arg}, std\-::string name, int id)
+\begin{DoxyCompactList}\small\item\em call back function for event process. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classEvent_a5a40dd4708297f7031e29b39e039ae10}{\-Event} ()
+\item 
+\hyperlink{classEvent_af801329053df35da07ec4d03c46c63bb}{\-Event} (long sched\-\_\-times, \hyperlink{classEvent_a8e493c850490cee46d90c553eec37a1c}{do\-\_\-schedule} sche, void $\ast$ar, std\-::string qu, int id)
+\item 
+\hyperlink{classEvent_ad2f1966199794fba4e23d004cf6fca0a}{\-Event} (long sched\-\_\-times, \hyperlink{classEvent_a8e493c850490cee46d90c553eec37a1c}{do\-\_\-schedule} sche=\-N\-U\-L\-L)
+\begin{DoxyCompactList}\small\item\em for test only \end{DoxyCompactList}\item 
+bool \hyperlink{classEvent_a02485379dbe8cc36e72eafa052622fe1}{operator==} (\hyperlink{classEvent}{\-Event} \&instance)
+\end{DoxyCompactItemize}
+\subsection*{\-Public \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+long \hyperlink{classEvent_af44247209b624738228d66efe4a5eb36}{sched\-\_\-time}
+\begin{DoxyCompactList}\small\item\em scheduled time in milliseconds \end{DoxyCompactList}\item 
+long \hyperlink{classEvent_a585aca2566e1db426a025ea97b55a74a}{join\-\_\-time}
+\begin{DoxyCompactList}\small\item\em real time when the event is added to the event chain in milliseconds \end{DoxyCompactList}\item 
+class \hyperlink{classEvent}{\-Event} $\ast$ \hyperlink{classEvent_a88dc0fa91acbfbcfb1d2014491630d39}{next}
+\begin{DoxyCompactList}\small\item\em next event in the chain \end{DoxyCompactList}\item 
+\hyperlink{classEvent_a8e493c850490cee46d90c553eec37a1c}{do\-\_\-schedule} \hyperlink{classEvent_acccade40f77a128deeddfebb3c560d20}{custom\-Schedule}
+\begin{DoxyCompactList}\small\item\em call back function to deal with the event \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{classEvent_ae7c4ba85ebe5cb4c29ba9659c475f269}{arg}
+\begin{DoxyCompactList}\small\item\em the context \end{DoxyCompactList}\item 
+std\-::string \hyperlink{classEvent_acaeeb3bd2c79b564a896c18f0188c264}{queue}
+\begin{DoxyCompactList}\small\item\em the queue name \end{DoxyCompactList}\item 
+int \hyperlink{classEvent_af7d83ab02ea78a76a229d077a701ed5d}{msg\-Id}
+\begin{DoxyCompactList}\small\item\em the message id \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\hyperlink{MsgLock_8h}{\-Msg\-Lock.\-h}. 
+
+\-Created on\-: \-May 15, 2012 \-Author\-: liwenhaosuper timeout event base class 
+
+\-Definition at line 18 of file \-Msg\-Lock.\-h.
+
+
+
+\subsection{\-Member \-Typedef \-Documentation}
+\hypertarget{classEvent_a8e493c850490cee46d90c553eec37a1c}{\index{\-Event@{\-Event}!do\-\_\-schedule@{do\-\_\-schedule}}
+\index{do\-\_\-schedule@{do\-\_\-schedule}!Event@{\-Event}}
+\subsubsection[{do\-\_\-schedule}]{\setlength{\rightskip}{0pt plus 5cm}typedef void($\ast$ {\bf \-Event\-::do\-\_\-schedule})(void $\ast${\bf arg}, std\-::string name, int id)}}\label{d5/da5/classEvent_a8e493c850490cee46d90c553eec37a1c}
+
+
+call back function for event process. 
+
+\-If the event is processed, it should also be deleted from the event chain 
+
+\-Definition at line 25 of file \-Msg\-Lock.\-h.
+
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{classEvent_a5a40dd4708297f7031e29b39e039ae10}{\index{\-Event@{\-Event}!\-Event@{\-Event}}
+\index{\-Event@{\-Event}!Event@{\-Event}}
+\subsubsection[{\-Event}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Event\-::\-Event} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{d5/da5/classEvent_a5a40dd4708297f7031e29b39e039ae10}
+
+
+\-Definition at line 56 of file \-Msg\-Lock.\-h.
+
+
+
+\-References custom\-Schedule, join\-\_\-time, msg\-Id, next, queue, and sched\-\_\-time.
+
+\hypertarget{classEvent_af801329053df35da07ec4d03c46c63bb}{\index{\-Event@{\-Event}!\-Event@{\-Event}}
+\index{\-Event@{\-Event}!Event@{\-Event}}
+\subsubsection[{\-Event}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Event\-::\-Event} (
+\begin{DoxyParamCaption}
+\item[{long}]{sched\-\_\-times, }
+\item[{{\bf do\-\_\-schedule}}]{sche, }
+\item[{void $\ast$}]{ar, }
+\item[{std\-::string}]{qu, }
+\item[{int}]{id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{d5/da5/classEvent_af801329053df35da07ec4d03c46c63bb}
+
+
+\-Definition at line 57 of file \-Msg\-Lock.\-h.
+
+\hypertarget{classEvent_ad2f1966199794fba4e23d004cf6fca0a}{\index{\-Event@{\-Event}!\-Event@{\-Event}}
+\index{\-Event@{\-Event}!Event@{\-Event}}
+\subsubsection[{\-Event}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Event\-::\-Event} (
+\begin{DoxyParamCaption}
+\item[{long}]{sched\-\_\-times, }
+\item[{{\bf do\-\_\-schedule}}]{sche = {\ttfamily \-N\-U\-L\-L}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{d5/da5/classEvent_ad2f1966199794fba4e23d004cf6fca0a}
+
+
+for test only 
+
+
+
+\-Definition at line 62 of file \-Msg\-Lock.\-h.
+
+
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{classEvent_a02485379dbe8cc36e72eafa052622fe1}{\index{\-Event@{\-Event}!operator==@{operator==}}
+\index{operator==@{operator==}!Event@{\-Event}}
+\subsubsection[{operator==}]{\setlength{\rightskip}{0pt plus 5cm}bool \-Event\-::operator== (
+\begin{DoxyParamCaption}
+\item[{{\bf \-Event} \&}]{instance}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{d5/da5/classEvent_a02485379dbe8cc36e72eafa052622fe1}
+
+
+\-Definition at line 64 of file \-Msg\-Lock.\-h.
+
+
+
+\-References msg\-Id, queue, and sched\-\_\-time.
+
+
+
+\subsection{\-Member \-Data \-Documentation}
+\hypertarget{classEvent_ae7c4ba85ebe5cb4c29ba9659c475f269}{\index{\-Event@{\-Event}!arg@{arg}}
+\index{arg@{arg}!Event@{\-Event}}
+\subsubsection[{arg}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ {\bf \-Event\-::arg}}}\label{d5/da5/classEvent_ae7c4ba85ebe5cb4c29ba9659c475f269}
+
+
+the context 
+
+
+
+\-Definition at line 46 of file \-Msg\-Lock.\-h.
+
+\hypertarget{classEvent_acccade40f77a128deeddfebb3c560d20}{\index{\-Event@{\-Event}!custom\-Schedule@{custom\-Schedule}}
+\index{custom\-Schedule@{custom\-Schedule}!Event@{\-Event}}
+\subsubsection[{custom\-Schedule}]{\setlength{\rightskip}{0pt plus 5cm}{\bf do\-\_\-schedule} {\bf \-Event\-::custom\-Schedule}}}\label{d5/da5/classEvent_acccade40f77a128deeddfebb3c560d20}
+
+
+call back function to deal with the event 
+
+
+
+\-Definition at line 41 of file \-Msg\-Lock.\-h.
+
+
+
+\-Referenced by \-Event().
+
+\hypertarget{classEvent_a585aca2566e1db426a025ea97b55a74a}{\index{\-Event@{\-Event}!join\-\_\-time@{join\-\_\-time}}
+\index{join\-\_\-time@{join\-\_\-time}!Event@{\-Event}}
+\subsubsection[{join\-\_\-time}]{\setlength{\rightskip}{0pt plus 5cm}long {\bf \-Event\-::join\-\_\-time}}}\label{d5/da5/classEvent_a585aca2566e1db426a025ea97b55a74a}
+
+
+real time when the event is added to the event chain in milliseconds 
+
+
+
+\-Definition at line 33 of file \-Msg\-Lock.\-h.
+
+
+
+\-Referenced by \-Event(), and \-Event\-Chain\-::\-Schedule().
+
+\hypertarget{classEvent_af7d83ab02ea78a76a229d077a701ed5d}{\index{\-Event@{\-Event}!msg\-Id@{msg\-Id}}
+\index{msg\-Id@{msg\-Id}!Event@{\-Event}}
+\subsubsection[{msg\-Id}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Event\-::msg\-Id}}}\label{d5/da5/classEvent_af7d83ab02ea78a76a229d077a701ed5d}
+
+
+the message id 
+
+
+
+\-Definition at line 54 of file \-Msg\-Lock.\-h.
+
+
+
+\-Referenced by \-Event(), and operator==().
+
+\hypertarget{classEvent_a88dc0fa91acbfbcfb1d2014491630d39}{\index{\-Event@{\-Event}!next@{next}}
+\index{next@{next}!Event@{\-Event}}
+\subsubsection[{next}]{\setlength{\rightskip}{0pt plus 5cm}class {\bf \-Event}$\ast$ {\bf \-Event\-::next}}}\label{d5/da5/classEvent_a88dc0fa91acbfbcfb1d2014491630d39}
+
+
+next event in the chain 
+
+
+
+\-Definition at line 37 of file \-Msg\-Lock.\-h.
+
+
+
+\-Referenced by \-Event\-Chain\-::\-Cancel(), \-Event(), \-Event\-Chain\-::\-Schedule(), \-Event\-Chain\-::\-Stop(), and \-Event\-Chain\-::$\sim$\-Event\-Chain().
+
+\hypertarget{classEvent_acaeeb3bd2c79b564a896c18f0188c264}{\index{\-Event@{\-Event}!queue@{queue}}
+\index{queue@{queue}!Event@{\-Event}}
+\subsubsection[{queue}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string {\bf \-Event\-::queue}}}\label{d5/da5/classEvent_acaeeb3bd2c79b564a896c18f0188c264}
+
+
+the queue name 
+
+
+
+\-Definition at line 50 of file \-Msg\-Lock.\-h.
+
+
+
+\-Referenced by \-Event(), and operator==().
+
+\hypertarget{classEvent_af44247209b624738228d66efe4a5eb36}{\index{\-Event@{\-Event}!sched\-\_\-time@{sched\-\_\-time}}
+\index{sched\-\_\-time@{sched\-\_\-time}!Event@{\-Event}}
+\subsubsection[{sched\-\_\-time}]{\setlength{\rightskip}{0pt plus 5cm}long {\bf \-Event\-::sched\-\_\-time}}}\label{d5/da5/classEvent_af44247209b624738228d66efe4a5eb36}
+
+
+scheduled time in milliseconds 
+
+
+
+\-Definition at line 29 of file \-Msg\-Lock.\-h.
+
+
+
+\-Referenced by \-Event(), operator==(), and \-Event\-Chain\-::\-Schedule().
+
+
+
+\-The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{MsgLock_8h}{\-Msg\-Lock.\-h}\end{DoxyCompactItemize}

@@ -1,0 +1,173 @@
+\hypertarget{classLogger}{\section{\-Logger \-Class \-Reference}
+\label{db/d67/classLogger}\index{\-Logger@{\-Logger}}
+}
+
+
+{\ttfamily \#include $<$\-Logger.\-h$>$}
+
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classLogger_a0916670d60807c695fc70d9734a93815}{\-Logger} (const char $\ast$filename)
+\item 
+\hyperlink{classLogger_a0ee14f33b07361f8f78b85b026fb0adc}{\-Logger} (const string \&filename)
+\item 
+virtual \hyperlink{classLogger_acb668a9e186a25fbaad2e4af6d1ed00a}{$\sim$\-Logger} ()
+\item 
+bool \hyperlink{classLogger_a9f927f569b189fd59ba66a12a8612e6d}{add\-Log} (const string \&operation)
+\begin{DoxyCompactList}\small\item\em \-Add a record to the log file. \end{DoxyCompactList}\item 
+int \hyperlink{classLogger_ae73ef1b58c2fc74e19e66660530a62ef}{count} ()
+\item 
+vector$<$ string $>$ \hyperlink{classLogger_aa1defe30f8805250673f32c7845c2146}{tail\-List} (int n)
+\end{DoxyCompactItemize}
+\subsection*{\-Private \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classLogger_a25dabaa7b9631ab7e7988b6b610c6f3a}{\-Logger} (const \hyperlink{classLogger}{\-Logger} \&other)
+\end{DoxyCompactItemize}
+\subsection*{\-Private \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+string \hyperlink{classLogger_aeb98df86650487b330427a1e48ec31d3}{m\-\_\-filename}
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+
+
+\-Definition at line 9 of file \-Logger.\-h.
+
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{classLogger_a0916670d60807c695fc70d9734a93815}{\index{\-Logger@{\-Logger}!\-Logger@{\-Logger}}
+\index{\-Logger@{\-Logger}!Logger@{\-Logger}}
+\subsubsection[{\-Logger}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Logger\-::\-Logger} (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{filename}
+\end{DoxyParamCaption}
+)}}\label{db/d67/classLogger_a0916670d60807c695fc70d9734a93815}
+
+
+\-Definition at line 10 of file \-Logger.\-cpp.
+
+
+
+\-References m\-\_\-filename.
+
+\hypertarget{classLogger_a0ee14f33b07361f8f78b85b026fb0adc}{\index{\-Logger@{\-Logger}!\-Logger@{\-Logger}}
+\index{\-Logger@{\-Logger}!Logger@{\-Logger}}
+\subsubsection[{\-Logger}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Logger\-::\-Logger} (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{filename}
+\end{DoxyParamCaption}
+)}}\label{db/d67/classLogger_a0ee14f33b07361f8f78b85b026fb0adc}
+
+
+\-Definition at line 16 of file \-Logger.\-cpp.
+
+
+
+\-References m\-\_\-filename.
+
+\hypertarget{classLogger_acb668a9e186a25fbaad2e4af6d1ed00a}{\index{\-Logger@{\-Logger}!$\sim$\-Logger@{$\sim$\-Logger}}
+\index{$\sim$\-Logger@{$\sim$\-Logger}!Logger@{\-Logger}}
+\subsubsection[{$\sim$\-Logger}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Logger\-::$\sim$\-Logger} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}\label{db/d67/classLogger_acb668a9e186a25fbaad2e4af6d1ed00a}
+
+
+\-Definition at line 22 of file \-Logger.\-cpp.
+
+\hypertarget{classLogger_a25dabaa7b9631ab7e7988b6b610c6f3a}{\index{\-Logger@{\-Logger}!\-Logger@{\-Logger}}
+\index{\-Logger@{\-Logger}!Logger@{\-Logger}}
+\subsubsection[{\-Logger}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Logger\-::\-Logger} (
+\begin{DoxyParamCaption}
+\item[{const {\bf \-Logger} \&}]{other}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{db/d67/classLogger_a25dabaa7b9631ab7e7988b6b610c6f3a}
+
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{classLogger_a9f927f569b189fd59ba66a12a8612e6d}{\index{\-Logger@{\-Logger}!add\-Log@{add\-Log}}
+\index{add\-Log@{add\-Log}!Logger@{\-Logger}}
+\subsubsection[{add\-Log}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Logger\-::add\-Log} (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{operation}
+\end{DoxyParamCaption}
+)}}\label{db/d67/classLogger_a9f927f569b189fd59ba66a12a8612e6d}
+
+
+\-Add a record to the log file. 
+
+{\ttfamily operation} the operation url
+
+\begin{DoxyReturn}{\-Returns}
+true if success, false otherwise 
+\end{DoxyReturn}
+
+
+\-Definition at line 26 of file \-Logger.\-cpp.
+
+
+
+\-References m\-\_\-filename.
+
+\hypertarget{classLogger_ae73ef1b58c2fc74e19e66660530a62ef}{\index{\-Logger@{\-Logger}!count@{count}}
+\index{count@{count}!Logger@{\-Logger}}
+\subsubsection[{count}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Logger\-::count} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{db/d67/classLogger_ae73ef1b58c2fc74e19e66660530a62ef}
+\begin{DoxyReturn}{\-Returns}
+the number of recorf in the log file. 
+\end{DoxyReturn}
+
+
+\-Definition at line 35 of file \-Logger.\-cpp.
+
+
+
+\-References m\-\_\-filename.
+
+\hypertarget{classLogger_aa1defe30f8805250673f32c7845c2146}{\index{\-Logger@{\-Logger}!tail\-List@{tail\-List}}
+\index{tail\-List@{tail\-List}!Logger@{\-Logger}}
+\subsubsection[{tail\-List}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ string $>$ {\bf \-Logger\-::tail\-List} (
+\begin{DoxyParamCaption}
+\item[{int}]{n}
+\end{DoxyParamCaption}
+)}}\label{db/d67/classLogger_aa1defe30f8805250673f32c7845c2146}
+\begin{DoxyReturn}{\-Returns}
+a vector of the last {\ttfamily n} records. 
+\end{DoxyReturn}
+
+
+\-Definition at line 46 of file \-Logger.\-cpp.
+
+
+
+\-References m\-\_\-filename.
+
+
+
+\subsection{\-Member \-Data \-Documentation}
+\hypertarget{classLogger_aeb98df86650487b330427a1e48ec31d3}{\index{\-Logger@{\-Logger}!m\-\_\-filename@{m\-\_\-filename}}
+\index{m\-\_\-filename@{m\-\_\-filename}!Logger@{\-Logger}}
+\subsubsection[{m\-\_\-filename}]{\setlength{\rightskip}{0pt plus 5cm}string {\bf \-Logger\-::m\-\_\-filename}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{db/d67/classLogger_aeb98df86650487b330427a1e48ec31d3}
+
+
+\-Definition at line 36 of file \-Logger.\-h.
+
+
+
+\-Referenced by add\-Log(), count(), \-Logger(), and tail\-List().
+
+
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{Logger_8h}{\-Logger.\-h}\item 
+src/\hyperlink{Logger_8cpp}{\-Logger.\-cpp}\end{DoxyCompactItemize}

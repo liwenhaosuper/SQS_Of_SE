@@ -1,0 +1,125 @@
+\hypertarget{SQSMaster_8cpp}{\section{src/\-S\-Q\-S\-Master.cpp \-File \-Reference}
+\label{d0/da6/SQSMaster_8cpp}\index{src/\-S\-Q\-S\-Master.\-cpp@{src/\-S\-Q\-S\-Master.\-cpp}}
+}
+{\ttfamily \#include \char`\"{}\-S\-Q\-S\-Master.\-h\char`\"{}}\*
+{\ttfamily \#include $<$iostream$>$}\*
+{\ttfamily \#include $<$err.\-h$>$}\*
+{\ttfamily \#include \char`\"{}event.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}evhttp.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}event2/http.\-h\char`\"{}}\*
+{\ttfamily \#include $<$sys/time.\-h$>$}\*
+{\ttfamily \#include \char`\"{}\-Convention.\-h\char`\"{}}\*
+{\ttfamily \#include $<$string.\-h$>$}\*
+{\ttfamily \#include $<$cstdlib$>$}\*
+\subsection*{\-Functions}
+\begin{DoxyCompactItemize}
+\item 
+void $\ast$ \hyperlink{SQSMaster_8cpp_a2c909906a58712999c27391cb2c17f11}{\-Regular\-Check} (void $\ast$arg)
+\item 
+void \hyperlink{SQSMaster_8cpp_a09f69fedba50197d6435b757b0b7fde2}{heartbeat\-\_\-callback} (struct evhttp\-\_\-request $\ast$req, void $\ast$rsp)
+\item 
+void \hyperlink{SQSMaster_8cpp_a679305faaa0381fc1e1d7a74d0765b6f}{\-Client\-Call\-Back} (struct evhttp\-\_\-request $\ast$req, void $\ast$arg)
+\item 
+void \hyperlink{SQSMaster_8cpp_aae80793c6b9b8eb3af08cdea2fe2ce00}{\-Data\-Node\-Call\-Back} (struct evhttp\-\_\-request $\ast$req, void $\ast$arg)
+\item 
+void \hyperlink{SQSMaster_8cpp_a773d508c319fad5f52ebeeb491061016}{dispatch\-Msg\-Call\-Back} (struct evhttp\-\_\-request $\ast$req, void $\ast$arg)
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Function \-Documentation}
+\hypertarget{SQSMaster_8cpp_a679305faaa0381fc1e1d7a74d0765b6f}{\index{\-S\-Q\-S\-Master.\-cpp@{\-S\-Q\-S\-Master.\-cpp}!\-Client\-Call\-Back@{\-Client\-Call\-Back}}
+\index{\-Client\-Call\-Back@{\-Client\-Call\-Back}!SQSMaster.cpp@{\-S\-Q\-S\-Master.\-cpp}}
+\subsubsection[{\-Client\-Call\-Back}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Client\-Call\-Back} (
+\begin{DoxyParamCaption}
+\item[{struct evhttp\-\_\-request $\ast$}]{req, }
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)}}\label{d0/da6/SQSMaster_8cpp_a679305faaa0381fc1e1d7a74d0765b6f}
+
+
+\-Definition at line 161 of file \-S\-Q\-S\-Master.\-cpp.
+
+
+
+\-References \-S\-Q\-S\-Master\-::on\-Client\-Req\-Recv().
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::init().
+
+\hypertarget{SQSMaster_8cpp_aae80793c6b9b8eb3af08cdea2fe2ce00}{\index{\-S\-Q\-S\-Master.\-cpp@{\-S\-Q\-S\-Master.\-cpp}!\-Data\-Node\-Call\-Back@{\-Data\-Node\-Call\-Back}}
+\index{\-Data\-Node\-Call\-Back@{\-Data\-Node\-Call\-Back}!SQSMaster.cpp@{\-S\-Q\-S\-Master.\-cpp}}
+\subsubsection[{\-Data\-Node\-Call\-Back}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Data\-Node\-Call\-Back} (
+\begin{DoxyParamCaption}
+\item[{struct evhttp\-\_\-request $\ast$}]{req, }
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)}}\label{d0/da6/SQSMaster_8cpp_aae80793c6b9b8eb3af08cdea2fe2ce00}
+
+
+\-Definition at line 166 of file \-S\-Q\-S\-Master.\-cpp.
+
+
+
+\-References \-S\-Q\-S\-Master\-::on\-Data\-Node\-Recv().
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::init().
+
+\hypertarget{SQSMaster_8cpp_a773d508c319fad5f52ebeeb491061016}{\index{\-S\-Q\-S\-Master.\-cpp@{\-S\-Q\-S\-Master.\-cpp}!dispatch\-Msg\-Call\-Back@{dispatch\-Msg\-Call\-Back}}
+\index{dispatch\-Msg\-Call\-Back@{dispatch\-Msg\-Call\-Back}!SQSMaster.cpp@{\-S\-Q\-S\-Master.\-cpp}}
+\subsubsection[{dispatch\-Msg\-Call\-Back}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf dispatch\-Msg\-Call\-Back} (
+\begin{DoxyParamCaption}
+\item[{struct evhttp\-\_\-request $\ast$}]{req, }
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)}}\label{d0/da6/SQSMaster_8cpp_a773d508c319fad5f52ebeeb491061016}
+
+
+\-Definition at line 171 of file \-S\-Q\-S\-Master.\-cpp.
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::dispatch\-Message().
+
+\hypertarget{SQSMaster_8cpp_a09f69fedba50197d6435b757b0b7fde2}{\index{\-S\-Q\-S\-Master.\-cpp@{\-S\-Q\-S\-Master.\-cpp}!heartbeat\-\_\-callback@{heartbeat\-\_\-callback}}
+\index{heartbeat\-\_\-callback@{heartbeat\-\_\-callback}!SQSMaster.cpp@{\-S\-Q\-S\-Master.\-cpp}}
+\subsubsection[{heartbeat\-\_\-callback}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf heartbeat\-\_\-callback} (
+\begin{DoxyParamCaption}
+\item[{struct evhttp\-\_\-request $\ast$}]{req, }
+\item[{void $\ast$}]{rsp}
+\end{DoxyParamCaption}
+)}}\label{d0/da6/SQSMaster_8cpp_a09f69fedba50197d6435b757b0b7fde2}
+well, it takes me a long time to find you,bug! so there is one question\-: if the pointer is modified by another thread,how could the original thread get the newest value? seems using keyword 'volatile' doesn't work
+
+\-Definition at line 78 of file \-S\-Q\-S\-Master.\-cpp.
+
+
+
+\-Referenced by \-Heart\-Beat\-::do\-Request().
+
+\hypertarget{SQSMaster_8cpp_a2c909906a58712999c27391cb2c17f11}{\index{\-S\-Q\-S\-Master.\-cpp@{\-S\-Q\-S\-Master.\-cpp}!\-Regular\-Check@{\-Regular\-Check}}
+\index{\-Regular\-Check@{\-Regular\-Check}!SQSMaster.cpp@{\-S\-Q\-S\-Master.\-cpp}}
+\subsubsection[{\-Regular\-Check}]{\setlength{\rightskip}{0pt plus 5cm}void$\ast$ {\bf \-Regular\-Check} (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arg}
+\end{DoxyParamCaption}
+)}}\label{d0/da6/SQSMaster_8cpp_a2c909906a58712999c27391cb2c17f11}
+
+\begin{DoxyParams}{\-Parameters}
+{\em arg} & the \hyperlink{classParam}{\-Param} object, containing the heart beat instance and the data node object to be processed \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 38 of file \-S\-Q\-S\-Master.\-cpp.
+
+
+
+\-References \-Heart\-Beat\-::\-Cancel\-Data\-Node(), \-Heart\-Beat\-::cycle, \-Heart\-Beat\-::do\-Request(), \-Param\-::instance, and \-Param\-::node.
+
+
+
+\-Referenced by \-Heart\-Beat\-::\-Add\-Data\-Node().
+

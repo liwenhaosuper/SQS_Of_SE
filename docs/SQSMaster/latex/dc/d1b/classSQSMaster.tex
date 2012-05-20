@@ -1,0 +1,348 @@
+\hypertarget{classSQSMaster}{\section{\-S\-Q\-S\-Master \-Class \-Reference}
+\label{dc/d1b/classSQSMaster}\index{\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}}
+}
+
+
+the main class for the master server  
+
+
+
+
+{\ttfamily \#include $<$\-S\-Q\-S\-Master.\-h$>$}
+
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classSQSMaster_aec053caf04055bce21d3d0d52e3c67f1}{\-S\-Q\-S\-Master} ()
+\item 
+\hyperlink{classSQSMaster_a156f1d02bf2e194994cc61ad084e8744}{\-S\-Q\-S\-Master} (int client, int data\-Node, int conn\-Timeout, int msg\-Timeout)
+\item 
+void \hyperlink{classSQSMaster_ac844442974f57fe16ab8ccdcffb7c0af}{dispatch\-Message} (std\-::string remote\-Node, int remote\-Port, std\-::string request)
+\begin{DoxyCompactList}\small\item\em dispatch the giving request to the remote node. \end{DoxyCompactList}\item 
+virtual \hyperlink{classSQSMaster_a5cea48538871c9ec2e329b3814961814}{$\sim$\-S\-Q\-S\-Master} ()
+\item 
+bool \hyperlink{classSQSMaster_aae86dc34884a4c5de5e9da57a2932040}{init} ()
+\begin{DoxyCompactList}\small\item\em do all the necessary things to start the master returns true if every goes fine, otherwise false \end{DoxyCompactList}\item 
+void \hyperlink{classSQSMaster_a77f66b138c351e508432458b764f218d}{start} ()
+\begin{DoxyCompactList}\small\item\em start listening on master. \end{DoxyCompactList}\item 
+void \hyperlink{classSQSMaster_a15fe36fa592546e0740e91bff9972fc2}{on\-Data\-Node\-Recv} (struct evhttp\-\_\-request $\ast$req)
+\begin{DoxyCompactList}\small\item\em invoke when a request from data node received \-The request url should be this kind\-: \href{http:hostName:hostPort/operation?param1=value1&param2=value2}{\tt http\-:host\-Name\-:host\-Port/operation?param1=value1\&param2=value2} \end{DoxyCompactList}\item 
+void \hyperlink{classSQSMaster_a0da388946c6cf48d2434d7ccdf4113fd}{on\-Client\-Req\-Recv} (struct evhttp\-\_\-request $\ast$req)
+\begin{DoxyCompactList}\small\item\em invoke when a request from client received if the request's path is {\bfseries '/getavailablehost'}, it will check the available data nodes and return one, i.\-e. "{\bfseries  node\-Name\-: localhost node\-Port\-: 8080 }" if no data nodes available, it will return a message\-: {\bfseries \char`\"{}\-No Data Node available...\char`\"{}} \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Private \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{classSQSMaster_a89e8b3c4b0da8172f5309bce3ac7dc26}{client\-Port}
+\begin{DoxyCompactList}\small\item\em port number for the client connection \end{DoxyCompactList}\item 
+int \hyperlink{classSQSMaster_a696a65ad732112ad27f1a1d353c3db63}{data\-Node\-Port}
+\begin{DoxyCompactList}\small\item\em port number for the data node connection \end{DoxyCompactList}\item 
+int \hyperlink{classSQSMaster_aec49d49c7c3301aaba049672f4a46cb9}{connection\-Timeout}
+\begin{DoxyCompactList}\small\item\em default connection time out \end{DoxyCompactList}\item 
+\hyperlink{classMsgLock}{\-Msg\-Lock} $\ast$ \hyperlink{classSQSMaster_a22ea7350f17c94861eb488ae5f4f7abb}{p\-Lock}
+\begin{DoxyCompactList}\small\item\em lock for message \end{DoxyCompactList}\item 
+std\-::vector$<$ \hyperlink{classDataNode}{\-Data\-Node} $>$ \hyperlink{classSQSMaster_a7f575898ece6a5812819780ca7b0c8c4}{m\-Data\-Nodes}
+\begin{DoxyCompactList}\small\item\em all available data nodes \end{DoxyCompactList}\item 
+\hyperlink{classLogger}{\-Logger} $\ast$ \hyperlink{classSQSMaster_a2c3525b0f014f112f5d425b1a34152c6}{logger}
+\begin{DoxyCompactList}\small\item\em logger for message processing \end{DoxyCompactList}\item 
+\hyperlink{classHeartBeat}{\-Heart\-Beat} $\ast$ \hyperlink{classSQSMaster_a9a8824c007d04b97b2334f4d332cd707}{p\-Beat}
+\begin{DoxyCompactList}\small\item\em \-Heart beat checker. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+the main class for the master server 
+
+\-Definition at line 166 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{classSQSMaster_aec053caf04055bce21d3d0d52e3c67f1}{\index{\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}!\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}}
+\index{\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}!SQSMaster@{\-S\-Q\-S\-Master}}
+\subsubsection[{\-S\-Q\-S\-Master}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-S\-Q\-S\-Master\-::\-S\-Q\-S\-Master} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{dc/d1b/classSQSMaster_aec053caf04055bce21d3d0d52e3c67f1}
+
+
+\-Definition at line 197 of file \-S\-Q\-S\-Master.\-h.
+
+\hypertarget{classSQSMaster_a156f1d02bf2e194994cc61ad084e8744}{\index{\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}!\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}}
+\index{\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}!SQSMaster@{\-S\-Q\-S\-Master}}
+\subsubsection[{\-S\-Q\-S\-Master}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-S\-Q\-S\-Master\-::\-S\-Q\-S\-Master} (
+\begin{DoxyParamCaption}
+\item[{int}]{client, }
+\item[{int}]{data\-Node, }
+\item[{int}]{conn\-Timeout, }
+\item[{int}]{msg\-Timeout}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{dc/d1b/classSQSMaster_a156f1d02bf2e194994cc61ad084e8744}
+
+
+\-Definition at line 199 of file \-S\-Q\-S\-Master.\-h.
+
+\hypertarget{classSQSMaster_a5cea48538871c9ec2e329b3814961814}{\index{\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}!$\sim$\-S\-Q\-S\-Master@{$\sim$\-S\-Q\-S\-Master}}
+\index{$\sim$\-S\-Q\-S\-Master@{$\sim$\-S\-Q\-S\-Master}!SQSMaster@{\-S\-Q\-S\-Master}}
+\subsubsection[{$\sim$\-S\-Q\-S\-Master}]{\setlength{\rightskip}{0pt plus 5cm}virtual {\bf \-S\-Q\-S\-Master\-::$\sim$\-S\-Q\-S\-Master} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, virtual\mbox{]}}}}\label{dc/d1b/classSQSMaster_a5cea48538871c9ec2e329b3814961814}
+
+
+\-Definition at line 211 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-References p\-Lock, and \-Msg\-Lock\-::\-Stop().
+
+
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{classSQSMaster_ac844442974f57fe16ab8ccdcffb7c0af}{\index{\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}!dispatch\-Message@{dispatch\-Message}}
+\index{dispatch\-Message@{dispatch\-Message}!SQSMaster@{\-S\-Q\-S\-Master}}
+\subsubsection[{dispatch\-Message}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-S\-Q\-S\-Master\-::dispatch\-Message} (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{remote\-Node, }
+\item[{int}]{remote\-Port, }
+\item[{std\-::string}]{request}
+\end{DoxyParamCaption}
+)}}\label{dc/d1b/classSQSMaster_ac844442974f57fe16ab8ccdcffb7c0af}
+
+
+dispatch the giving request to the remote node. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em remote\-Node} & the remote node name \\
+\hline
+{\em remote\-Port} & the remote port \\
+\hline
+{\em request} & the url path that containing all the datas, i.\-e. '/create\-Queue?queue\-Name=queue1' \\
+\hline
+\end{DoxyParams}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000001}{\-Bug}]there is a bug. \-It will block for a long time sometimes on some circumstances \end{DoxyRefDesc}
+
+
+\-Definition at line 176 of file \-S\-Q\-S\-Master.\-cpp.
+
+
+
+\-References dispatch\-Msg\-Call\-Back().
+
+\hypertarget{classSQSMaster_aae86dc34884a4c5de5e9da57a2932040}{\index{\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}!init@{init}}
+\index{init@{init}!SQSMaster@{\-S\-Q\-S\-Master}}
+\subsubsection[{init}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-S\-Q\-S\-Master\-::init} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{dc/d1b/classSQSMaster_aae86dc34884a4c5de5e9da57a2932040}
+
+
+do all the necessary things to start the master returns true if every goes fine, otherwise false 
+
+
+
+\-Definition at line 594 of file \-S\-Q\-S\-Master.\-cpp.
+
+
+
+\-References \-Client\-Call\-Back(), and \-Data\-Node\-Call\-Back().
+
+
+
+\-Referenced by main().
+
+\hypertarget{classSQSMaster_a0da388946c6cf48d2434d7ccdf4113fd}{\index{\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}!on\-Client\-Req\-Recv@{on\-Client\-Req\-Recv}}
+\index{on\-Client\-Req\-Recv@{on\-Client\-Req\-Recv}!SQSMaster@{\-S\-Q\-S\-Master}}
+\subsubsection[{on\-Client\-Req\-Recv}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-S\-Q\-S\-Master\-::on\-Client\-Req\-Recv} (
+\begin{DoxyParamCaption}
+\item[{struct evhttp\-\_\-request $\ast$}]{req}
+\end{DoxyParamCaption}
+)}}\label{dc/d1b/classSQSMaster_a0da388946c6cf48d2434d7ccdf4113fd}
+
+
+invoke when a request from client received if the request's path is {\bfseries '/getavailablehost'}, it will check the available data nodes and return one, i.\-e. "{\bfseries  node\-Name\-: localhost node\-Port\-: 8080 }" if no data nodes available, it will return a message\-: {\bfseries \char`\"{}\-No Data Node available...\char`\"{}} 
+
+\begin{DoxyRefDesc}{\-Todo}
+\item[\hyperlink{todo__todo000001}{\-Todo}]\-You can change the return messages!\end{DoxyRefDesc}
+
+
+all the other request are unrecognizable and will return a message\-: {\bfseries \char`\"{}\-Unrecognized request......\char`\"{}}
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em req} & the object containing all the necessary messages \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 562 of file \-S\-Q\-S\-Master.\-cpp.
+
+
+
+\-References \-G\-E\-T\-\_\-\-A\-V\-A\-I\-L\-A\-B\-L\-E\-\_\-\-H\-O\-S\-T.
+
+
+
+\-Referenced by \-Client\-Call\-Back().
+
+\hypertarget{classSQSMaster_a15fe36fa592546e0740e91bff9972fc2}{\index{\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}!on\-Data\-Node\-Recv@{on\-Data\-Node\-Recv}}
+\index{on\-Data\-Node\-Recv@{on\-Data\-Node\-Recv}!SQSMaster@{\-S\-Q\-S\-Master}}
+\subsubsection[{on\-Data\-Node\-Recv}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-S\-Q\-S\-Master\-::on\-Data\-Node\-Recv} (
+\begin{DoxyParamCaption}
+\item[{struct evhttp\-\_\-request $\ast$}]{req}
+\end{DoxyParamCaption}
+)}}\label{dc/d1b/classSQSMaster_a15fe36fa592546e0740e91bff9972fc2}
+
+
+invoke when a request from data node received \-The request url should be this kind\-: \href{http:hostName:hostPort/operation?param1=value1&param2=value2}{\tt http\-:host\-Name\-:host\-Port/operation?param1=value1\&param2=value2} 
+
+\begin{DoxyWarning}{\-Warning}
+\-All the requests should contain its node name and node port which is used to communicate with the master, i.\-e. \href{http:hostName:hostPort/operation?nodeName=value1&nodePort=value2}{\tt http\-:host\-Name\-:host\-Port/operation?node\-Name=value1\&node\-Port=value2}.
+
+\-The redirect message is the same with the log message
+\end{DoxyWarning}
+{\bfseries 1} {\bfseries  \-To create a queue, the uri should be\-: \href{http:hostName:hostPort/createQueue?nodeName=value1&nodePort=value2&queueName=value3}{\tt http\-:host\-Name\-:host\-Port/create\-Queue?node\-Name=value1\&node\-Port=value2\&queue\-Name=value3}. \-The log and redirect message will be\-: /create\-Queue?queue\-Name=value1 \-If succeeds, the return message is \char`\"{}\-Create Queue Request Accepted!\char`\"{} }
+
+{\bfseries 2} {\bfseries  \-To delete a queue, the uri should be\-: \href{http:hostName:hostPort/deleteQueue?nodeName=value1&nodePort=value2&queueName=value3}{\tt http\-:host\-Name\-:host\-Port/delete\-Queue?node\-Name=value1\&node\-Port=value2\&queue\-Name=value3}. \-The log and redirect message will be\-: /delete\-Queue?queue\-Name=value1 \-If succeeds, the return message is \char`\"{}\-Delete Queue Request Accepted!\char`\"{} }
+
+{\bfseries 3} {\bfseries  \-To put a message, the url should be\-: \href{http:hostName:hostPort/putMessage?nodeName=value1&nodePort=value2&queueName=value3&message=value4&mId=value5}{\tt http\-:host\-Name\-:host\-Port/put\-Message?node\-Name=value1\&node\-Port=value2\&queue\-Name=value3\&message=value4\&m\-Id=value5}. \-The log and redirect message will be\-: /put\-Message?queue\-Name=value1\&message=value2\&m\-Id=value3 \-If succeeds, the return message is \char`\"{}\-Put message Request Accepted!\char`\"{} }
+
+{\bfseries 4} {\bfseries  \-To delete a message, the url should be\-: \href{http:hostName:hostPort/deleteMessage?nodeName=value1&nodePort=value2&queueName=value3&mId=value5}{\tt http\-:host\-Name\-:host\-Port/delete\-Message?node\-Name=value1\&node\-Port=value2\&queue\-Name=value3\&m\-Id=value5}. \-The log and redirect message will be\-: /delete\-Message?queue\-Name=value1\&m\-Id=value3 \-If succeeds, the return message is \char`\"{}\-Delete message Request Accepted!\char`\"{} }
+
+{\bfseries 5} {\bfseries  \-To get a message, the url should be\-: \href{http:hostName:hostPort/getMessage?nodeName=value1&nodePort=value2&queueName=value3&mId=value5}{\tt http\-:host\-Name\-:host\-Port/get\-Message?node\-Name=value1\&node\-Port=value2\&queue\-Name=value3\&m\-Id=value5}. \-If succeeds, the return message is \char`\"{}\-Success\char`\"{}, otherwise \char`\"{}\-Fail\char`\"{}. }
+
+{\bfseries 6} {\bfseries  \-To get a recovery mode, the url should be\-: \href{http:hostName:hostPort/recovery?nodeName=value1&nodePort=value2&logsize=val4}{\tt http\-:host\-Name\-:host\-Port/recovery?node\-Name=value1\&node\-Port=value2\&logsize=val4}. \-If succeeds, the return message is the log messages. }
+
+{\bfseries 7} {\bfseries  \-To join it, the url should be\-: \href{http:hostName:hostPort/join?nodeName=value1&nodePort=value2&publicNodeName=val3&publicNodePort=val4}{\tt http\-:host\-Name\-:host\-Port/join?node\-Name=value1\&node\-Port=value2\&public\-Node\-Name=val3\&public\-Node\-Port=val4}. \-If succeeds, the return message is \char`\"{}\-Welcome to join us!\char`\"{}. }
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em req} & the object containing all the necessary messages\\
+\hline
+\end{DoxyParams}
+\begin{DoxyRefDesc}{\-Bug}
+\item[\hyperlink{bug__bug000002}{\-Bug}]if adds \char`\"{}delete url\-\_\-path;delete url\-\_\-query;\char`\"{}, it will tell me double free the memory. \-So \-I do not free it. \-But who does this job? \end{DoxyRefDesc}
+
+
+\-Definition at line 189 of file \-S\-Q\-S\-Master.\-cpp.
+
+
+
+\-References \-C\-R\-E\-A\-T\-E\-\_\-\-Q\-U\-E\-U\-E, \-D\-E\-L\-\_\-\-Q\-U\-E\-U\-E, \-D\-E\-L\-E\-T\-E\-\_\-\-M\-S\-G, \-E\-M\-P\-T\-Y\-\_\-\-P\-A\-T\-H, \-G\-E\-T\-\_\-\-M\-S\-G, \-J\-O\-I\-N\-\_\-\-T\-E\-A\-M, \-L\-O\-G\-\_\-\-S\-I\-Z\-E, \-M\-S\-G, \-M\-S\-G\-\_\-\-I\-D, \-N\-O\-D\-E\-\_\-\-N\-A\-M\-E, \-N\-O\-D\-E\-\_\-\-P\-O\-R\-T, \-P\-U\-B\-L\-I\-C\-\_\-\-N\-O\-D\-E\-\_\-\-N\-A\-M\-E, \-P\-U\-B\-L\-I\-C\-\_\-\-N\-O\-D\-E\-\_\-\-P\-O\-R\-T, \-P\-U\-T\-\_\-\-M\-S\-G, \-Q\-U\-E\-U\-E\-\_\-\-N\-A\-M\-E, and \-R\-E\-C\-O\-V\-E\-R\-Y.
+
+
+
+\-Referenced by \-Data\-Node\-Call\-Back().
+
+\hypertarget{classSQSMaster_a77f66b138c351e508432458b764f218d}{\index{\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}!start@{start}}
+\index{start@{start}!SQSMaster@{\-S\-Q\-S\-Master}}
+\subsubsection[{start}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-S\-Q\-S\-Master\-::start} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{dc/d1b/classSQSMaster_a77f66b138c351e508432458b764f218d}
+
+
+start listening on master. 
+
+\-Make sure you have called \hyperlink{classSQSMaster_aae86dc34884a4c5de5e9da57a2932040}{init()} and \hyperlink{classSQSMaster_aae86dc34884a4c5de5e9da57a2932040}{init()} returns true before you can call this method 
+
+\-Definition at line 613 of file \-S\-Q\-S\-Master.\-cpp.
+
+
+
+\-Referenced by main().
+
+
+
+\subsection{\-Member \-Data \-Documentation}
+\hypertarget{classSQSMaster_a89e8b3c4b0da8172f5309bce3ac7dc26}{\index{\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}!client\-Port@{client\-Port}}
+\index{client\-Port@{client\-Port}!SQSMaster@{\-S\-Q\-S\-Master}}
+\subsubsection[{client\-Port}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-S\-Q\-S\-Master\-::client\-Port}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{dc/d1b/classSQSMaster_a89e8b3c4b0da8172f5309bce3ac7dc26}
+
+
+port number for the client connection 
+
+
+
+\-Definition at line 171 of file \-S\-Q\-S\-Master.\-h.
+
+\hypertarget{classSQSMaster_aec49d49c7c3301aaba049672f4a46cb9}{\index{\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}!connection\-Timeout@{connection\-Timeout}}
+\index{connection\-Timeout@{connection\-Timeout}!SQSMaster@{\-S\-Q\-S\-Master}}
+\subsubsection[{connection\-Timeout}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-S\-Q\-S\-Master\-::connection\-Timeout}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{dc/d1b/classSQSMaster_aec49d49c7c3301aaba049672f4a46cb9}
+
+
+default connection time out 
+
+
+
+\-Definition at line 179 of file \-S\-Q\-S\-Master.\-h.
+
+\hypertarget{classSQSMaster_a696a65ad732112ad27f1a1d353c3db63}{\index{\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}!data\-Node\-Port@{data\-Node\-Port}}
+\index{data\-Node\-Port@{data\-Node\-Port}!SQSMaster@{\-S\-Q\-S\-Master}}
+\subsubsection[{data\-Node\-Port}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-S\-Q\-S\-Master\-::data\-Node\-Port}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{dc/d1b/classSQSMaster_a696a65ad732112ad27f1a1d353c3db63}
+
+
+port number for the data node connection 
+
+
+
+\-Definition at line 175 of file \-S\-Q\-S\-Master.\-h.
+
+\hypertarget{classSQSMaster_a2c3525b0f014f112f5d425b1a34152c6}{\index{\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}!logger@{logger}}
+\index{logger@{logger}!SQSMaster@{\-S\-Q\-S\-Master}}
+\subsubsection[{logger}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Logger}$\ast$ {\bf \-S\-Q\-S\-Master\-::logger}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{dc/d1b/classSQSMaster_a2c3525b0f014f112f5d425b1a34152c6}
+
+
+logger for message processing 
+
+
+
+\-Definition at line 191 of file \-S\-Q\-S\-Master.\-h.
+
+\hypertarget{classSQSMaster_a7f575898ece6a5812819780ca7b0c8c4}{\index{\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}!m\-Data\-Nodes@{m\-Data\-Nodes}}
+\index{m\-Data\-Nodes@{m\-Data\-Nodes}!SQSMaster@{\-S\-Q\-S\-Master}}
+\subsubsection[{m\-Data\-Nodes}]{\setlength{\rightskip}{0pt plus 5cm}std\-::vector$<${\bf \-Data\-Node}$>$ {\bf \-S\-Q\-S\-Master\-::m\-Data\-Nodes}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{dc/d1b/classSQSMaster_a7f575898ece6a5812819780ca7b0c8c4}
+
+
+all available data nodes 
+
+
+
+\-Definition at line 187 of file \-S\-Q\-S\-Master.\-h.
+
+\hypertarget{classSQSMaster_a9a8824c007d04b97b2334f4d332cd707}{\index{\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}!p\-Beat@{p\-Beat}}
+\index{p\-Beat@{p\-Beat}!SQSMaster@{\-S\-Q\-S\-Master}}
+\subsubsection[{p\-Beat}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Heart\-Beat}$\ast$ {\bf \-S\-Q\-S\-Master\-::p\-Beat}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{dc/d1b/classSQSMaster_a9a8824c007d04b97b2334f4d332cd707}
+
+
+\-Heart beat checker. 
+
+
+
+\-Definition at line 195 of file \-S\-Q\-S\-Master.\-h.
+
+\hypertarget{classSQSMaster_a22ea7350f17c94861eb488ae5f4f7abb}{\index{\-S\-Q\-S\-Master@{\-S\-Q\-S\-Master}!p\-Lock@{p\-Lock}}
+\index{p\-Lock@{p\-Lock}!SQSMaster@{\-S\-Q\-S\-Master}}
+\subsubsection[{p\-Lock}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Msg\-Lock}$\ast$ {\bf \-S\-Q\-S\-Master\-::p\-Lock}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{dc/d1b/classSQSMaster_a22ea7350f17c94861eb488ae5f4f7abb}
+
+
+lock for message 
+
+
+
+\-Definition at line 183 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-Referenced by $\sim$\-S\-Q\-S\-Master().
+
+
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{SQSMaster_8h}{\-S\-Q\-S\-Master.\-h}\item 
+src/\hyperlink{SQSMaster_8cpp}{\-S\-Q\-S\-Master.\-cpp}\end{DoxyCompactItemize}

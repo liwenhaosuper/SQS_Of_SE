@@ -1,0 +1,362 @@
+\hypertarget{classDataNode}{\section{\-Data\-Node \-Class \-Reference}
+\label{d7/d25/classDataNode}\index{\-Data\-Node@{\-Data\-Node}}
+}
+
+
+\hyperlink{SQSMaster_8h}{\-S\-Q\-S\-Master.\-h}.  
+
+
+
+
+{\ttfamily \#include $<$\-S\-Q\-S\-Master.\-h$>$}
+
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classDataNode_ac068287608bac392bcacbcd331dcb61b}{\-Data\-Node} (std\-::string nm, int port, std\-::string master\-N\-M, int master\-Port, long timeout)
+\item 
+void \hyperlink{classDataNode_a3d27272bfc8151cb971b0ce383cc6051}{\-Recycle} ()
+\begin{DoxyCompactList}\small\item\em refresh the start\-Time to the current time stamp \end{DoxyCompactList}\item 
+bool \hyperlink{classDataNode_acd2015cb18b6f7b10f1d383f600cd159}{\-Is\-Alive} ()
+\begin{DoxyCompactList}\small\item\em tell whether this data node is still alive or not \-A data node is alive only if it is not time out \end{DoxyCompactList}\item 
+bool \hyperlink{classDataNode_a1c678740e9a4234d0af048d516887245}{\-Is\-Cancel} ()
+\begin{DoxyCompactList}\small\item\em whether it has been canceled or not \end{DoxyCompactList}\item 
+void \hyperlink{classDataNode_af7c18df11377f857c1d0b35c6569c184}{\-Cancel} ()
+\begin{DoxyCompactList}\small\item\em cancel the data node \end{DoxyCompactList}\item 
+\hyperlink{classDataNode_a4d9639b6295e5746af51ad24f2880095}{\-Data\-Node} (const \hyperlink{classDataNode}{\-Data\-Node} \&node)
+\item 
+bool \hyperlink{classDataNode_a1cfd13daabc2c5b82d5b22fa8835c7ee}{operator==} (\hyperlink{classDataNode}{\-Data\-Node} \&instance)
+\item 
+std\-::string \hyperlink{classDataNode_af3254e5f7a69c389618d23090eacc6ed}{get\-Node\-Name\-Formaster} () const 
+\item 
+std\-::string \hyperlink{classDataNode_a46aed0f07640f0833f87405b2084656d}{get\-Node\-Name\-Public} () const 
+\item 
+int \hyperlink{classDataNode_a89e54bfc19a24d97248f1dca5808b341}{get\-Node\-Port\-Formaster} () const 
+\item 
+int \hyperlink{classDataNode_af305eef4e4c22bec38af7e837151bc4c}{get\-Node\-Port\-Public} () const 
+\end{DoxyCompactItemize}
+\subsection*{\-Private \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\-::string \hyperlink{classDataNode_afc6ee468a328c1f6004e81ddf123804b}{node\-Name\-\_\-public}
+\begin{DoxyCompactList}\small\item\em node name for client connection \end{DoxyCompactList}\item 
+int \hyperlink{classDataNode_a0cf1261ec432ee38f2fbd3ff4cfff5eb}{node\-Port\-\_\-public}
+\begin{DoxyCompactList}\small\item\em node port for client connection \end{DoxyCompactList}\item 
+std\-::string \hyperlink{classDataNode_a3d6d0ffea35a5806fc86c4aa5484f2f2}{node\-Name\-\_\-formaster}
+\begin{DoxyCompactList}\small\item\em node name for communication with the master \end{DoxyCompactList}\item 
+int \hyperlink{classDataNode_aa0047e3d31e28ca707f46138ded5f152}{node\-Port\-\_\-formaster}
+\begin{DoxyCompactList}\small\item\em node port for communication with the master \end{DoxyCompactList}\item 
+long \hyperlink{classDataNode_ab1ee6091587c21e54d4564869431c7f0}{default\-Timeout}
+\begin{DoxyCompactList}\small\item\em default time out for the data node, in milliseconds \end{DoxyCompactList}\item 
+long \hyperlink{classDataNode_ae2e3f7f945adb505b53b1e13a2e82bf5}{start\-Time}
+\begin{DoxyCompactList}\small\item\em the time it joins the data node list, in milliseconds \end{DoxyCompactList}\item 
+bool \hyperlink{classDataNode_ab0fde2dcd093b8d7beb962993e078b38}{cancel}
+\begin{DoxyCompactList}\small\item\em whether it has been cancel or not. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\hyperlink{SQSMaster_8h}{\-S\-Q\-S\-Master.\-h}. 
+
+\-Created on\-: \-May 15, 2012 \-Author\-: liwenhaosuper
+
+\hyperlink{classDataNode}{\-Data\-Node} \-A data node object has two public ports, one for client communication, one for master communication 
+
+\-Definition at line 24 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{classDataNode_ac068287608bac392bcacbcd331dcb61b}{\index{\-Data\-Node@{\-Data\-Node}!\-Data\-Node@{\-Data\-Node}}
+\index{\-Data\-Node@{\-Data\-Node}!DataNode@{\-Data\-Node}}
+\subsubsection[{\-Data\-Node}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Data\-Node\-::\-Data\-Node} (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{nm, }
+\item[{int}]{port, }
+\item[{std\-::string}]{master\-N\-M, }
+\item[{int}]{master\-Port, }
+\item[{long}]{timeout}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{d7/d25/classDataNode_ac068287608bac392bcacbcd331dcb61b}
+
+
+\-Definition at line 55 of file \-S\-Q\-S\-Master.\-h.
+
+\hypertarget{classDataNode_a4d9639b6295e5746af51ad24f2880095}{\index{\-Data\-Node@{\-Data\-Node}!\-Data\-Node@{\-Data\-Node}}
+\index{\-Data\-Node@{\-Data\-Node}!DataNode@{\-Data\-Node}}
+\subsubsection[{\-Data\-Node}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Data\-Node\-::\-Data\-Node} (
+\begin{DoxyParamCaption}
+\item[{const {\bf \-Data\-Node} \&}]{node}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{d7/d25/classDataNode_a4d9639b6295e5746af51ad24f2880095}
+
+
+\-Definition at line 76 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-References cancel, default\-Timeout, node\-Name\-\_\-formaster, node\-Name\-\_\-public, node\-Port\-\_\-formaster, node\-Port\-\_\-public, and start\-Time.
+
+
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{classDataNode_af7c18df11377f857c1d0b35c6569c184}{\index{\-Data\-Node@{\-Data\-Node}!\-Cancel@{\-Cancel}}
+\index{\-Cancel@{\-Cancel}!DataNode@{\-Data\-Node}}
+\subsubsection[{\-Cancel}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Data\-Node\-::\-Cancel} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{d7/d25/classDataNode_af7c18df11377f857c1d0b35c6569c184}
+
+
+cancel the data node 
+
+
+
+\-Definition at line 74 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-References cancel.
+
+\hypertarget{classDataNode_af3254e5f7a69c389618d23090eacc6ed}{\index{\-Data\-Node@{\-Data\-Node}!get\-Node\-Name\-Formaster@{get\-Node\-Name\-Formaster}}
+\index{get\-Node\-Name\-Formaster@{get\-Node\-Name\-Formaster}!DataNode@{\-Data\-Node}}
+\subsubsection[{get\-Node\-Name\-Formaster}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string {\bf \-Data\-Node\-::get\-Node\-Name\-Formaster} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{d7/d25/classDataNode_af3254e5f7a69c389618d23090eacc6ed}
+
+
+\-Definition at line 91 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-References node\-Name\-\_\-formaster.
+
+\hypertarget{classDataNode_a46aed0f07640f0833f87405b2084656d}{\index{\-Data\-Node@{\-Data\-Node}!get\-Node\-Name\-Public@{get\-Node\-Name\-Public}}
+\index{get\-Node\-Name\-Public@{get\-Node\-Name\-Public}!DataNode@{\-Data\-Node}}
+\subsubsection[{get\-Node\-Name\-Public}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string {\bf \-Data\-Node\-::get\-Node\-Name\-Public} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{d7/d25/classDataNode_a46aed0f07640f0833f87405b2084656d}
+
+
+\-Definition at line 94 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-References node\-Name\-\_\-public.
+
+\hypertarget{classDataNode_a89e54bfc19a24d97248f1dca5808b341}{\index{\-Data\-Node@{\-Data\-Node}!get\-Node\-Port\-Formaster@{get\-Node\-Port\-Formaster}}
+\index{get\-Node\-Port\-Formaster@{get\-Node\-Port\-Formaster}!DataNode@{\-Data\-Node}}
+\subsubsection[{get\-Node\-Port\-Formaster}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Data\-Node\-::get\-Node\-Port\-Formaster} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{d7/d25/classDataNode_a89e54bfc19a24d97248f1dca5808b341}
+
+
+\-Definition at line 97 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-References node\-Port\-\_\-formaster.
+
+\hypertarget{classDataNode_af305eef4e4c22bec38af7e837151bc4c}{\index{\-Data\-Node@{\-Data\-Node}!get\-Node\-Port\-Public@{get\-Node\-Port\-Public}}
+\index{get\-Node\-Port\-Public@{get\-Node\-Port\-Public}!DataNode@{\-Data\-Node}}
+\subsubsection[{get\-Node\-Port\-Public}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Data\-Node\-::get\-Node\-Port\-Public} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{d7/d25/classDataNode_af305eef4e4c22bec38af7e837151bc4c}
+
+
+\-Definition at line 100 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-References node\-Port\-\_\-public.
+
+\hypertarget{classDataNode_acd2015cb18b6f7b10f1d383f600cd159}{\index{\-Data\-Node@{\-Data\-Node}!\-Is\-Alive@{\-Is\-Alive}}
+\index{\-Is\-Alive@{\-Is\-Alive}!DataNode@{\-Data\-Node}}
+\subsubsection[{\-Is\-Alive}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Data\-Node\-::\-Is\-Alive} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{d7/d25/classDataNode_acd2015cb18b6f7b10f1d383f600cd159}
+
+
+tell whether this data node is still alive or not \-A data node is alive only if it is not time out 
+
+
+
+\-Definition at line 29 of file \-S\-Q\-S\-Master.\-cpp.
+
+\hypertarget{classDataNode_a1c678740e9a4234d0af048d516887245}{\index{\-Data\-Node@{\-Data\-Node}!\-Is\-Cancel@{\-Is\-Cancel}}
+\index{\-Is\-Cancel@{\-Is\-Cancel}!DataNode@{\-Data\-Node}}
+\subsubsection[{\-Is\-Cancel}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Data\-Node\-::\-Is\-Cancel} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{d7/d25/classDataNode_a1c678740e9a4234d0af048d516887245}
+
+
+whether it has been canceled or not 
+
+
+
+\-Definition at line 70 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-References cancel.
+
+\hypertarget{classDataNode_a1cfd13daabc2c5b82d5b22fa8835c7ee}{\index{\-Data\-Node@{\-Data\-Node}!operator==@{operator==}}
+\index{operator==@{operator==}!DataNode@{\-Data\-Node}}
+\subsubsection[{operator==}]{\setlength{\rightskip}{0pt plus 5cm}bool \-Data\-Node\-::operator== (
+\begin{DoxyParamCaption}
+\item[{{\bf \-Data\-Node} \&}]{instance}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{d7/d25/classDataNode_a1cfd13daabc2c5b82d5b22fa8835c7ee}
+
+
+\-Definition at line 85 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-References node\-Name\-\_\-formaster, node\-Name\-\_\-public, node\-Port\-\_\-formaster, and node\-Port\-\_\-public.
+
+\hypertarget{classDataNode_a3d27272bfc8151cb971b0ce383cc6051}{\index{\-Data\-Node@{\-Data\-Node}!\-Recycle@{\-Recycle}}
+\index{\-Recycle@{\-Recycle}!DataNode@{\-Data\-Node}}
+\subsubsection[{\-Recycle}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Data\-Node\-::\-Recycle} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{d7/d25/classDataNode_a3d27272bfc8151cb971b0ce383cc6051}
+
+
+refresh the start\-Time to the current time stamp 
+
+
+
+\-Definition at line 24 of file \-S\-Q\-S\-Master.\-cpp.
+
+
+
+\-Referenced by \-Heart\-Beat\-::\-Add\-Data\-Node().
+
+
+
+\subsection{\-Member \-Data \-Documentation}
+\hypertarget{classDataNode_ab0fde2dcd093b8d7beb962993e078b38}{\index{\-Data\-Node@{\-Data\-Node}!cancel@{cancel}}
+\index{cancel@{cancel}!DataNode@{\-Data\-Node}}
+\subsubsection[{cancel}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Data\-Node\-::cancel}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{d7/d25/classDataNode_ab0fde2dcd093b8d7beb962993e078b38}
+
+
+whether it has been cancel or not. 
+
+
+
+\-Definition at line 53 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-Referenced by \-Cancel(), \-Data\-Node(), and \-Is\-Cancel().
+
+\hypertarget{classDataNode_ab1ee6091587c21e54d4564869431c7f0}{\index{\-Data\-Node@{\-Data\-Node}!default\-Timeout@{default\-Timeout}}
+\index{default\-Timeout@{default\-Timeout}!DataNode@{\-Data\-Node}}
+\subsubsection[{default\-Timeout}]{\setlength{\rightskip}{0pt plus 5cm}long {\bf \-Data\-Node\-::default\-Timeout}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{d7/d25/classDataNode_ab1ee6091587c21e54d4564869431c7f0}
+
+
+default time out for the data node, in milliseconds 
+
+
+
+\-Definition at line 45 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-Referenced by \-Data\-Node().
+
+\hypertarget{classDataNode_a3d6d0ffea35a5806fc86c4aa5484f2f2}{\index{\-Data\-Node@{\-Data\-Node}!node\-Name\-\_\-formaster@{node\-Name\-\_\-formaster}}
+\index{node\-Name\-\_\-formaster@{node\-Name\-\_\-formaster}!DataNode@{\-Data\-Node}}
+\subsubsection[{node\-Name\-\_\-formaster}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string {\bf \-Data\-Node\-::node\-Name\-\_\-formaster}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{d7/d25/classDataNode_a3d6d0ffea35a5806fc86c4aa5484f2f2}
+
+
+node name for communication with the master 
+
+
+
+\-Definition at line 37 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-Referenced by \-Data\-Node(), get\-Node\-Name\-Formaster(), and operator==().
+
+\hypertarget{classDataNode_afc6ee468a328c1f6004e81ddf123804b}{\index{\-Data\-Node@{\-Data\-Node}!node\-Name\-\_\-public@{node\-Name\-\_\-public}}
+\index{node\-Name\-\_\-public@{node\-Name\-\_\-public}!DataNode@{\-Data\-Node}}
+\subsubsection[{node\-Name\-\_\-public}]{\setlength{\rightskip}{0pt plus 5cm}std\-::string {\bf \-Data\-Node\-::node\-Name\-\_\-public}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{d7/d25/classDataNode_afc6ee468a328c1f6004e81ddf123804b}
+
+
+node name for client connection 
+
+
+
+\-Definition at line 29 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-Referenced by \-Data\-Node(), get\-Node\-Name\-Public(), and operator==().
+
+\hypertarget{classDataNode_aa0047e3d31e28ca707f46138ded5f152}{\index{\-Data\-Node@{\-Data\-Node}!node\-Port\-\_\-formaster@{node\-Port\-\_\-formaster}}
+\index{node\-Port\-\_\-formaster@{node\-Port\-\_\-formaster}!DataNode@{\-Data\-Node}}
+\subsubsection[{node\-Port\-\_\-formaster}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Data\-Node\-::node\-Port\-\_\-formaster}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{d7/d25/classDataNode_aa0047e3d31e28ca707f46138ded5f152}
+
+
+node port for communication with the master 
+
+
+
+\-Definition at line 41 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-Referenced by \-Data\-Node(), get\-Node\-Port\-Formaster(), and operator==().
+
+\hypertarget{classDataNode_a0cf1261ec432ee38f2fbd3ff4cfff5eb}{\index{\-Data\-Node@{\-Data\-Node}!node\-Port\-\_\-public@{node\-Port\-\_\-public}}
+\index{node\-Port\-\_\-public@{node\-Port\-\_\-public}!DataNode@{\-Data\-Node}}
+\subsubsection[{node\-Port\-\_\-public}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Data\-Node\-::node\-Port\-\_\-public}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{d7/d25/classDataNode_a0cf1261ec432ee38f2fbd3ff4cfff5eb}
+
+
+node port for client connection 
+
+
+
+\-Definition at line 33 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-Referenced by \-Data\-Node(), get\-Node\-Port\-Public(), and operator==().
+
+\hypertarget{classDataNode_ae2e3f7f945adb505b53b1e13a2e82bf5}{\index{\-Data\-Node@{\-Data\-Node}!start\-Time@{start\-Time}}
+\index{start\-Time@{start\-Time}!DataNode@{\-Data\-Node}}
+\subsubsection[{start\-Time}]{\setlength{\rightskip}{0pt plus 5cm}long {\bf \-Data\-Node\-::start\-Time}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{d7/d25/classDataNode_ae2e3f7f945adb505b53b1e13a2e82bf5}
+
+
+the time it joins the data node list, in milliseconds 
+
+
+
+\-Definition at line 49 of file \-S\-Q\-S\-Master.\-h.
+
+
+
+\-Referenced by \-Data\-Node().
+
+
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{SQSMaster_8h}{\-S\-Q\-S\-Master.\-h}\item 
+src/\hyperlink{SQSMaster_8cpp}{\-S\-Q\-S\-Master.\-cpp}\end{DoxyCompactItemize}

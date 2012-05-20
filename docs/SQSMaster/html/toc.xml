@@ -1,0 +1,187 @@
+<toc label="SQSMaster" topic="index.html">
+  <topic label="Related Pages" href="pages.html">
+    <topic label="Todo List" href="dd/da0/todo.html">
+    </topic>
+    <topic label="Bug List" href="de/da5/bug.html">
+    </topic>
+  </topic>
+  <topic label="Classes">
+    <topic label="Class List" href="annotated.html">
+      <topic label="DataNode" href="d7/d25/classDataNode.html">
+        <topic label="DataNode" href="d7/d25/classDataNode.html#ac068287608bac392bcacbcd331dcb61b"/>
+        <topic label="DataNode" href="d7/d25/classDataNode.html#a4d9639b6295e5746af51ad24f2880095"/>
+        <topic label="Cancel" href="d7/d25/classDataNode.html#af7c18df11377f857c1d0b35c6569c184"/>
+        <topic label="getNodeNameFormaster" href="d7/d25/classDataNode.html#af3254e5f7a69c389618d23090eacc6ed"/>
+        <topic label="getNodeNamePublic" href="d7/d25/classDataNode.html#a46aed0f07640f0833f87405b2084656d"/>
+        <topic label="getNodePortFormaster" href="d7/d25/classDataNode.html#a89e54bfc19a24d97248f1dca5808b341"/>
+        <topic label="getNodePortPublic" href="d7/d25/classDataNode.html#af305eef4e4c22bec38af7e837151bc4c"/>
+        <topic label="IsAlive" href="d7/d25/classDataNode.html#acd2015cb18b6f7b10f1d383f600cd159"/>
+        <topic label="IsCancel" href="d7/d25/classDataNode.html#a1c678740e9a4234d0af048d516887245"/>
+        <topic label="operator==" href="d7/d25/classDataNode.html#a1cfd13daabc2c5b82d5b22fa8835c7ee"/>
+        <topic label="Recycle" href="d7/d25/classDataNode.html#a3d27272bfc8151cb971b0ce383cc6051"/>
+        <topic label="cancel" href="d7/d25/classDataNode.html#ab0fde2dcd093b8d7beb962993e078b38"/>
+        <topic label="defaultTimeout" href="d7/d25/classDataNode.html#ab1ee6091587c21e54d4564869431c7f0"/>
+        <topic label="nodeName_formaster" href="d7/d25/classDataNode.html#a3d6d0ffea35a5806fc86c4aa5484f2f2"/>
+        <topic label="nodeName_public" href="d7/d25/classDataNode.html#afc6ee468a328c1f6004e81ddf123804b"/>
+        <topic label="nodePort_formaster" href="d7/d25/classDataNode.html#aa0047e3d31e28ca707f46138ded5f152"/>
+        <topic label="nodePort_public" href="d7/d25/classDataNode.html#a0cf1261ec432ee38f2fbd3ff4cfff5eb"/>
+        <topic label="startTime" href="d7/d25/classDataNode.html#ae2e3f7f945adb505b53b1e13a2e82bf5"/>
+      </topic>
+      <topic label="Event" href="d5/da5/classEvent.html">
+        <topic label="do_schedule" href="d5/da5/classEvent.html#a8e493c850490cee46d90c553eec37a1c"/>
+        <topic label="Event" href="d5/da5/classEvent.html#a5a40dd4708297f7031e29b39e039ae10"/>
+        <topic label="Event" href="d5/da5/classEvent.html#af801329053df35da07ec4d03c46c63bb"/>
+        <topic label="Event" href="d5/da5/classEvent.html#ad2f1966199794fba4e23d004cf6fca0a"/>
+        <topic label="operator==" href="d5/da5/classEvent.html#a02485379dbe8cc36e72eafa052622fe1"/>
+        <topic label="arg" href="d5/da5/classEvent.html#ae7c4ba85ebe5cb4c29ba9659c475f269"/>
+        <topic label="customSchedule" href="d5/da5/classEvent.html#acccade40f77a128deeddfebb3c560d20"/>
+        <topic label="join_time" href="d5/da5/classEvent.html#a585aca2566e1db426a025ea97b55a74a"/>
+        <topic label="msgId" href="d5/da5/classEvent.html#af7d83ab02ea78a76a229d077a701ed5d"/>
+        <topic label="next" href="d5/da5/classEvent.html#a88dc0fa91acbfbcfb1d2014491630d39"/>
+        <topic label="queue" href="d5/da5/classEvent.html#acaeeb3bd2c79b564a896c18f0188c264"/>
+        <topic label="sched_time" href="d5/da5/classEvent.html#af44247209b624738228d66efe4a5eb36"/>
+      </topic>
+      <topic label="EventChain" href="df/dd4/classEventChain.html">
+        <topic label="EventChain" href="df/dd4/classEventChain.html#ada7e8a70f9a8d1401ae8688d1c229c48"/>
+        <topic label="~EventChain" href="df/dd4/classEventChain.html#a236195bf33b701dbc51aed3f2626a3ce"/>
+        <topic label="Cancel" href="df/dd4/classEventChain.html#af62373dcc9dd1b677eb957f8ba2c46c5"/>
+        <topic label="Run" href="df/dd4/classEventChain.html#a5946605e94f28745049b188436d1b4d9"/>
+        <topic label="Schedule" href="df/dd4/classEventChain.html#ac986b5d2267157e6e8bb6deadef8b973"/>
+        <topic label="Start" href="df/dd4/classEventChain.html#a16e7a78c2ed7f99f317bd3e07af1d8f9"/>
+        <topic label="Stop" href="df/dd4/classEventChain.html#aa1291ec4c607b26362ce57269f90e7cb"/>
+        <topic label="Cleanup" href="df/dd4/classEventChain.html#a009f6fec4bfd5adc7c28c7c6acc8d317"/>
+        <topic label="head" href="df/dd4/classEventChain.html#ae1a1e5817ae1441dd667bf8cc61d2189"/>
+        <topic label="pid" href="df/dd4/classEventChain.html#a18d260ab11be32921c0048f9baee010f"/>
+        <topic label="qlock" href="df/dd4/classEventChain.html#ade765e56690d9ed14ade46e379a52680"/>
+        <topic label="qready" href="df/dd4/classEventChain.html#a07bb206a91428aa03e3167760357bc57"/>
+      </topic>
+      <topic label="HeartBeat" href="d7/d28/classHeartBeat.html">
+        <topic label="HeartBeat" href="d7/d28/classHeartBeat.html#ab0b77e6af31793da01b8a6d99ac4999e"/>
+        <topic label="~HeartBeat" href="d7/d28/classHeartBeat.html#a8c6852870c1654cdd14af4d21362ade0"/>
+        <topic label="AddDataNode" href="d7/d28/classHeartBeat.html#acd7815d9c021dac972ddd6e670cefcb8"/>
+        <topic label="CancelDataNode" href="d7/d28/classHeartBeat.html#aeef6d5b3263f58fcd80f34570758a8c0"/>
+        <topic label="doRequest" href="d7/d28/classHeartBeat.html#a214003a874871f9757b62afeac63c504"/>
+        <topic label="IsNodeAlive" href="d7/d28/classHeartBeat.html#afaece774c2a5046dbb45fff2e452628b"/>
+        <topic label="RegularCheck" href="d7/d28/classHeartBeat.html#a2c909906a58712999c27391cb2c17f11"/>
+        <topic label="clients" href="d7/d28/classHeartBeat.html#a6a52caa433708eae3b8dfd315c7f3f70"/>
+        <topic label="cycle" href="d7/d28/classHeartBeat.html#aa0384e810d6db72a57bea95a74a262db"/>
+      </topic>
+      <topic label="Logger" href="db/d67/classLogger.html">
+        <topic label="Logger" href="db/d67/classLogger.html#a0916670d60807c695fc70d9734a93815"/>
+        <topic label="Logger" href="db/d67/classLogger.html#a0ee14f33b07361f8f78b85b026fb0adc"/>
+        <topic label="~Logger" href="db/d67/classLogger.html#acb668a9e186a25fbaad2e4af6d1ed00a"/>
+        <topic label="Logger" href="db/d67/classLogger.html#a25dabaa7b9631ab7e7988b6b610c6f3a"/>
+        <topic label="addLog" href="db/d67/classLogger.html#a9f927f569b189fd59ba66a12a8612e6d"/>
+        <topic label="count" href="db/d67/classLogger.html#ae73ef1b58c2fc74e19e66660530a62ef"/>
+        <topic label="tailList" href="db/d67/classLogger.html#aa1defe30f8805250673f32c7845c2146"/>
+        <topic label="m_filename" href="db/d67/classLogger.html#aeb98df86650487b330427a1e48ec31d3"/>
+      </topic>
+      <topic label="MsgLock" href="da/d01/classMsgLock.html">
+        <topic label="MsgLock" href="da/d01/classMsgLock.html#a29a504bb53629c05ecb9e09dc8bd08ec"/>
+        <topic label="MsgLock" href="da/d01/classMsgLock.html#a6f2097905a4ed2e3a0129de845d5fe63"/>
+        <topic label="Del" href="da/d01/classMsgLock.html#a309cdb87539f105fe41ed0130fa21f5b"/>
+        <topic label="Insert" href="da/d01/classMsgLock.html#a641f1a5b90f5eb59f3139eb4a311267a"/>
+        <topic label="IsExist" href="da/d01/classMsgLock.html#ae10ea239514a1e25b04e1cbff387f60b"/>
+        <topic label="Lock" href="da/d01/classMsgLock.html#abefa80b2195e058a42e28496607c1781"/>
+        <topic label="Start" href="da/d01/classMsgLock.html#aabe3da15ec94dbb5ec28cb1122d01f1f"/>
+        <topic label="Stop" href="da/d01/classMsgLock.html#aacf751266c7c5bd26e96950f56e59ab4"/>
+        <topic label="UnLock" href="da/d01/classMsgLock.html#ab13af89818d9c55ad8a2b1350f83c123"/>
+        <topic label="ReleaseLock" href="da/d01/classMsgLock.html#af2724aaff9e232ca798de9f3ec8f65c8"/>
+        <topic label="chain_core" href="da/d01/classMsgLock.html#a31f44a96cdf2cef27b8543f530231631"/>
+        <topic label="defaultTmout" href="da/d01/classMsgLock.html#a39cad315b694113c3aa552ba84db9093"/>
+        <topic label="mDatas" href="da/d01/classMsgLock.html#a15c1b0e57d86b2598e5b57b43094c4c6"/>
+        <topic label="qlock" href="da/d01/classMsgLock.html#a8d00c3f7af52fef41cc98c661e1df541"/>
+        <topic label="qready" href="da/d01/classMsgLock.html#a94499ef81482492775a556e26ff6fe3f"/>
+      </topic>
+      <topic label="Param" href="d7/d16/classParam.html">
+        <topic label="instance" href="d7/d16/classParam.html#a1e890d1b1a8bdc8882923d7e5db3e998"/>
+        <topic label="node" href="d7/d16/classParam.html#a3e74d625d823037deea01bb8933ee62c"/>
+      </topic>
+      <topic label="SQSMaster" href="dc/d1b/classSQSMaster.html">
+        <topic label="SQSMaster" href="dc/d1b/classSQSMaster.html#aec053caf04055bce21d3d0d52e3c67f1"/>
+        <topic label="SQSMaster" href="dc/d1b/classSQSMaster.html#a156f1d02bf2e194994cc61ad084e8744"/>
+        <topic label="~SQSMaster" href="dc/d1b/classSQSMaster.html#a5cea48538871c9ec2e329b3814961814"/>
+        <topic label="dispatchMessage" href="dc/d1b/classSQSMaster.html#ac844442974f57fe16ab8ccdcffb7c0af"/>
+        <topic label="init" href="dc/d1b/classSQSMaster.html#aae86dc34884a4c5de5e9da57a2932040"/>
+        <topic label="onClientReqRecv" href="dc/d1b/classSQSMaster.html#a0da388946c6cf48d2434d7ccdf4113fd"/>
+        <topic label="onDataNodeRecv" href="dc/d1b/classSQSMaster.html#a15fe36fa592546e0740e91bff9972fc2"/>
+        <topic label="start" href="dc/d1b/classSQSMaster.html#a77f66b138c351e508432458b764f218d"/>
+        <topic label="clientPort" href="dc/d1b/classSQSMaster.html#a89e8b3c4b0da8172f5309bce3ac7dc26"/>
+        <topic label="connectionTimeout" href="dc/d1b/classSQSMaster.html#aec49d49c7c3301aaba049672f4a46cb9"/>
+        <topic label="dataNodePort" href="dc/d1b/classSQSMaster.html#a696a65ad732112ad27f1a1d353c3db63"/>
+        <topic label="logger" href="dc/d1b/classSQSMaster.html#a2c3525b0f014f112f5d425b1a34152c6"/>
+        <topic label="mDataNodes" href="dc/d1b/classSQSMaster.html#a7f575898ece6a5812819780ca7b0c8c4"/>
+        <topic label="pBeat" href="dc/d1b/classSQSMaster.html#a9a8824c007d04b97b2334f4d332cd707"/>
+        <topic label="pLock" href="dc/d1b/classSQSMaster.html#a22ea7350f17c94861eb488ae5f4f7abb"/>
+      </topic>
+    </topic>
+    <topic label="Class Index" href="classes.html"/>
+    <topic label="Class Members" href="functions.html">
+      <topic label="All" href="functions.html"/>
+      <topic label="Functions" href="functions_func.html"/>
+      <topic label="Variables" href="functions_vars.html"/>
+      <topic label="Typedefs" href="functions_type.html"/>
+      <topic label="Related Functions" href="functions_rela.html"/>
+    </topic>
+  </topic>
+  <topic label="Files">
+    <topic label="File List" href="files.html">
+      <topic label="src/Convention.h" href="dc/d0d/Convention_8h.html">
+        <topic label="CREATE_QUEUE" href="dc/d0d/Convention_8h.html#adc1d9ec732e2b90dc4b825201bdf58ca"/>
+        <topic label="DEL_QUEUE" href="dc/d0d/Convention_8h.html#a9d2f3ddbc2ed1567324bc09ac63f8365"/>
+        <topic label="DELETE_MSG" href="dc/d0d/Convention_8h.html#a53ddae6ce9433e7e3243e4b2b042ea02"/>
+        <topic label="EMPTY_PATH" href="dc/d0d/Convention_8h.html#afa2ce2c723c13dc76832067599718db7"/>
+        <topic label="GET_AVAILABLE_HOST" href="dc/d0d/Convention_8h.html#ac5254192c606741ffea5f509e58fd3fe"/>
+        <topic label="GET_MSG" href="dc/d0d/Convention_8h.html#ab38976c5a0354a77f40204cbc40f72b4"/>
+        <topic label="HEARTBEAT" href="dc/d0d/Convention_8h.html#a89d4b6fa1eab82d4ceb201c3592a75c1"/>
+        <topic label="JOIN_TEAM" href="dc/d0d/Convention_8h.html#ac797d68d9f4a9f40d6ed9c4f1694dbe1"/>
+        <topic label="LIST_QUEUES" href="dc/d0d/Convention_8h.html#aa7fd01fdd6ac886c2daec2da0f7cb2b7"/>
+        <topic label="LOG_SIZE" href="dc/d0d/Convention_8h.html#a8fe30e137a34f40cae21efadb9f6c0b7"/>
+        <topic label="masterIp_ForClient" href="dc/d0d/Convention_8h.html#a71e05348b49518de386c4f9ce71d4460"/>
+        <topic label="masterIP_ForDataNode" href="dc/d0d/Convention_8h.html#a08771afcc7567862e9c7986838c79b19"/>
+        <topic label="masterPort_ForClient" href="dc/d0d/Convention_8h.html#a760fc5aa7c79d793c8bb27717d0fa390"/>
+        <topic label="masterPort_ForDataNode" href="dc/d0d/Convention_8h.html#a66637814f7566b32d1e5f130edcb2535"/>
+        <topic label="MSG" href="dc/d0d/Convention_8h.html#acbccba60dac98884dc208f29d544533a"/>
+        <topic label="MSG_CONTENT" href="dc/d0d/Convention_8h.html#abeb843cc08b65705ec0cefde0696b988"/>
+        <topic label="MSG_ID" href="dc/d0d/Convention_8h.html#a792929c00204a00e9731b091e95c90ce"/>
+        <topic label="MSG_LENGTH" href="dc/d0d/Convention_8h.html#a939896f36ee6ba81bc88b4ed4709762f"/>
+        <topic label="NODE_NAME" href="dc/d0d/Convention_8h.html#a004c151ed2ae054a858ddc89d9f6b0ea"/>
+        <topic label="NODE_PORT" href="dc/d0d/Convention_8h.html#aaa42bceac4a20349613b0bfac112bd03"/>
+        <topic label="PUBLIC_NODE_NAME" href="dc/d0d/Convention_8h.html#ad9fc9b69bc33c8b644f023fb0945ff3f"/>
+        <topic label="PUBLIC_NODE_PORT" href="dc/d0d/Convention_8h.html#ac7fbe6a60882e762f8bbc79872ed41a7"/>
+        <topic label="PUT_MSG" href="dc/d0d/Convention_8h.html#a0ae245189df75fbdb3ff9dc49d9feed4"/>
+        <topic label="QUEUE_NAME" href="dc/d0d/Convention_8h.html#afb2787ee4ffee2e63ff77af2860d4be9"/>
+        <topic label="RECOVERY" href="dc/d0d/Convention_8h.html#ad392178bccf781650dc8bd6eb3aaed27"/>
+      </topic>
+      <topic label="src/Logger.cpp" href="d9/df5/Logger_8cpp.html"/>
+      <topic label="src/Logger.h" href="dd/da4/Logger_8h.html"/>
+      <topic label="src/main.cpp" href="df/d0a/main_8cpp.html">
+        <topic label="callback" href="df/d0a/main_8cpp.html#aab000f2eab5b804d7d29ce1ada0c0cac"/>
+        <topic label="main" href="df/d0a/main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4"/>
+      </topic>
+      <topic label="src/MsgLock.cpp" href="df/d58/MsgLock_8cpp.html">
+        <topic label="Cleanup" href="df/d58/MsgLock_8cpp.html#a06e60e0332164201777f63084cee39dd"/>
+        <topic label="ReleaseLock" href="df/d58/MsgLock_8cpp.html#af2724aaff9e232ca798de9f3ec8f65c8"/>
+        <topic label="startThread" href="df/d58/MsgLock_8cpp.html#af6491856e14c9fb18b0a050f430cbb44"/>
+      </topic>
+      <topic label="src/MsgLock.h" href="d6/da8/MsgLock_8h.html"/>
+      <topic label="src/SQSMaster.cpp" href="d0/da6/SQSMaster_8cpp.html">
+        <topic label="ClientCallBack" href="d0/da6/SQSMaster_8cpp.html#a679305faaa0381fc1e1d7a74d0765b6f"/>
+        <topic label="DataNodeCallBack" href="d0/da6/SQSMaster_8cpp.html#aae80793c6b9b8eb3af08cdea2fe2ce00"/>
+        <topic label="dispatchMsgCallBack" href="d0/da6/SQSMaster_8cpp.html#a773d508c319fad5f52ebeeb491061016"/>
+        <topic label="heartbeat_callback" href="d0/da6/SQSMaster_8cpp.html#a09f69fedba50197d6435b757b0b7fde2"/>
+        <topic label="RegularCheck" href="d0/da6/SQSMaster_8cpp.html#a2c909906a58712999c27391cb2c17f11"/>
+      </topic>
+      <topic label="src/SQSMaster.h" href="df/d4b/SQSMaster_8h.html"/>
+    </topic>
+    <topic label="File Members" href="globals.html">
+      <topic label="All" href="globals.html"/>
+      <topic label="Functions" href="globals_func.html"/>
+      <topic label="Variables" href="globals_vars.html"/>
+    </topic>
+  </topic>
+  <topic label="Directories" href="dirs.html">
+    <topic label="src" href="dir_dc197915deac41fa33e172f289b63cec.html">
+    </topic>
+  </topic>
+</toc>

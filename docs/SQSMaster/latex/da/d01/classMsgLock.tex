@@ -1,0 +1,305 @@
+\hypertarget{classMsgLock}{\section{\-Msg\-Lock \-Class \-Reference}
+\label{da/d01/classMsgLock}\index{\-Msg\-Lock@{\-Msg\-Lock}}
+}
+
+
+class to handle message lock and unlock.  
+
+
+
+
+{\ttfamily \#include $<$\-Msg\-Lock.\-h$>$}
+
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classMsgLock_a29a504bb53629c05ecb9e09dc8bd08ec}{\-Msg\-Lock} ()
+\item 
+\hyperlink{classMsgLock_a6f2097905a4ed2e3a0129de845d5fe63}{\-Msg\-Lock} (long tmout)
+\item 
+bool \hyperlink{classMsgLock_abefa80b2195e058a42e28496607c1781}{\-Lock} (std\-::string queue\-Name, int msg\-Id)
+\begin{DoxyCompactList}\small\item\em lock the message returns true if successfully lock, false if the message is already locked by others \end{DoxyCompactList}\item 
+bool \hyperlink{classMsgLock_ab13af89818d9c55ad8a2b1350f83c123}{\-Un\-Lock} (std\-::string queue\-Name, int msg\-Id)
+\begin{DoxyCompactList}\small\item\em unlock the message this will always return true \end{DoxyCompactList}\item 
+bool \hyperlink{classMsgLock_aabe3da15ec94dbb5ec28cb1122d01f1f}{\-Start} ()
+\begin{DoxyCompactList}\small\item\em start the event chain process. \end{DoxyCompactList}\item 
+bool \hyperlink{classMsgLock_aacf751266c7c5bd26e96950f56e59ab4}{\-Stop} ()
+\begin{DoxyCompactList}\small\item\em stop the event chain process. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Private \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{classMsgLock_ae10ea239514a1e25b04e1cbff387f60b}{\-Is\-Exist} (std\-::string queue\-Name, int msg\-Id)
+\begin{DoxyCompactList}\small\item\em \-Whether the giving msg id in the giving queue is already lock returns true if already lock. \end{DoxyCompactList}\item 
+bool \hyperlink{classMsgLock_a641f1a5b90f5eb59f3139eb4a311267a}{\-Insert} (std\-::string queue\-Name, int msg\-Id)
+\begin{DoxyCompactList}\small\item\em insert the message to the lock list. \end{DoxyCompactList}\item 
+bool \hyperlink{classMsgLock_a309cdb87539f105fe41ed0130fa21f5b}{\-Del} (std\-::string queue\-Name, int msg\-Id)
+\begin{DoxyCompactList}\small\item\em \-Delete the locked message lock it when processing. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Private \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classEventChain}{\-Event\-Chain} $\ast$ \hyperlink{classMsgLock_a31f44a96cdf2cef27b8543f530231631}{chain\-\_\-core}
+\item 
+std\-::multimap$<$ std\-::string, int $>$ \hyperlink{classMsgLock_a15c1b0e57d86b2598e5b57b43094c4c6}{m\-Datas}
+\begin{DoxyCompactList}\small\item\em locked messages,i.\-e. \end{DoxyCompactList}\item 
+long \hyperlink{classMsgLock_a39cad315b694113c3aa552ba84db9093}{default\-Tmout}
+\begin{DoxyCompactList}\small\item\em default time out for the message lock, 5s in default \end{DoxyCompactList}\item 
+pthread\-\_\-cond\-\_\-t \hyperlink{classMsgLock_a94499ef81482492775a556e26ff6fe3f}{qready}
+\item 
+pthread\-\_\-mutex\-\_\-t \hyperlink{classMsgLock_a8d00c3f7af52fef41cc98c661e1df541}{qlock}
+\end{DoxyCompactItemize}
+\subsection*{\-Friends}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classMsgLock_af2724aaff9e232ca798de9f3ec8f65c8}{\-Release\-Lock} (void $\ast$arg, std\-::string name, int id)
+\begin{DoxyCompactList}\small\item\em call back function to do with the event process\-: unlock the message and delete the event from the event list \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+class to handle message lock and unlock. 
+
+\-It can handle time out event automatically 
+
+\-Definition at line 149 of file \-Msg\-Lock.\-h.
+
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{classMsgLock_a29a504bb53629c05ecb9e09dc8bd08ec}{\index{\-Msg\-Lock@{\-Msg\-Lock}!\-Msg\-Lock@{\-Msg\-Lock}}
+\index{\-Msg\-Lock@{\-Msg\-Lock}!MsgLock@{\-Msg\-Lock}}
+\subsubsection[{\-Msg\-Lock}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Msg\-Lock\-::\-Msg\-Lock} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{da/d01/classMsgLock_a29a504bb53629c05ecb9e09dc8bd08ec}
+
+
+\-Definition at line 184 of file \-Msg\-Lock.\-h.
+
+\hypertarget{classMsgLock_a6f2097905a4ed2e3a0129de845d5fe63}{\index{\-Msg\-Lock@{\-Msg\-Lock}!\-Msg\-Lock@{\-Msg\-Lock}}
+\index{\-Msg\-Lock@{\-Msg\-Lock}!MsgLock@{\-Msg\-Lock}}
+\subsubsection[{\-Msg\-Lock}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Msg\-Lock\-::\-Msg\-Lock} (
+\begin{DoxyParamCaption}
+\item[{long}]{tmout}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline\mbox{]}}}}\label{da/d01/classMsgLock_a6f2097905a4ed2e3a0129de845d5fe63}
+
+
+\-Definition at line 185 of file \-Msg\-Lock.\-h.
+
+
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{classMsgLock_a309cdb87539f105fe41ed0130fa21f5b}{\index{\-Msg\-Lock@{\-Msg\-Lock}!\-Del@{\-Del}}
+\index{\-Del@{\-Del}!MsgLock@{\-Msg\-Lock}}
+\subsubsection[{\-Del}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Msg\-Lock\-::\-Del} (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{queue\-Name, }
+\item[{int}]{msg\-Id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{da/d01/classMsgLock_a309cdb87539f105fe41ed0130fa21f5b}
+
+
+\-Delete the locked message lock it when processing. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em queue\-Name} & the queue name \\
+\hline
+{\em msg\-Id} & the message id to be unlocked returns true if successfully unlock, false if message could not be found and unlocked \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 212 of file \-Msg\-Lock.\-cpp.
+
+
+
+\-References \-Release\-Lock().
+
+
+
+\-Referenced by \-Release\-Lock().
+
+\hypertarget{classMsgLock_a641f1a5b90f5eb59f3139eb4a311267a}{\index{\-Msg\-Lock@{\-Msg\-Lock}!\-Insert@{\-Insert}}
+\index{\-Insert@{\-Insert}!MsgLock@{\-Msg\-Lock}}
+\subsubsection[{\-Insert}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Msg\-Lock\-::\-Insert} (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{queue\-Name, }
+\item[{int}]{msg\-Id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{da/d01/classMsgLock_a641f1a5b90f5eb59f3139eb4a311267a}
+
+
+insert the message to the lock list. 
+
+\-It will always return true 
+
+\-Definition at line 206 of file \-Msg\-Lock.\-cpp.
+
+
+
+\-References \-Release\-Lock().
+
+\hypertarget{classMsgLock_ae10ea239514a1e25b04e1cbff387f60b}{\index{\-Msg\-Lock@{\-Msg\-Lock}!\-Is\-Exist@{\-Is\-Exist}}
+\index{\-Is\-Exist@{\-Is\-Exist}!MsgLock@{\-Msg\-Lock}}
+\subsubsection[{\-Is\-Exist}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Msg\-Lock\-::\-Is\-Exist} (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{queue\-Name, }
+\item[{int}]{msg\-Id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{da/d01/classMsgLock_ae10ea239514a1e25b04e1cbff387f60b}
+
+
+\-Whether the giving msg id in the giving queue is already lock returns true if already lock. 
+
+
+
+\-Definition at line 189 of file \-Msg\-Lock.\-cpp.
+
+\hypertarget{classMsgLock_abefa80b2195e058a42e28496607c1781}{\index{\-Msg\-Lock@{\-Msg\-Lock}!\-Lock@{\-Lock}}
+\index{\-Lock@{\-Lock}!MsgLock@{\-Msg\-Lock}}
+\subsubsection[{\-Lock}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Msg\-Lock\-::\-Lock} (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{queue\-Name, }
+\item[{int}]{msg\-Id}
+\end{DoxyParamCaption}
+)}}\label{da/d01/classMsgLock_abefa80b2195e058a42e28496607c1781}
+
+
+lock the message returns true if successfully lock, false if the message is already locked by others 
+
+
+
+\-Definition at line 174 of file \-Msg\-Lock.\-cpp.
+
+\hypertarget{classMsgLock_aabe3da15ec94dbb5ec28cb1122d01f1f}{\index{\-Msg\-Lock@{\-Msg\-Lock}!\-Start@{\-Start}}
+\index{\-Start@{\-Start}!MsgLock@{\-Msg\-Lock}}
+\subsubsection[{\-Start}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Msg\-Lock\-::\-Start} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{da/d01/classMsgLock_aabe3da15ec94dbb5ec28cb1122d01f1f}
+
+
+start the event chain process. 
+
+this is for the lock time out handling 
+
+\-Definition at line 229 of file \-Msg\-Lock.\-cpp.
+
+\hypertarget{classMsgLock_aacf751266c7c5bd26e96950f56e59ab4}{\index{\-Msg\-Lock@{\-Msg\-Lock}!\-Stop@{\-Stop}}
+\index{\-Stop@{\-Stop}!MsgLock@{\-Msg\-Lock}}
+\subsubsection[{\-Stop}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Msg\-Lock\-::\-Stop} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{da/d01/classMsgLock_aacf751266c7c5bd26e96950f56e59ab4}
+
+
+stop the event chain process. 
+
+remember to call it on terminate and only once! 
+
+\-Definition at line 232 of file \-Msg\-Lock.\-cpp.
+
+
+
+\-Referenced by \-S\-Q\-S\-Master\-::$\sim$\-S\-Q\-S\-Master().
+
+\hypertarget{classMsgLock_ab13af89818d9c55ad8a2b1350f83c123}{\index{\-Msg\-Lock@{\-Msg\-Lock}!\-Un\-Lock@{\-Un\-Lock}}
+\index{\-Un\-Lock@{\-Un\-Lock}!MsgLock@{\-Msg\-Lock}}
+\subsubsection[{\-Un\-Lock}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Msg\-Lock\-::\-Un\-Lock} (
+\begin{DoxyParamCaption}
+\item[{std\-::string}]{queue\-Name, }
+\item[{int}]{msg\-Id}
+\end{DoxyParamCaption}
+)}}\label{da/d01/classMsgLock_ab13af89818d9c55ad8a2b1350f83c123}
+
+
+unlock the message this will always return true 
+
+
+
+\-Definition at line 185 of file \-Msg\-Lock.\-cpp.
+
+
+
+\subsection{\-Friends \-And \-Related \-Function \-Documentation}
+\hypertarget{classMsgLock_af2724aaff9e232ca798de9f3ec8f65c8}{\index{\-Msg\-Lock@{\-Msg\-Lock}!\-Release\-Lock@{\-Release\-Lock}}
+\index{\-Release\-Lock@{\-Release\-Lock}!MsgLock@{\-Msg\-Lock}}
+\subsubsection[{\-Release\-Lock}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Release\-Lock} (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{arg, }
+\item[{std\-::string}]{name, }
+\item[{int}]{id}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}friend\mbox{]}}}}\label{da/d01/classMsgLock_af2724aaff9e232ca798de9f3ec8f65c8}
+
+
+call back function to do with the event process\-: unlock the message and delete the event from the event list 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em arg} & the context environment, that's, the \-Msglock instance \\
+\hline
+{\em name} & the queue name \\
+\hline
+{\em id} & the message id \\
+\hline
+\end{DoxyParams}
+
+
+\-Definition at line 199 of file \-Msg\-Lock.\-cpp.
+
+
+
+\subsection{\-Member \-Data \-Documentation}
+\hypertarget{classMsgLock_a31f44a96cdf2cef27b8543f530231631}{\index{\-Msg\-Lock@{\-Msg\-Lock}!chain\-\_\-core@{chain\-\_\-core}}
+\index{chain\-\_\-core@{chain\-\_\-core}!MsgLock@{\-Msg\-Lock}}
+\subsubsection[{chain\-\_\-core}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Event\-Chain}$\ast$ {\bf \-Msg\-Lock\-::chain\-\_\-core}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{da/d01/classMsgLock_a31f44a96cdf2cef27b8543f530231631}
+
+
+\-Definition at line 151 of file \-Msg\-Lock.\-h.
+
+\hypertarget{classMsgLock_a39cad315b694113c3aa552ba84db9093}{\index{\-Msg\-Lock@{\-Msg\-Lock}!default\-Tmout@{default\-Tmout}}
+\index{default\-Tmout@{default\-Tmout}!MsgLock@{\-Msg\-Lock}}
+\subsubsection[{default\-Tmout}]{\setlength{\rightskip}{0pt plus 5cm}long {\bf \-Msg\-Lock\-::default\-Tmout}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{da/d01/classMsgLock_a39cad315b694113c3aa552ba84db9093}
+
+
+default time out for the message lock, 5s in default 
+
+
+
+\-Definition at line 159 of file \-Msg\-Lock.\-h.
+
+\hypertarget{classMsgLock_a15c1b0e57d86b2598e5b57b43094c4c6}{\index{\-Msg\-Lock@{\-Msg\-Lock}!m\-Datas@{m\-Datas}}
+\index{m\-Datas@{m\-Datas}!MsgLock@{\-Msg\-Lock}}
+\subsubsection[{m\-Datas}]{\setlength{\rightskip}{0pt plus 5cm}std\-::multimap$<$std\-::string,int$>$ {\bf \-Msg\-Lock\-::m\-Datas}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{da/d01/classMsgLock_a15c1b0e57d86b2598e5b57b43094c4c6}
+
+
+locked messages,i.\-e. 
+
+\{queue name\-: \{ id1,id2,id3\}\} 
+
+\-Definition at line 155 of file \-Msg\-Lock.\-h.
+
+\hypertarget{classMsgLock_a8d00c3f7af52fef41cc98c661e1df541}{\index{\-Msg\-Lock@{\-Msg\-Lock}!qlock@{qlock}}
+\index{qlock@{qlock}!MsgLock@{\-Msg\-Lock}}
+\subsubsection[{qlock}]{\setlength{\rightskip}{0pt plus 5cm}pthread\-\_\-mutex\-\_\-t {\bf \-Msg\-Lock\-::qlock}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{da/d01/classMsgLock_a8d00c3f7af52fef41cc98c661e1df541}
+
+
+\-Definition at line 161 of file \-Msg\-Lock.\-h.
+
+\hypertarget{classMsgLock_a94499ef81482492775a556e26ff6fe3f}{\index{\-Msg\-Lock@{\-Msg\-Lock}!qready@{qready}}
+\index{qready@{qready}!MsgLock@{\-Msg\-Lock}}
+\subsubsection[{qready}]{\setlength{\rightskip}{0pt plus 5cm}pthread\-\_\-cond\-\_\-t {\bf \-Msg\-Lock\-::qready}\hspace{0.3cm}{\ttfamily  \mbox{[}private\mbox{]}}}}\label{da/d01/classMsgLock_a94499ef81482492775a556e26ff6fe3f}
+
+
+\-Definition at line 160 of file \-Msg\-Lock.\-h.
+
+
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+src/\hyperlink{MsgLock_8h}{\-Msg\-Lock.\-h}\item 
+src/\hyperlink{MsgLock_8cpp}{\-Msg\-Lock.\-cpp}\end{DoxyCompactItemize}

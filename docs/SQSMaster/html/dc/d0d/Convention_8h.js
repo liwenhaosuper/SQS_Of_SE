@@ -1,0 +1,28 @@
+var Convention_8h =
+[
+    [ "CREATE_QUEUE", "dc/d0d/Convention_8h.html#adc1d9ec732e2b90dc4b825201bdf58ca", null ],
+    [ "DEL_QUEUE", "dc/d0d/Convention_8h.html#a9d2f3ddbc2ed1567324bc09ac63f8365", null ],
+    [ "DELETE_MSG", "dc/d0d/Convention_8h.html#a53ddae6ce9433e7e3243e4b2b042ea02", null ],
+    [ "EMPTY_PATH", "dc/d0d/Convention_8h.html#afa2ce2c723c13dc76832067599718db7", null ],
+    [ "GET_AVAILABLE_HOST", "dc/d0d/Convention_8h.html#ac5254192c606741ffea5f509e58fd3fe", null ],
+    [ "GET_MSG", "dc/d0d/Convention_8h.html#ab38976c5a0354a77f40204cbc40f72b4", null ],
+    [ "HEARTBEAT", "dc/d0d/Convention_8h.html#a89d4b6fa1eab82d4ceb201c3592a75c1", null ],
+    [ "JOIN_TEAM", "dc/d0d/Convention_8h.html#ac797d68d9f4a9f40d6ed9c4f1694dbe1", null ],
+    [ "LIST_QUEUES", "dc/d0d/Convention_8h.html#aa7fd01fdd6ac886c2daec2da0f7cb2b7", null ],
+    [ "LOG_SIZE", "dc/d0d/Convention_8h.html#a8fe30e137a34f40cae21efadb9f6c0b7", null ],
+    [ "masterIp_ForClient", "dc/d0d/Convention_8h.html#a71e05348b49518de386c4f9ce71d4460", null ],
+    [ "masterIP_ForDataNode", "dc/d0d/Convention_8h.html#a08771afcc7567862e9c7986838c79b19", null ],
+    [ "masterPort_ForClient", "dc/d0d/Convention_8h.html#a760fc5aa7c79d793c8bb27717d0fa390", null ],
+    [ "masterPort_ForDataNode", "dc/d0d/Convention_8h.html#a66637814f7566b32d1e5f130edcb2535", null ],
+    [ "MSG", "dc/d0d/Convention_8h.html#acbccba60dac98884dc208f29d544533a", null ],
+    [ "MSG_CONTENT", "dc/d0d/Convention_8h.html#abeb843cc08b65705ec0cefde0696b988", null ],
+    [ "MSG_ID", "dc/d0d/Convention_8h.html#a792929c00204a00e9731b091e95c90ce", null ],
+    [ "MSG_LENGTH", "dc/d0d/Convention_8h.html#a939896f36ee6ba81bc88b4ed4709762f", null ],
+    [ "NODE_NAME", "dc/d0d/Convention_8h.html#a004c151ed2ae054a858ddc89d9f6b0ea", null ],
+    [ "NODE_PORT", "dc/d0d/Convention_8h.html#aaa42bceac4a20349613b0bfac112bd03", null ],
+    [ "PUBLIC_NODE_NAME", "dc/d0d/Convention_8h.html#ad9fc9b69bc33c8b644f023fb0945ff3f", null ],
+    [ "PUBLIC_NODE_PORT", "dc/d0d/Convention_8h.html#ac7fbe6a60882e762f8bbc79872ed41a7", null ],
+    [ "PUT_MSG", "dc/d0d/Convention_8h.html#a0ae245189df75fbdb3ff9dc49d9feed4", null ],
+    [ "QUEUE_NAME", "dc/d0d/Convention_8h.html#afb2787ee4ffee2e63ff77af2860d4be9", null ],
+    [ "RECOVERY", "dc/d0d/Convention_8h.html#ad392178bccf781650dc8bd6eb3aaed27", null ]
+];
