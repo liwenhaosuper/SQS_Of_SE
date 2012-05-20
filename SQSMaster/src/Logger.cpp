@@ -9,13 +9,13 @@ using namespace std;
 
 Logger::Logger(const char *filename) : m_filename(filename)
 {
-	FILE *file = fopen(m_filename.c_str(), "w+");
+	FILE *file = fopen(m_filename.c_str(), "a+");
 	fclose(file);
 }
 
 Logger::Logger(const string &filename) : m_filename(filename)
 {
-	FILE *file = fopen(m_filename.c_str(), "w+");
+	FILE *file = fopen(m_filename.c_str(), "a+");
 	fclose(file);
 }
 
