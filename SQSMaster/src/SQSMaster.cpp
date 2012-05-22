@@ -51,14 +51,13 @@ void* RegularCheck(void* arg){
 	}
 	int cnt = 0;
 	while(true){
-		struct evhttp_request *rsp = instance->doRequest(node->getNodeNameFormaster(),node->getNodePortFormaster());
+		char *rsp = instance->doRequest(node->getNodeNameFormaster(),node->getNodePortFormaster());
 		if(rsp==NULL){
-			cout<<"Rsp is NULL..."<<endl;
-			cnt++;
-		}else if(rsp->response_code==0){
+			cout<<"Rsp is NULL or connection fail..."<<endl;
 			cnt++;
 		}else{
 			cnt = 0;
+			delete rsp;
 		}
 		if(cnt>5){
 			instance->CancelDataNode(*node);
@@ -71,48 +70,59 @@ void* RegularCheck(void* arg){
 			node->Recycle();
 		}
 		sleep(instance->cycle/1000);
+
 	}
 	return (void*)0;
 }
 
 void heartbeat_callback(struct evhttp_request *req, void *rsp){
-//	cout<<"heartbeat callback"<<":rsp body size:"<<req->body_size<<":rsp code line:"<<req->response_code_line<<":"<<
-//			"rsp header size:"<<req->headers_size<<endl;
-//	cout<<rsp<<endl;
 	/**
 	 * well, it takes me a long time to find you,bug!
 	 * so there is one question: if the pointer is modified by another thread,how could
 	 * the original thread get the newest value? seems using keyword 'volatile' doesn't work
 	 */
-	memcpy(rsp,req,sizeof(struct evhttp_request));
-	//rsp = req;
-//	cout<<rsp<<endl;
-//	cout<<":rsp body size:"<<((struct evhttp_request *)rsp)->body_size
-//			<<":rsp code line:"<<((struct evhttp_request *)rsp)->response_code_line
-//			<<":rsp header size:"<<((struct evhttp_request *)rsp)->headers_size<<endl;
+	//memcpy(rsp,req,sizeof(struct evhttp_request));
+	/**
+	 * remove bugs of previously exist
+	 */
+    RspParam* param = (RspParam*)rsp;
+    if(param==NULL){
+        return;
+    }
+    if(req==NULL||req->response_code==0){
+        param->rsp = NULL;
+    }else{
+        struct evbuffer *buf = evhttp_request_get_input_buffer(req);
+        size_t sz = evbuffer_get_length(buf);
+        if(sz<=0){
+            param->rsp = "";
+        }else{
+            param->rsp = new char[sz+1];
+            evbuffer_remove(buf,param->rsp,sz);
+        }
+    }
+    event_base_loopbreak(param->base);
 }
 
-struct evhttp_request* HeartBeat::doRequest(std::string dataNode,int port){
+char* HeartBeat::doRequest(std::string dataNode,int port){
 	struct event_base *base = event_base_new();
 	struct evhttp_connection *cn = evhttp_connection_base_new(
 	        base, NULL,
 	        dataNode.c_str(),
 	        port);
-	struct evhttp_request *rsp = NULL;
-	/* Allocate request structure */
-	if ((rsp = (struct evhttp_request *)malloc(sizeof(struct evhttp_request))) == NULL) {
-		cout<<"Error allocating rsp structure"<<endl;
-		return NULL;
-	}
-	//cout<<"original rsp:"<<rsp<<endl;
-	struct evhttp_request *req = evhttp_request_new(heartbeat_callback,rsp);
+	RspParam* param = (struct RspParam*)malloc(sizeof(struct RspParam));
+	param->base = base;param->rsp = NULL;
+	struct evhttp_request *req = evhttp_request_new(heartbeat_callback,param);
 	evhttp_make_request(cn,req,EVHTTP_REQ_GET,HEARTBEAT.c_str());
 	event_base_dispatch(base);
-//	cout<<"sent heart beat:"<<rsp<<endl;
-//	cout<<"rsp::::rsp body size:"<<((struct evhttp_request *)rsp)->body_size
-//			<<":rsp code line:"<<((struct evhttp_request *)rsp)->response_code_line
-//			<<":rsp header size:"<<((struct evhttp_request *)rsp)->headers_size<<endl;
-	return (struct evhttp_request *)rsp;
+	if(param->rsp==NULL){
+	    free(param);
+	    return NULL;
+	}
+	char* res = param->rsp;
+	param->rsp = NULL;
+	free(param);
+	return res;
 }
 
 void HeartBeat::AddDataNode(DataNode node){
@@ -169,10 +179,9 @@ void DataNodeCallBack(struct evhttp_request* req, void* arg){
 }
 
 void dispatchMsgCallBack(struct evhttp_request* req, void* arg){
-	//event_base_loopbreak((struct event_base*)arg);
-	//cout<<"dispatchMsgCallBack:Care about nothing!"<<endl;
+	event_base_loopbreak((struct event_base*)arg);
 }
-//FIXME and IMPORTANT: there is a bug. It will block for a long time sometimes
+
 void SQSMaster::dispatchMessage(std::string remoteNode,int remotePort,std::string request){
 	struct event_base *base = event_base_new();
 	struct evhttp_connection *cn = evhttp_connection_base_new(
