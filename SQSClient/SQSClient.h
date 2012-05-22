@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 
+#define DEBUG 1
 
 /*!
  *@brief Simple Queue Service Client Class
@@ -22,8 +23,11 @@ private:
     int dataNodePort;
     //! whether the data node is ready
     bool isDataNodeReady;
+#ifdef DEBUG
+public:
+#endif
     //! send http request
-    struct evhttp_request* doRequest(std::string dataNode,int port,std::string path);
+    char* doRequest(std::string dataNode,int port,std::string path);
     //! response call back function
     friend void response_callback(struct evhttp_request *req, void *rsp);
     //! get the data node host and port
@@ -42,7 +46,7 @@ public:
      *@return the vector containing all the queue names or
      *      null when fails to connect to data node
      */
-    std::vector<std::string> ListQueues();
+    std::vector<std::string>* ListQueues();
     /*!
      *@brief delete the queue via its queue name
      *@return true if successfully deleted otherwise false

@@ -10,33 +10,99 @@
 
 #include "SQSClient.h"
 
+#include <map>
+
 using namespace std;
 
+struct Param{
+    char* rsp;
+    struct event_base* base;
+};
+
 void response_callback(struct evhttp_request *req, void *rsp){
-    memcpy(rsp,req,sizeof(struct evhttp_request));
+    Param* param = (Param*)rsp;
+    if(param==NULL){
+        return;
+    }
+    if(req==NULL||req->response_code==0){
+        param->rsp = NULL;
+    }else{
+        struct evbuffer *buf = evhttp_request_get_input_buffer(req);
+        size_t sz = evbuffer_get_length(buf);
+        if(sz<=0){
+            param->rsp = "";
+        }else{
+            param->rsp = new char[sz+1];
+            evbuffer_remove(buf,param->rsp,sz);
+        }
+    }
+    event_base_loopbreak(param->base);
 }
 
-struct evhttp_request* SQSClient::doRequest(std::string dataNode,int port,std::string path){
-    struct event_base *base = event_base_new();
-    struct evhttp_connection *cn = evhttp_connection_base_new(
+
+char* SQSClient::doRequest(std::string dataNode,int port,std::string path){
+    struct event_base *base = event_base_new();//TODO: Should I delete you?
+    struct evhttp_connection *cn = evhttp_connection_base_new(//TODO: Should I delete you?
             base, NULL,
             dataNode.c_str(),
             port);
-    struct evhttp_request *rsp = NULL;
-    /* Allocate request structure */
-    if ((rsp = (struct evhttp_request *)malloc(sizeof(struct evhttp_request))) == NULL) {
-        cout<<"Error allocating rsp structure"<<endl;
-        return NULL;
-    }
-    struct evhttp_request *req = evhttp_request_new(response_callback,rsp);
+    Param* param = (struct Param*)malloc(sizeof(struct Param));
+    param->base = base;param->rsp = NULL;
+    struct evhttp_request *req = evhttp_request_new(response_callback,param);
     evhttp_make_request(cn,req,EVHTTP_REQ_GET,path.c_str());
     event_base_dispatch(base);
-    return rsp;
+    if(param->rsp==NULL){
+        free(param);
+        return NULL;
+    }
+    char* res = param->rsp;
+    param->rsp = NULL;
+    free(param);
+    return res;
 }
 
 
+
 bool SQSClient::getRemoteHost(){
-    return false;
+    char* rsp;
+    rsp = doRequest(this->masterName,this->masterPort,"/getavailablehost");
+    if(rsp==NULL){
+        cout<<"WOW!rsp is null..."<<endl;
+        return false;
+    }else{
+        cout<<rsp<<endl;
+        if(strcmp(rsp,"No Data Node available")==0){
+            return false;
+        }else{
+            //TODO: Parse the string
+            string container = rsp;
+            map<string,string> data;
+            int begin = 0,end=0;
+            while((end = container.find_first_of(":",begin))>=0){
+                string key = container.substr(begin,end-begin);
+                begin = end;
+                end = container.find_first_of(":",begin);
+                string value;
+                if(end<=0){
+                    value = container.substr(end);
+                }else{
+                    value = container.substr(begin,end-begin);
+                    begin = end;
+                }
+                data.insert(make_pair(key,value));
+            }
+            map<string,string>::iterator iter = data.find("nodeName");
+            if(iter!=data.end()){
+                this->dataNodeName = iter->first;
+                this->dataNodePort = atoi(iter->second.c_str());
+                this->isDataNodeReady = true;
+                return true;
+            }
+            return false;
+        }
+
+    }
+
 }
 
 /*!
@@ -45,7 +111,35 @@ bool SQSClient::getRemoteHost(){
  *@return true if successfully created, otherwise false
  */
 bool SQSClient::CreateQueue(std::string QueueName){
-    return false;
+    int cnt = 0;
+    while(!isDataNodeReady){
+        getRemoteHost();
+        if(isDataNodeReady){
+            break;
+        }
+        cnt++;
+        if(cnt>3){
+            return false;
+        }
+    }
+    char* rsp;
+    rsp = doRequest(this->dataNodeName,this->dataNodePort,"/createQueue?&queueName="+QueueName);
+    cnt = 0;
+    while(rsp==NULL||strcmp(rsp,"")==0){
+        cnt++;
+        if(cnt>3){
+            this->isDataNodeReady = false;
+            getRemoteHost();
+            if(this->isDataNodeReady){
+               cnt = 0;
+            }else{
+                return false;
+            }
+        }
+        rsp = doRequest(this->dataNodeName,this->dataNodePort,"/createQueue?&queueName="+QueueName);
+    }
+    //TODO: do more parsing
+    return true;
 }
 
 /*!
@@ -53,8 +147,37 @@ bool SQSClient::CreateQueue(std::string QueueName){
  *@return the vector containing all the queue names or
  *      null when fails to connect to data node
  */
-std::vector<std::string> SQSClient::ListQueues(){
-    std::vector<std::string> res;
+vector<string> *SQSClient::ListQueues(){
+    int cnt = 0;
+    while(!isDataNodeReady){
+        getRemoteHost();
+        if(isDataNodeReady){
+            break;
+        }
+        cnt++;
+        if(cnt>3){
+            return NULL;
+        }
+    }
+    char* rsp;
+    rsp = doRequest(this->dataNodeName,this->dataNodePort,"/listQueues");
+    cnt = 0;
+    while(rsp==NULL||strcmp(rsp,"")==0){
+        cnt++;
+        if(cnt>3){
+            this->isDataNodeReady = false;
+            getRemoteHost();
+            if(this->isDataNodeReady){
+               cnt = 0;
+            }else{
+                return NULL;
+            }
+        }
+        rsp = doRequest(this->dataNodeName,this->dataNodePort,"/listQueues");
+    }
+    vector<string>* res = new vector<string>;
+    //TODO: parse the results
+    //TO BE CONTINUED...
     return res;
 }
 
@@ -63,7 +186,35 @@ std::vector<std::string> SQSClient::ListQueues(){
  *@return true if successfully deleted otherwise false
  */
 bool SQSClient::DeleteQueue(std::string QueueName){
-    return false;
+    int cnt = 0;
+    while(!isDataNodeReady){
+        getRemoteHost();
+        if(isDataNodeReady){
+            break;
+        }
+        cnt++;
+        if(cnt>3){
+            return false;
+        }
+    }
+    char* rsp;
+    rsp = doRequest(this->dataNodeName,this->dataNodePort,"/deleteQueue?&queueName="+QueueName);
+    cnt = 0;
+    while(rsp==NULL||strcmp(rsp,"")==0){
+        cnt++;
+        if(cnt>3){
+            this->isDataNodeReady = false;
+            getRemoteHost();
+            if(this->isDataNodeReady){
+               cnt = 0;
+            }else{
+                return false;
+            }
+        }
+        rsp = doRequest(this->dataNodeName,this->dataNodePort,"/deleteQueue?&queueName="+QueueName);
+    }
+    //TODO: some more parsing
+    return true;
 }
 
 /*!
@@ -73,7 +224,35 @@ bool SQSClient::DeleteQueue(std::string QueueName){
  *@return true of successfully inserted otherwise false
  */
 bool SQSClient::SendMessage(std::string QueueName, std::string Message){
-    return false;
+    int cnt = 0;
+    while(!isDataNodeReady){
+        getRemoteHost();
+        if(isDataNodeReady){
+            break;
+        }
+        cnt++;
+        if(cnt>3){
+            return false;
+        }
+    }
+    char* rsp;
+    rsp = doRequest(this->dataNodeName,this->dataNodePort,"/putMessage?&queueName="+QueueName+"&message="+Message);
+    cnt = 0;
+    while(rsp==NULL||strcmp(rsp,"")==0){
+        cnt++;
+        if(cnt>3){
+            this->isDataNodeReady = false;
+            getRemoteHost();
+            if(this->isDataNodeReady){
+               cnt = 0;
+            }else{
+                return false;
+            }
+        }
+        rsp = doRequest(this->dataNodeName,this->dataNodePort,"/putMessage?&queueName="+QueueName+"&message="+Message);
+    }
+    //TODO: some more parsing
+    return true;
 }
 
 /*!
@@ -83,8 +262,60 @@ bool SQSClient::SendMessage(std::string QueueName, std::string Message){
  *@return the message if success, otherwise return ""
  */
 std::string SQSClient::ReceiveMessage(std::string QueueName, int &MessageID){
-    return "";
+    int cnt = 0;
+    while(!isDataNodeReady){
+        getRemoteHost();
+        if(isDataNodeReady){
+            break;
+        }
+        cnt++;
+        if(cnt>3){
+            return "";
+        }
+    }
+    char* rsp;
+    rsp = doRequest(this->dataNodeName,this->dataNodePort,"/getMessage?&queueName="+QueueName);
+    cnt = 0;
+    while(rsp==NULL||strcmp(rsp,"")==0){
+        cnt++;
+        if(cnt>3){
+            this->isDataNodeReady = false;
+            getRemoteHost();
+            if(this->isDataNodeReady){
+               cnt = 0;
+            }else{
+                return "";
+            }
+        }
+        rsp = doRequest(this->dataNodeName,this->dataNodePort,"/getMessage?&queueName="+QueueName);
+    }
+    string container = rsp;
+    map<string,string> data;
+    int begin = 0,end=0;
+    while((end = container.find_first_of(":",begin))>=0){
+        string key = container.substr(begin,end-begin);
+        begin = end;
+        end = container.find_first_of(":",begin);
+        string value;
+        if(end<=0){
+            value = container.substr(end);
+        }else{
+            value = container.substr(begin,end-begin);
+            begin = end;
+        }
+        data.insert(make_pair(key,value));
+    }
+    map<string,string>::iterator iter = data.find("mId");
+    if(iter!=data.end()){
+        MessageID = atoi(iter->second.c_str());
+    }
+    iter = data.find("message");
+    if(iter!=data.end()){
+       return iter->second;
+    }
 }
+
+
 
 /*!
  *@brief delete a message from a queue with a message id
@@ -93,5 +324,33 @@ std::string SQSClient::ReceiveMessage(std::string QueueName, int &MessageID){
  *@return true if success , otherwise false
  */
 bool SQSClient::DeleteMessage(std::string QueueName,int MessageID){
-    return false;
+    int cnt = 0;
+    while(!isDataNodeReady){
+        getRemoteHost();
+        if(isDataNodeReady){
+            break;
+        }
+        cnt++;
+        if(cnt>3){
+            return false;
+        }
+    }
+    char* rsp;
+    rsp = doRequest(this->dataNodeName,this->dataNodePort,"/deleteQueue?&queueName="+QueueName);
+    cnt = 0;
+    while(rsp==NULL||strcmp(rsp,"")==0){
+        cnt++;
+        if(cnt>3){
+            this->isDataNodeReady = false;
+            getRemoteHost();
+            if(this->isDataNodeReady){
+               cnt = 0;
+            }else{
+                return false;
+            }
+        }
+        rsp = doRequest(this->dataNodeName,this->dataNodePort,"/deleteQueue?&queueName="+QueueName);
+    }
+    //TODO: some more parsing
+    return true;
 }
