@@ -120,7 +120,9 @@ void callback(void* arg,string name="",int msgId=2){
 //}
 
 
-/* start service */
+/**
+ *  start service
+ */
 int main() {
 	SQSMaster* master = new SQSMaster(1200,1300,5,5000);
 	if(master->init()){

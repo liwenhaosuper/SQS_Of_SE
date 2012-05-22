@@ -1,4 +1,4 @@
-/*
+/**
  * Convention.h
  *
  *  Created on: May 15, 2012
@@ -15,14 +15,18 @@
 #include <stdio.h>
 
 using namespace std;
-  /*Convention for client handling*/
+  /**
+   * Convention for client handling
+   */
+
 string		 		masterIp_ForClient = "127.0.0.1";
 int 				masterPort_ForClient = 1200;
 string				masterIP_ForDataNode = "127.0.0.1";
 int					masterPort_ForDataNode = 1300;
 
-//Url path:
+//
 /**
+ * Url path:
  *    	DataNode to Master
  * localhost:1200/operaion?param=?&param2=?
  * recovery:
@@ -53,8 +57,8 @@ int					masterPort_ForDataNode = 1300;
 
 
 
-//url path
-const string				GET_AVAILABLE_HOST = "/getavailablehost"; /* A client should first call this url to get the available data node to connect*/
+///url path
+const string				GET_AVAILABLE_HOST = "/getavailablehost"; /// A client should first call this url to get the available data node to connect
 const string				CREATE_QUEUE = "/createQueue";
 const string				LIST_QUEUES = "/listQueues";
 const string				DEL_QUEUE = "/deleteQueue";
@@ -66,7 +70,7 @@ const string				RECOVERY = "/recovery";
 const string				JOIN_TEAM = "/join";
 const string				HEARTBEAT = "/heartbeat";
 
-//queue operation
+///queue operation
 
 const string				NODE_NAME = "nodeName";
 const string				NODE_PORT = "nodePort";

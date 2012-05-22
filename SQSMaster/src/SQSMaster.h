@@ -1,4 +1,4 @@
-/*
+/**
  * SQSMaster.h
  *
  *  Created on: May 15, 2012
@@ -17,38 +17,62 @@
 #include "Logger.h"
 
 /**
- * DataNode object
+ * @brief
+ * DataNode
  * A data node object has two public ports, one for client communication, one for master communication
  */
 class DataNode{
 private:
-	std::string nodeName_public; /* node name for client connection*/
-	int nodePort_public;   /*node port for client connection*/
-	std::string nodeName_formaster; /* node name for communication with the master*/
-	int nodePort_formaster; /* node port for communication with the master*/
-	long defaultTimeout;//default time out for the data node, in milliseconds
-	long startTime;   // the time it joins the data node list, in milliseconds
-	bool cancel;      //whether it has been cancel or not.
+	/**
+	 * node name for client connection
+	 */
+	std::string nodeName_public;
+	/**
+	 *  node port for client connection
+	 */
+	int nodePort_public;
+	/**
+	 * node name for communication with the master
+	 */
+	std::string nodeName_formaster;
+	/**
+	 * node port for communication with the master
+	 */
+	int nodePort_formaster;
+	/**
+	 * default time out for the data node, in milliseconds
+	 */
+	long defaultTimeout;
+	/**
+	 * the time it joins the data node list, in milliseconds
+	 */
+	long startTime;
+	/**
+	 * whether it has been cancel or not.
+	 */
+	bool cancel;
 public:
 	DataNode(std::string nm,int port,std::string masterNM,int masterPort,long timeout):cancel(false),
 		nodeName_public(nm),nodePort_public(port),nodeName_formaster(masterNM),nodePort_formaster(masterPort),defaultTimeout(timeout){}
 	/**
-	 * refresh the startTime to the current time stamp
+	 * @brief refresh the startTime to the current time stamp
 	 */
 	void Recycle();
-	/*
+	/**
+	 * @brief
 	 * tell whether this data node is still alive or not
 	 * A data node is alive only if it is not time out
 	 */
 	bool IsAlive();
 	/**
-	 * whether it has been canceled or not
+	 * @brief whether it has been canceled or not
 	 */
 	bool IsCancel(){return cancel;}
 	/**
-	 * cancel the data node
+	 * @brief cancel the data node
 	 */
 	void Cancel(){ cancel = true; }
+
 	DataNode(const DataNode& node){
 		this->defaultTimeout = node.defaultTimeout;
 		this->nodeName_formaster = node.nodeName_formaster;
@@ -79,13 +103,21 @@ public:
 };
 
 /**
+ * @brief
  * heart beat handling class with the data nodes
  */
 class HeartBeat{
 private:
-	long cycle;//the heart beat cycle in millisecond
-	std::vector<DataNode*> clients;// data node list
-	/*
+	/**
+	 * the heart beat cycle in millisecond
+	 */
+	long cycle;
+	/**
+	 * data node list
+	 */
+	std::vector<DataNode*> clients;
+	/**
+	 * @brief
 	 * send a simple http heart beat request to the giving data node and
 	 * return its response. return NULL if lack of memory
 	 * */
@@ -114,13 +146,13 @@ public:
 	 */
 	bool IsNodeAlive(DataNode node);
 	/**
-	 * do the regular check for a giving data node
+	 * @brief do the regular check for a giving data node
 	 * @param arg the Param object, containing the heart beat instance and the data node object to be processed
 	 */
 	friend void* RegularCheck(void* arg);
 };
 /**
- * helper class to transfer parameters
+ * @brief helper class to transfer parameters
  */
 class Param{
 public:
@@ -129,17 +161,38 @@ public:
 };
 
 /**
- * the main class for the master server
+ * @brief the main class for the master server
  */
 class SQSMaster{
 private:
-	int clientPort; /*port number for the client connection*/
-	int dataNodePort; /*port number for the data node connection*/
-	int connectionTimeout;/*default connection time out*/
-	MsgLock* pLock;   /*lock for message*/
-	std::vector<DataNode> mDataNodes; /*all available data nodes*/
-	Logger* logger;   /*logger for message processing*/
-	HeartBeat* pBeat;  /*Heart beat checker*/
+	/**
+	 * port number for the client connection
+	 */
+	int clientPort;
+	/**
+	 * port number for the data node connection
+	 */
+	int dataNodePort;
+	/**
+	 * default connection time out
+	 */
+	int connectionTimeout;
+	/**
+	 * lock for message
+	 */
+	MsgLock* pLock;
+	/**
+	 * all available data nodes
+	 */
+	std::vector<DataNode> mDataNodes;
+	/**
+	 *  logger for message processing
+	 */
+	Logger* logger;
+	/**
+	 * Heart beat checker
+	 */
+	HeartBeat* pBeat;
 public:
 	SQSMaster():clientPort(1200),dataNodePort(1300),connectionTimeout(6),pLock(new MsgLock(5000)),
 		logger(new Logger("SQS.log")),pBeat(new HeartBeat(3000)){}
@@ -147,11 +200,11 @@ public:
 		,pLock(new MsgLock(msgTimeout)),logger(new Logger("SQS.log")),pBeat(new HeartBeat(3000)){}
 
 	/**
-	 * dispatch the giving request to the remote node.
+	 * @brief dispatch the giving request to the remote node.
 	 * @param remoteNode the remote node name
 	 * @param remotePort the remote port
 	 * @param request the url path that containing all the datas, i.e. '/createQueue?queueName=queue1'
-	 * FIXME and IMPORTANT: there is a bug. It will block for a long time sometimes on some circumstances
+	 * @bug	there is a bug. It will block for a long time sometimes on some circumstances
 	 */
 	void dispatchMessage(std::string remoteNode,int remotePort,std::string request);
 
@@ -172,88 +225,98 @@ public:
 	 *you can call this method
 	 */
 	void start();
-	/*
+	/**
+	 * @brief
 	 * invoke when a request from data node received
 	 * The request url should be this kind:
 	 * 		http:hostName:hostPort/operation?param1=value1&param2=value2
 	 *
-	 *NOTE1: All the requests should contain its node name and node port which is used to
+	 *@warning All the requests should contain its node name and node port which is used to
 	 *communicate with the master, i.e.
 	 *		http:hostName:hostPort/operation?nodeName=value1&nodePort=value2.
 	 *
-	 *NODE2: The redirect message is the same with the log message
+	 *@warning The redirect message is the same with the log message
 	 *
-	 *1.
-	 *To create a queue, the uri should be:
+	 *@b 1
+	 *<b>  To create a queue, the uri should be:
 	 *		http:hostName:hostPort/createQueue?nodeName=value1&nodePort=value2&queueName=value3.
 	 *The log and redirect message will be: /createQueue?queueName=value1
 	 *If succeeds, the return message is "Create Queue Request Accepted!"
+	 *</b>
 	 *
-	 *2.
-	 *To delete a queue, the uri should be:
+	 *@b 2
+	 *<b>  To delete a queue, the uri should be:
 	 *		http:hostName:hostPort/deleteQueue?nodeName=value1&nodePort=value2&queueName=value3.
 	 *The log and redirect message will be: /deleteQueue?queueName=value1
 	 *If succeeds, the return message is "Delete Queue Request Accepted!"
+	 *</b>
 	 *
-	 *3.
-	 *To put a message, the url should be:
+	 *@b 3
+	 *<b>
+	 *  To put a message, the url should be:
 	 *		http:hostName:hostPort/putMessage?nodeName=value1&nodePort=value2&queueName=value3&message=value4&mId=value5.
 	 *The log and redirect message will be: /putMessage?queueName=value1&message=value2&mId=value3
 	 *If succeeds, the return message is "Put message Request Accepted!"
+	 *</b>
 	 *
-	 *4.
-	 *To delete a message, the url should be:
+	 *@b 4
+	 *<b>
+	 *  To delete a message, the url should be:
 	 *		http:hostName:hostPort/deleteMessage?nodeName=value1&nodePort=value2&queueName=value3&mId=value5.
 	 *The log and redirect message will be: /deleteMessage?queueName=value1&mId=value3
 	 *If succeeds, the return message is "Delete message Request Accepted!"
+	 *</b>
 	 *
-	 *
-	 *5.
-	 *To get a message, the url should be:
+	 *@b 5
+	 *<b>
+	 *  To get a message, the url should be:
 	 *		http:hostName:hostPort/getMessage?nodeName=value1&nodePort=value2&queueName=value3&mId=value5.
 	 *If succeeds, the return message is "Success", otherwise "Fail".
+	 *</b>
 	 *
-	 *
-	 *6.
+	 *@b 6
+	 *<b>
 	 *To get a recovery mode, the url should be:
 	 *		http:hostName:hostPort/recovery?nodeName=value1&nodePort=value2&logsize=val4.
 	 *If succeeds, the return message is the log messages.
+	 *</b>
 	 *
-	 *
-	 *7.
+	 *@b 7
+	 *<b>
 	 *To join it, the url should be:
 	 *		http:hostName:hostPort/join?nodeName=value1&nodePort=value2&publicNodeName=val3&publicNodePort=val4.
 	 *If succeeds, the return message is "Welcome to join us!".
-	 *
+	 *</b>
 	 *
 	 *
 	 * @param req the object containing all the necessary messages
 	 *
-	 * FIXME:
+	 *@bug
 	 * 	if adds "delete url_path;delete url_query;", it will tell me double free the memory.
 	 * 	So I do not free it. But who does this job?
 	 */
 	void onDataNodeRecv (struct evhttp_request *req);
 
-	/*
-	 * TODO: You can change the return messages!
+	/**
+	 *@todo You can change the return messages!
 	 *
+	 *@brief
 	 * invoke when a request from client received
-	 * if the request's path is '/getavailablehost', it will check the
+	 * if the request's path is <b>'/getavailablehost'</b>, it will check the
 	 * available data nodes and return one, i.e.
-	 *"
+	 *"<b>
 	 *nodeName: localhost
 	 *nodePort: 8080
-	 *"
+	 *</b>"
 	 *if no data nodes available, it will return a message:
-	 *"No Data Node available..."
+	 *<b>"No Data Node available..."</b>
 	 *
 	 *all the other request are  unrecognizable and will return a message:
-	 *"Unrecognized request......"
+	 *<b>"Unrecognized request......"</b>
 	 *
 	 * @param req the object containing all the necessary messages
 	 */
-	void onClientReqRecv (struct evhttp_request *req);/* invoke when a request from client recv */
+	void onClientReqRecv (struct evhttp_request *req);
 };
 
 
