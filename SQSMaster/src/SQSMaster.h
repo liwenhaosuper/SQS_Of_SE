@@ -119,9 +119,10 @@ private:
 	/**
 	 * @brief
 	 * send a simple http heart beat request to the giving data node and
-	 * return its response. return NULL if lack of memory
+	 * return its response. return NULL if fail.
+	 * @warning It is your responsibility to free the memory
 	 * */
-	struct evhttp_request *doRequest(std::string dataNode,int port);
+	char *doRequest(std::string dataNode,int port);
 public:
 	HeartBeat(long scheTime):cycle(scheTime){}
 	virtual ~HeartBeat(){
@@ -158,6 +159,14 @@ class Param{
 public:
 	HeartBeat* instance;
 	DataNode* node;
+};
+
+/**
+ * @brief helper structure for response call back
+ */
+struct RspParam{
+    char* rsp;
+    struct event_base* base;
 };
 
 /**
@@ -204,7 +213,6 @@ public:
 	 * @param remoteNode the remote node name
 	 * @param remotePort the remote port
 	 * @param request the url path that containing all the datas, i.e. '/createQueue?queueName=queue1'
-	 * @bug	there is a bug. It will block for a long time sometimes on some circumstances
 	 */
 	void dispatchMessage(std::string remoteNode,int remotePort,std::string request);
 
