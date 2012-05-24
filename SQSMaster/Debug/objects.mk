@@ -5,4 +5,3 @@
 USER_OBJS :=
 
 LIBS := -lpthread -levent -levent_core -levent_extra
-
