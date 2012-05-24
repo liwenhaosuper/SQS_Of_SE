@@ -12,6 +12,7 @@ public:
 	Database(const char *dbname = "datanode.db");
 	virtual ~Database();
 
+	bool init(std::string log){return true;/*init db using log*/}
 	bool createQueue(const std::string &queueName);
 	std::vector<std::string> listQueue();
 	bool deleteQueue(const std::string &queueName);

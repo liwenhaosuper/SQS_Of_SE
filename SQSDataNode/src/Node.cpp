@@ -8,8 +8,6 @@
 #include <sys/time.h>
 #include "Convention.h"
 #include <string.h>
-
-
 #include <cstdlib>
 using namespace std;
 
@@ -35,10 +33,10 @@ bool Node::init(){
 		fprintf(stderr,"ERROR:Unable to listen on %s:%d\n","0.0.0.0",master_port);
 		return false;
 	}
-	evhttp_set_gencb(httpd_client, ClientCallBackNode, this);
-	evhttp_set_gencb(httpd_master, MasterCallBack,this);
 	Recovery();
 	Join();
+	evhttp_set_gencb(httpd_client, ClientCallBackNode, this);
+	evhttp_set_gencb(httpd_master, MasterCallBack,this);
 	event_dispatch();
 	return true;
 }
@@ -46,6 +44,7 @@ bool Node::init(){
 void recovery_callback(struct evhttp_request *req, void *rsp){
 
 }
+
 void Node::dispatch(string request){
 	struct event_base *base = event_base_new();
 	struct evhttp_connection *cn = evhttp_connection_base_new(
@@ -76,16 +75,12 @@ bool Node::Recovery(){
 	struct evhttp_request *req = evhttp_request_new(recovery_callback,rsp);
 	evhttp_make_request(cn,req,EVHTTP_REQ_GET,RECOVERY.c_str());
 	event_base_dispatch(base);
-//	cout<<"sent heart beat:"<<rsp<<endl;
-//	cout<<"rsp::::rsp body size:"<<((struct evhttp_request *)rsp)->body_size
-//			<<":rsp code line:"<<((struct evhttp_request *)rsp)->response_code_line
-//			<<":rsp header size:"<<((struct evhttp_request *)rsp)->headers_size<<endl;
-	return true;
-}
-bool Node::Join(){
 	return true;
 }
 
+bool Node::Join(){
+	//master join the node automatically??
+}
 void Node::onMasterRecv(struct evhttp_request *req){
 	cout<<"Receive msg from master.path:"<<req->uri<<endl;
     struct evbuffer *buf;
@@ -135,7 +130,7 @@ void Node::onClientRecv(struct evhttp_request *req){
 			evbuffer_free(buf);
 			return;
 		}
-		const char* content = db->getMessage(queueName,msgID).c_str();
+		const char* content = "DEFAULT";//db->getMessage(&(string)queueName,atoi(msgID),true).c_str();
 		if(content!=NULL){
 			string command = GET_MSG;
 			command +="?"+QUEUE_NAME+"="+queueName;
@@ -162,8 +157,59 @@ void Node::onClientRecv(struct evhttp_request *req){
 			return;
 		}
 		string msg = evhttp_find_header(url_parameters,MSG.c_str());
-		if(db->putMessage(msg)){
+		int msg_id;
+		if((msg_id=db->putMessage(queueName,msg))){
 			string command = PUT_MSG;
+			command +="?"+QUEUE_NAME+"="+queueName;
+			command +="&"+MSG+"="+msg;
+			char* msgId;
+			sprintf(msgId,"%d",msg_id);
+			command +="&"+MSG_ID+"="+*msgId;
+			logger->addLog(command);
+			evbuffer_add_printf(buf, "%s", msg_id);
+		}else{
+			evbuffer_add_printf(buf, "%s", "Fail");
+		}
+		evhttp_send_reply(req, HTTP_OK, "OK", buf);
+		delete url_parameters;
+		delete queueName;
+		return;
+	}else if(strcmp(url_path,CREATE_QUEUE.c_str())==0){
+		//create queue
+		const char* queueName = evhttp_find_header(url_parameters,QUEUE_NAME.c_str());
+		if(queueName==NULL){
+			evbuffer_add_printf(buf, "%s", "The request url should be this kind:http:hostName:hostPort/getMessage?nodeName=value1&nodePort=value2&queueName=value3&mId=val5");
+			evhttp_send_reply(req, HTTP_OK, "OK", buf);
+			delete url_parameters;
+			delete queueName;
+			evbuffer_free(buf);
+			return;
+		}
+		if(db->createQueue(queueName)){
+			string command = CREATE_QUEUE;
+			command +="?"+QUEUE_NAME+"="+queueName;
+			logger->addLog(command);
+			evbuffer_add_printf(buf, "%s", "Succeed");
+		}else{
+			evbuffer_add_printf(buf, "%s", "Fail");
+		}
+		evhttp_send_reply(req, HTTP_OK, "OK", buf);
+		delete url_parameters;
+		delete queueName;
+		return;
+	}else if(strcmp(url_path,DEL_QUEUE.c_str())==0){
+		//delete queue
+		const char* queueName = evhttp_find_header(url_parameters,QUEUE_NAME.c_str());
+		if(queueName==NULL){
+			evbuffer_add_printf(buf, "%s", "The request url should be this kind:http:hostName:hostPort/getMessage?nodeName=value1&nodePort=value2&queueName=value3&mId=val5");
+			evhttp_send_reply(req, HTTP_OK, "OK", buf);
+			delete url_parameters;
+			delete queueName;
+			evbuffer_free(buf);
+			return;
+		}
+		if(db->deleteQueue(queueName)){
+			string command = DEL_QUEUE;
 			command +="?"+QUEUE_NAME+"="+queueName;
 			logger->addLog(command);
 			evbuffer_add_printf(buf, "%s", "Succeed");

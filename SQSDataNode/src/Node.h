@@ -6,7 +6,7 @@
 #include"evhttp.h"
 #include<string>
 #include"Logger.h"
-#include"DataBase.h"
+#include"Database.h"
 
 using namespace std;
 class Node{
@@ -40,7 +40,7 @@ private:
 	int master_port;//port communicate with master
 	int client_port;//port for client
 	Logger* logger;  //logger to operate log
-	DataBase* db;
+	Database* db;
 };
 
 #endif
