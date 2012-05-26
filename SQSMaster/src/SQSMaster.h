@@ -128,7 +128,7 @@ private:
 public:
 	HeartBeat(long scheTime):cycle(scheTime){}
 	virtual ~HeartBeat(){
-		for(vector<DataNode*>::iterator iter = clients.begin();iter!=clients.end();iter++){
+		for(std::vector<DataNode*>::iterator iter = clients.begin();iter!=clients.end();iter++){
 			DataNode* node = *iter;
 			delete node;
 			*iter=NULL;

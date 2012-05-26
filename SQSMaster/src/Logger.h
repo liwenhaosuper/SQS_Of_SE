@@ -4,13 +4,11 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 class Logger
 {
 public:
 	Logger(const char *filename);
-	Logger(const string &filename);
+	Logger(const std::string &filename);
 	virtual ~Logger();
 
 	/**
@@ -20,7 +18,7 @@ public:
 	 * 
 	 * @return true if success, false otherwise
 	 */
-	bool addLog(const string &operation);
+	bool addLog(const std::string &operation);
 
 	/**
 	 * @return the number of recorf in the log file.
@@ -30,10 +28,10 @@ public:
 	/**
 	 * @return a vector of the last @p n records.
 	 */
-	vector<string> tailList(int n);
+	std::vector<std::string> tailList(int n);
 
 private:
-	string m_filename;
+	std::string m_filename;
 
 	Logger(const Logger &other);
 };

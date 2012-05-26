@@ -7,6 +7,7 @@ set(DataNode_SRCS
    main.cpp
    Logger.cpp
    Database.cpp
+   DataNode.cpp
 )
 
 add_executable(SQSDataNode ${DataNode_SRCS})

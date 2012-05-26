@@ -12,17 +12,16 @@ public:
 	Database(const char *dbname = "datanode.db");
 	virtual ~Database();
 
-	bool init(std::string log){return true;/*init db using log*/}
-	bool createQueue(const std::string &queueName);
-	std::vector<std::string> listQueue();
-	bool deleteQueue(const std::string &queueName);
-	int putMessage(const std::string& queueName, const std::string& message, int messageID = -1);
-	std::string getMessage(const std::string &queueName, int messageID, bool &ok);
-	bool deleteMessage(const std::string &queueName, int messageID);
+	bool createQueue(const char *queueName);
+	std::vector<std::string> listQueues();
+	bool deleteQueue(const char *queueName);
+	int putMessage(const char *queueName, const char *message, int messageID = -1);
+	std::string getMessage(const char *queueName, int messageID, bool &ok);
+	bool deleteMessage(const char *queueName, int messageID);
 
 private:
 	Database(const Database& other);
-	bool hasMessage(const std::string &queueName, int messageID);
+	bool hasMessage(const char *queueName, int messageID);
 
 	std::string m_dbname;
 	sqlite3 *conn;

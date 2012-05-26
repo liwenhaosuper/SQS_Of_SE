@@ -2,6 +2,7 @@
 
 #include <cstdlib>
 #include <cstdio>
+#include <cstring>
 #include <string>
 #include <vector>
 
@@ -55,6 +56,11 @@ vector<string> Logger::tailList(int n)
 	ssize_t read;
 
 	while ((read = getline(&line, &len, pipe)) != -1) {
+		// remove the '\n' at the end of this string
+		int pos = strlen(line) - 1;
+		if (line[pos] == '\n')
+			line[pos] = '\0';
+
 		resultVec.push_back(line);
 	}
 	free(line);

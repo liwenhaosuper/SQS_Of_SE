@@ -1,0 +1,124 @@
+There are 4 kinds of communication could happen in our SQS system:
+  1. Client to Master (get the available datanode)
+  2. Client to DataNode (actual operation)
+  3. DataNode to Master (datanode tells master what he does)
+  4. Master to DataNode (master notices other datanodes to redo the operaion to do backup)
+
+The common request url is: http://host:port/operaion?param=?&param2=?...
+
+Client to Master:
+  * Get Available Host
+    http://master:publicPort/getavailablehost
+    RETURN:
+      1. "nodeName: localhost\r\n
+          nodePort: 8080"
+      2. "No Data Node available..."
+      3. "Unrecognized request......"
+
+Client to DataNode:
+  * Create Queue
+    http://datanode:publicPort/createQueue?queueName=%s
+    RETURN:
+      1. "Create queue successfully"
+      2. "Create queue fail"
+      3. "Unrecognized request"
+
+  * List Queues
+    http://datanode:publicPort/listQueues
+    RETURN:
+      1. "queue1\r\n
+          queue2" <-- queues' name separated by \r\n
+
+  * Delete Queue
+    http://datanode:publicPort/deleteQueue?queueName=%s
+    RETURN:
+      1. "Delete queue successfully"
+      2. "Delete queue fail"
+      3. "Unrecognized request"
+
+  * Put Message
+    http://datanode:publicPort/putMessage?queueName=%s&message=%s
+    RETURN:
+      1. "123" <-- just return the Message ID
+      2. "Put message fail"
+      3. "Unrecognized request"
+
+  * Delete Message
+    http://datanode:publicPort/deleteMessage?queueName=%s&mId=%s
+    RETURN:
+      1. "Delete message successfully"
+      2. "Delete message fail"
+      3. "Unrecognized request"
+
+  * Get Message
+    http://datanode:publicPort/getMessage?queueName=%s&mId=%s
+    RETURN:
+      1. "blahblah" <-- just return the Message
+      2. "Get message fail"
+      3. "Unrecognized request"
+
+DataNode to Master:
+  * Recovery
+    http://master:forDatanodePort/recovery?nodeName=v1&nodePort=v2&logsize=v3
+    RETURN:
+      1. "(log messages)"
+
+  * Join
+    http://master:forDatanodePort/join?nodeName=v1&nodePort=v2&publicNodeName=v3&publicNodePort=v4
+    RETURN:
+      1. "Welcome to join us!"
+
+  * Create Queue
+    http://master:forDatanodePort/createQueue?nodeName=v1&nodePort=v2&queueName=v3
+    RETURN:
+      1. "Create Queue Request Accepted!"
+
+  * Delete Queue
+    http://master:forDatanodePort/deleteQueue?nodeName=v1&nodePort=v2&queueName=v3
+    RETURN:
+      1. "Delete Queue Request Accepted!"
+
+  * Put Message
+    http://master:forDatanodePort/putMessage?nodeName=v1&nodePort=v2&queueName=v3&message=v4&mId=v5
+    RETURN:
+      1. "Put message Request Accepted!"
+
+  * Get Message
+    http://master:forDatanodePort/getMessage?nodeName=v1&nodePort=v2&queueName=v3&mId=v4.
+    RETURN:
+      1. "Success"
+      2. "Fail"
+
+  * Delete Message
+    http://master:forDatanodePort/deleteMessage?nodeName=v1&nodePort=v2&queueName=v3&mId=v4
+    RETURN:
+      1. "Delete Message Request Accepted!"
+
+Master to DataNode:
+  * Create Queue
+    http://datanode:forMasterNode/createQueue?queueName=v1
+    RETURN:
+      1. "Create queue successfully"
+      2. "Create queue fail"
+      3. "Unrecognized request"
+
+  * Delete Queue
+    http://datanode:forMasterNode/deleteQueue?queueName=v1
+    RETURN:
+      1. "Delete queue successfully"
+      2. "Delete queue fail"
+      3. "Unrecognized request"
+
+  * Put Message
+    http://datanode:forMasterNode/putMessage?queueName=v1&message=v2&mId=v3
+    RETURN:
+      1. "Put message successfully"
+      2. "Put message fail"
+      3. "Unrecognized request"
+
+  * Delete Message
+    http://datanode:forMasterNode/deleteMessage?queueName=v1&mId=v2
+    RETURN:
+      1. "Delete message successfully"
+      2. "Delete message fail"
+      3. "Unrecognized request"

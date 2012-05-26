@@ -26,18 +26,18 @@ Database::~Database()
 	}
 }
 
-bool Database::createQueue(const string &queueName)
+bool Database::createQueue(const char *queueName)
 {
 	char *err_msg = NULL;
 	char sql[128];
-	sprintf(sql, "CREATE TABLE [%s] ([id] INTEGER PRIMARY KEY AUTOINCREMENT, [message] TEXT);", queueName.c_str());
+	sprintf(sql, "CREATE TABLE [%s] ([id] INTEGER PRIMARY KEY AUTOINCREMENT, [message] TEXT);", queueName);
 	if (sqlite3_exec(conn, sql, 0, 0, &err_msg) != SQLITE_OK)
 		return false;
 	else
 		return true;
 }
 
-vector<string> Database::listQueue()
+vector<string> Database::listQueues()
 {
 	char *err_msg = NULL;
 	vector<string> result;
@@ -51,38 +51,44 @@ vector<string> Database::listQueue()
 	}
 }
 
-bool Database::deleteQueue(const string &queueName)
+bool Database::deleteQueue(const char *queueName)
 {
 	char *err_msg = NULL;
 	char sql[128];
-	sprintf(sql, "DROP TABLE [%s];", queueName.c_str());
+	sprintf(sql, "DROP TABLE [%s];", queueName);
 	if (sqlite3_exec(conn, sql, 0, 0, &err_msg) != SQLITE_OK)
 		return false;
 	else
 		return true;
 }
 
-int Database::putMessage(const string &queueName, const string &message, int messageID)
+int Database::putMessage(const char *queueName, const char *message, int messageID)
 {
 	char *err_msg = NULL;
 	char sql[128];
 	if (messageID == -1)
-		sprintf(sql, "INSERT INTO %s values(NULL, '%s');", queueName.c_str(), message.c_str());
+		sprintf(sql, "INSERT INTO %s values(NULL, '%s');", queueName, message);
 	else
-		sprintf(sql, "INSERT INTO %s values(%d, '%s');", queueName.c_str(), messageID, message.c_str());
+		sprintf(sql, "INSERT INTO %s values(%d, '%s');", queueName, messageID, message);
 	if (sqlite3_exec(conn, sql, 0, 0, &err_msg) != SQLITE_OK)
 		return -1;
 	else
 		return sqlite3_last_insert_rowid(conn);
 }
 
-string Database::getMessage(const string &queueName, int messageID, bool &ok)
+string Database::getMessage(const char *queueName, int messageID, bool &ok)
 {
+	if (!hasMessage(queueName, messageID)) {
+		ok = false;
+		string error;
+		return error;
+	}
+
 	char *err_msg = NULL;
 	string result;
 
 	char sql[128];
-	sprintf(sql, "SELECT * FROM %s WHERE id=%d;", queueName.c_str(), messageID);
+	sprintf(sql, "SELECT * FROM %s WHERE id=%d;", queueName, messageID);
 	if (sqlite3_exec(conn, sql, &getMessageCallback, &result, &err_msg) != SQLITE_OK) {
 		ok = false;
 		string error;
@@ -93,14 +99,14 @@ string Database::getMessage(const string &queueName, int messageID, bool &ok)
 	}
 }
 
-bool Database::deleteMessage(const string &queueName, int messageID)
+bool Database::deleteMessage(const char *queueName, int messageID)
 {
 	if (!hasMessage(queueName, messageID))
 		return false;
 
 	char *err_msg = NULL;
 	char sql[128];
-	sprintf(sql, "DELETE FROM [%s] WHERE id=%d;", queueName.c_str(), messageID);
+	sprintf(sql, "DELETE FROM [%s] WHERE id=%d;", queueName, messageID);
 	if (sqlite3_exec(conn, sql, 0, 0, &err_msg) != SQLITE_OK)
 		return false;
 	else
@@ -116,13 +122,13 @@ int hasMessageCallback(void *data, int n_columns, char **col_values, char **col_
 	return 0;
 }
 
-bool Database::hasMessage(const std::string &queueName, int messageID)
+bool Database::hasMessage(const char *queueName, int messageID)
 {
 	char *err_msg = NULL;
 	bool result;
 
 	char sql[128];
-	sprintf(sql, "SELECT * FROM %s WHERE id=%d;", queueName.c_str(), messageID);
+	sprintf(sql, "SELECT * FROM %s WHERE id=%d;", queueName, messageID);
 	if (sqlite3_exec(conn, sql, &hasMessageCallback, &result, &err_msg) != SQLITE_OK) {
 		return result;
 	} else {
@@ -146,7 +152,7 @@ int getMessageCallback(void *data, int n_columns, char **col_values, char **col_
 {
 	string *message = (string *)data;
 
-	*message = col_values[0];
+	*message = col_values[1];
 
 	return 0;
 }

@@ -183,6 +183,8 @@ void dispatchMsgCallBack(struct evhttp_request* req, void* arg){
 }
 
 void SQSMaster::dispatchMessage(std::string remoteNode,int remotePort,std::string request){
+	cout << "request: " << request << endl;
+	cout << strcmp("/createQueue?queueName=value3\r\n", request.c_str()) << endl;
 	struct event_base *base = event_base_new();
 	struct evhttp_connection *cn = evhttp_connection_base_new(
 			base, NULL,

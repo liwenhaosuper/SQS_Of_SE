@@ -39,17 +39,17 @@ int					masterPort_ForDataNode = 1300;
  * localhost:1300/deleteMessage?nodeName=%s&nodePort=%s&nodeNameMaster=%s&nodePortMaster=%s&queueName=%s&messageId=%s
  *
  *
- *		Client to DataNode
+ *		Client to master
  *put message
- *localhost:1200/putMessage?queueName=%s&message=%s
+ *localhost:1300/putMessage?queueName=%s&message=%s
  *delete message
- *localhost:1200/deleteMessage?queueName=%s&messageId=%s
+ *localhost:1300/deleteMessage?queueName=%s&messageId=%s
  *get message
- *localhost:1200/getMessage?queueName=%s&messageId=%s
+ *localhost:1300/deleteMessage?queueName=%s&messageId=%s
  *create queue:
- *localhost:1200/createQueue?queueName=%s
+ *localhost:1300/deleteMessage?queueName=%s
  *delete queue:
- *localhost:1200/deleteQueue?queueName=%s
+ *localhost:1300/deleteMessage?queueName=%s
  *
  *
  */
