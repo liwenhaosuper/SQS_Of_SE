@@ -1,0 +1,2 @@
+/createQueue?queueName=hi
+/deleteQueue?queueName=queue
