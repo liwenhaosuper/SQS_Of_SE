@@ -24,6 +24,10 @@ int main(int argc, char *argv[])
 	if (!dataNode->start()) {
 		cerr << "Fail to start service. Bye" << endl;
 	}
+	cout << "recovery" << endl;
+	dataNode->recovery();
+	cout << "join" << endl;
+	dataNode->join();
 	return 0;
 }
 
