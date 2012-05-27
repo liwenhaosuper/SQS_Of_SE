@@ -1,28 +1,98 @@
-#include <iostream>
 #include <cstdlib>
 #include <cstdio>
+#include <cstring>
+#include <getopt.h>
 #include "DataNode.h"
 
-using namespace std;
+static struct option long_options[] = {
+	{"masterName",     required_argument, 0, 0},
+	{"masterPort",     required_argument, 0, 0},
+	{"nodeName",       required_argument, 0, 0},
+	{"nodePort",       required_argument, 0, 0},
+	{"nodeNameMaster", required_argument, 0, 0},
+	{"nodePortMaster", required_argument, 0, 0},
+	{"timeout",        required_argument, 0, 0},
+	{0,                0,                 0, 0}
+};
+
+void showUsage()
+{
+	const char *b = "-------------------------------------------------------------------------------\n"
+			"--masterName     <name>  master node's name\n"
+			"--masterPort     <port>  master node's port\n"
+			"--nodeName       <name>  the node's name for client\n"
+			"--nodePort       <port>  the node's port for client\n"
+			"--nodeNameMaster <name>  the node's name for master\n"
+			"--nodePortMaster <port>  the node's port for master\n"
+			"--timeout        <num>   keep-alive timeout for an http request (default: 60)\n"
+			"-h                       print this help and exit\n"
+			"-------------------------------------------------------------------------------\n";
+	printf("%s", b);
+}
 
 int main(int argc, char *argv[])
 {
-	if (argc != 3) {
-		return -1;
+	char name[65];
+	gethostname(name, sizeof(name));
+	const char *masterName = name;
+	int masterPort = 1300;
+	const char *nodeNamePublic = name;
+	int portPublic = 1200;
+	const char *nodeNameMaster = name;
+	int portMaster = 1300;
+	int timeout = 60;
+
+	int c;
+
+	while (1) {
+		int option_index = 0;
+		c = getopt_long(argc, argv, "h", long_options, &option_index);
+
+		if (c == -1)
+			break;
+
+		switch (c) {
+		case 0:
+			switch (option_index) {
+			case 0:
+				masterName = optarg;
+				break;
+			case 1:
+				masterPort = atoi(optarg);
+				break;
+			case 2:
+				nodeNamePublic = optarg;
+				break;
+			case 3:
+				portPublic = atoi(optarg);
+				break;
+			case 4:
+				nodeNameMaster = optarg;
+				break;
+			case 5:
+				portMaster = atoi(optarg);
+				break;
+			case 6:
+				timeout = atoi(optarg);
+				break;
+			default:
+				break;
+			}
+			break;
+		case 'h':
+		default:
+			showUsage();
+			exit(1);
+			break;
+		}
 	}
 
-	const char *masterName = "localhost";
-	const int masterPort = 1300;
-	const char *nodeNamePublic = "localhost";
-	const int portPublic = atoi(argv[1]);
-	const char *nodeNameMaster = "localhost";
-	const int portMaster = atoi(argv[2]);
-	const int timeout = 5;
 	DataNode *dataNode = new DataNode(masterName, masterPort, nodeNamePublic, portPublic,
 					  nodeNameMaster, portMaster, timeout);
 	printf("will listen on %d for public and on %d for master.\n", portPublic, portMaster);
 	if (!dataNode->start()) {
-		cerr << "Fail to start service. Bye" << endl;
+		fprintf(stderr, "Fail to start service. Bye\n");
+		return 1;
 	}
 	cout << "recovery" << endl;
 	dataNode->recovery();

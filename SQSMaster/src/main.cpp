@@ -7,6 +7,7 @@
 //============================================================================
 
 #include <iostream>
+#include <getopt.h>
 #include <err.h>
 #include "event.h"
 #include "evhttp.h"
@@ -119,12 +120,71 @@ void callback(void* arg,string name="",int msgId=2){
 //	return 0;
 //}
 
+static struct option long_options[] = {
+	{"clientPort",     required_argument, 0, 0},
+	{"datanodePort",   required_argument, 0, 0},
+	{"timeout",        required_argument, 0, 0},
+	{"msgTimeout",     required_argument, 0, 0},
+	{0,                0,                 0, 0}
+};
+
+void showUsage()
+{
+	const char *b = "-------------------------------------------------------------------------------\n"
+			"--clientPort     <port>  port for client\n"
+			"--datanodePort   <port>  port for datanode\n"
+			"--timeout        <num>   keep-alive timeout for an http request (default: 6)\n"
+			"--msgTimeout     <num>   keep-alive timeout for an http request (default: 5000)\n"
+			"-h                       print this help and exit\n"
+			"-------------------------------------------------------------------------------\n";
+	printf("%s", b);
+}
 
 /**
  *  start service
  */
-int main() {
-	SQSMaster* master = new SQSMaster(1200,1300,5,5000);
+int main(int argc, char *argv[]) {
+	int portPublic = 1200;
+	int portDatanode = 1300;
+	int timeout = 6;
+	int msgTimeout = 5000;
+
+	int c;
+
+	while (1) {
+		int option_index = 0;
+		c = getopt_long(argc, argv, "h", long_options, &option_index);
+
+		if (c == -1)
+			break;
+
+		switch (c) {
+		case 0:
+			switch (option_index) {
+			case 0:
+				portPublic = atoi(optarg);
+				break;
+			case 1:
+				portDatanode = atoi(optarg);
+				break;
+			case 2:
+				timeout = atoi(optarg);
+				break;
+			case 3:
+				msgTimeout = atoi(optarg);
+				break;
+			default:
+				break;
+			}
+			break;
+		case 'h':
+		default:
+			showUsage();
+			exit(1);
+			break;
+		}
+	}
+	SQSMaster* master = new SQSMaster(portPublic,portDatanode,timeout,msgTimeout);
 	if(master->init()){
 		cout << "<<<<<<<<<SQSMaster is started>>>>>>>>>>" << endl;
 		master->start();

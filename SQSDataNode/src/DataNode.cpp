@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
+#include <pthread.h>
 
 #include "Convention.h"
 
@@ -43,6 +44,16 @@ void dispatchMsgCallBack(struct evhttp_request *req, void *arg)
 	event_base_loopbreak((struct event_base *)arg);
 }
 
+void* recover_and_join(void *ptr)
+{
+	DataNode *node = (DataNode *)ptr;
+	printf("start recovery\n");
+	node->recovery();
+	printf("start join\n");
+	node->join();
+	return (void *)0;
+}
+
 void DataNode::dispatchMessage(const char *remoteNode, int remotePort, const char *request)
 {
 	struct event_base *base = event_base_new();
@@ -74,6 +85,11 @@ bool DataNode::start()
 	evhttp_set_timeout(httpd_master, m_timeout);
 	evhttp_set_gencb(httpd_client, ClientCallBack, this);
 	evhttp_set_gencb(httpd_master, MasterCallBack, this);
+
+	// create a new thread to do recovery work
+	pthread_t pid;
+	pthread_create(&pid, NULL, recover_and_join, this);
+
 	event_dispatch();
 	return true;
 }
@@ -97,7 +113,7 @@ void DataNode::join()
 	sprintf(m_portMasterStr, "%d", m_portMaster);
 	char m_portPublicStr[16];
 	sprintf(m_portPublicStr, "%d", m_portPublic);
-	string command = RECOVERY;
+	string command = JOIN_TEAM;
 	command += "?" + NODE_NAME + "=" + m_nodeNameMaster
 		    + "&" + NODE_PORT + "=" + m_portMasterStr
 		    + "&" + PUBLIC_NODE_NAME + "=" + m_nodeNamePublic

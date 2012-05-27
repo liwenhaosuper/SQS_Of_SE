@@ -656,13 +656,14 @@ void* startCallback(void* instance){
 
 struct LockCheckParam{
 	SyncWorker* worker;
-	string id;
+	char *id;
 };
 
 void* lockCheckCallback(void* instance){
 	LockCheckParam* param = (LockCheckParam*)instance;
 	sleep(10);
 	param->worker->DecrementLock(param->id);
+// 	free(param);
 	return (void*)0;
 }
 
@@ -713,9 +714,16 @@ void SyncWorker::IncrementLock(string id){
 	locksVec.push_back(id);
 	pthread_mutex_unlock(&qlock);
 
-	struct LockCheckParam param= {this,id};
+	struct LockCheckParam *param = (struct LockCheckParam *)malloc(sizeof(struct LockCheckParam));
+	param->worker = this;
+	int idSize = id.size() + 1;
+	char *idStr = (char *)malloc(idSize);
+	strncpy(idStr, id.c_str(), idSize);
+	idStr[idSize] = '\0';
+	param->id = idStr;
+
 	pthread_t pid;
-	pthread_create(&pid,NULL,lockCheckCallback,&param);
+	pthread_create(&pid,NULL,lockCheckCallback,(void *)param);
 
 }
 void SyncWorker::Run(){
