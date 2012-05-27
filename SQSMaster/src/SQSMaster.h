@@ -16,6 +16,8 @@
 #include "MsgLock.h"
 #include "Logger.h"
 
+#include <deque>
+
 /**
  * @brief
  * DataNode
@@ -170,6 +172,71 @@ struct RspParam{
 };
 
 /**
+ * @brief SyncWorker is a thread worker that synchronize the data queue into log file
+ *  interval
+ */
+class SyncWorker{
+public:
+	SyncWorker(long interval,std::deque<std::string>* p,Logger* log):
+		sync_interval(interval),locks(0),stop(true),
+		qready(PTHREAD_COND_INITIALIZER),qlock(PTHREAD_MUTEX_INITIALIZER),
+	    pQueue(p),logger(log){}
+	/**
+	 * @brief call to start the SyncWorker
+	 */
+	bool Start();
+	/**
+	 * @brief stop the SyncWorker
+	 */
+	bool Stop();
+	/**
+	 * @brief add a lock to the worker
+	 */
+	void IncrementLock(std::string id);
+	/**
+	 * @brief remove a lock from the worker
+	 */
+	void DecrementLock(std::string id);
+
+private:
+	/**
+	 * list of locks waiting for time out
+	 */
+	std::vector<std::string> locksVec;
+	/**
+	 *  logger for message processing
+	 */
+	Logger* logger;
+	/**
+	 * message queue
+	 */
+	std::deque<std::string>* pQueue;
+	/**
+	 * number of locks
+	 */
+	int locks;
+	/**
+	 *  synchronize interval in milliseconds
+	 */
+	long sync_interval;
+	/**
+	 *  flag to stop the worker
+	 */
+	volatile bool stop;
+
+	pthread_cond_t qready;
+	pthread_mutex_t qlock;
+private:
+	/**
+	 * @brief internal start the worker
+	 */
+	void Run();
+	friend void* lockCheckCallback(void* instance);
+	friend void* startCallback(void* instance);
+};
+
+
+/**
  * @brief the main class for the master server
  */
 class SQSMaster{
@@ -202,11 +269,26 @@ private:
 	 * Heart beat checker
 	 */
 	HeartBeat* pBeat;
+	/**
+	 * disk syncworker
+	 */
+	SyncWorker* pSyncWorker;
+	/**
+	 * message queue
+	 */
+	std::deque<std::string>* pQueue;
 public:
 	SQSMaster():clientPort(1200),dataNodePort(1300),connectionTimeout(6),pLock(new MsgLock(5000)),
-		logger(new Logger("SQS.log")),pBeat(new HeartBeat(3000)){}
+		logger(new Logger("SQS.log")),pBeat(new HeartBeat(3000)){
+		pQueue = new std::deque<std::string>;
+		pSyncWorker = new SyncWorker(1000,pQueue,logger);
+	}
 	SQSMaster(int client,int dataNode,int connTimeout,int msgTimeout):clientPort(client),dataNodePort(dataNode),connectionTimeout(connTimeout)
-		,pLock(new MsgLock(msgTimeout)),logger(new Logger("SQS.log")),pBeat(new HeartBeat(3000)){}
+		,pLock(new MsgLock(msgTimeout)),logger(new Logger("SQS.log")),pBeat(new HeartBeat(3000))
+	{
+		pQueue = new std::deque<std::string>;
+		pSyncWorker = new SyncWorker(1000,pQueue,logger);
+	}
 
 	/**
 	 * @brief dispatch the giving request to the remote node.
@@ -222,6 +304,7 @@ public:
 			delete pLock;
 		}
 	}
+
 	/**
 	 * do all the necessary things to start the master
 	 * returns true if every goes fine, otherwise false
@@ -326,6 +409,7 @@ public:
 	 */
 	void onClientReqRecv (struct evhttp_request *req);
 };
+
 
 
 #endif /* SQSMASTER_H_ */

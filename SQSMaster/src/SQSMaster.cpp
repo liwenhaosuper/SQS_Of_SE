@@ -245,7 +245,8 @@ void SQSMaster::onDataNodeRecv (struct evhttp_request* req) {
 		// add log
 		string command = CREATE_QUEUE;
 		command+="?"+QUEUE_NAME+"="+queueName;
-		logger->addLog(command);
+		//logger->addLog(command);
+		pQueue->push_back(command);
 		//dispatch message
 		for(vector<DataNode>::iterator iter = mDataNodes.begin();iter!=mDataNodes.end();iter++){
 			if(!pBeat->IsNodeAlive(*iter)){
@@ -287,7 +288,8 @@ void SQSMaster::onDataNodeRecv (struct evhttp_request* req) {
 		// add log
 		string command = DEL_QUEUE;
 		command+="?"+QUEUE_NAME+"="+queueName;
-		logger->addLog(command);
+		//logger->addLog(command);
+		pQueue->push_back(command);
 
 		//dispatch message
 		for(vector<DataNode>::iterator iter = mDataNodes.begin();iter!=mDataNodes.end();iter++){
@@ -348,7 +350,8 @@ void SQSMaster::onDataNodeRecv (struct evhttp_request* req) {
 		//add log
 		string command = PUT_MSG;
 		command+="?"+QUEUE_NAME+"="+queueName+"&"+MSG+"="+msg+"&"+MSG_ID+"="+msgId;
-		logger->addLog(command);
+		//logger->addLog(command);
+		pQueue->push_back(command);
 		//dispatch message
 		for(vector<DataNode>::iterator iter = mDataNodes.begin();iter!=mDataNodes.end();iter++){
 			if(!pBeat->IsNodeAlive(*iter)){
@@ -406,7 +409,8 @@ void SQSMaster::onDataNodeRecv (struct evhttp_request* req) {
 		//add log
 		string command = DELETE_MSG;
 		command+="?"+QUEUE_NAME+"="+queueName+"&"+MSG_ID+"="+msgId;
-		logger->addLog(command);
+		//logger->addLog(command);
+		pQueue->push_back(command);
 		//dispatch message
 		for(vector<DataNode>::iterator iter = mDataNodes.begin();iter!=mDataNodes.end();iter++){
 			if(!pBeat->IsNodeAlive(*iter)){
@@ -479,6 +483,10 @@ void SQSMaster::onDataNodeRecv (struct evhttp_request* req) {
 			delete nodePort;
 			return;
 		}
+		string tid = nodeName;
+		tid += nodePort;
+		pSyncWorker->IncrementLock(tid);
+		//TODO: add an to-do-event
 		int sz = logger->count()-atoi(logsize);
 		if(sz<0){
 			evbuffer_add_printf(buf, "%s", "Error:Logsize is larger than the master's!");
@@ -525,9 +533,19 @@ void SQSMaster::onDataNodeRecv (struct evhttp_request* req) {
 			if(publicNodePort) delete publicNodePort;
 			return;
 		}
+		int sz = pQueue->size();
 		DataNode* dNode = new DataNode(publicNodeName,atoi(publicNodePort),nodeName,atoi(nodePort),10000);
 		mDataNodes.push_back(*dNode);
 		pBeat->AddDataNode(*dNode);
+		int indx = 0;
+		for(deque<string>::iterator iter = pQueue->begin();indx<sz&&iter!=pQueue->end();iter++){
+			dispatchMessage(nodeName,atoi(nodePort),*iter);
+			sz++;
+		}
+		string tid = nodeName;
+		tid += nodePort;
+		pSyncWorker->DecrementLock(tid);
+
 		evbuffer_add_printf(buf, "%s", "Welcome to join us!");
 		evhttp_send_reply(req, HTTP_OK, "OK", buf);
 		evbuffer_free(buf);
@@ -621,5 +639,99 @@ bool SQSMaster::init(){
 }
 void SQSMaster::start(){
 	pLock->Start();
+	pSyncWorker->Start();
 	event_dispatch();
+}
+
+
+
+
+void* startCallback(void* instance){
+	SyncWorker* worker = (SyncWorker*)instance;
+	worker->Run();
+	return (void*)0;
+}
+
+struct LockCheckParam{
+	SyncWorker* worker;
+	string id;
+};
+
+void* lockCheckCallback(void* instance){
+	LockCheckParam* param = (LockCheckParam*)instance;
+	sleep(10);
+	param->worker->DecrementLock(param->id);
+	return (void*)0;
+}
+
+bool SyncWorker::Start(){
+	pthread_t pid;
+	int err;
+	stop = false;
+	err = pthread_create(&pid,NULL,startCallback,this);
+	if(err!=0){
+    	cout<<"Fail to start SyncWorker thread.Error msg:can't create	thread:"<<strerror(err)<<std::endl;
+    	stop = true;
+    	return false;
+	}
+	return true;
+}
+bool SyncWorker::Stop(){
+	stop = true;
+	return true;
+}
+void SyncWorker::DecrementLock(string id){
+	for(vector<string>::iterator iter = locksVec.begin();iter!=locksVec.end();iter++){
+		if((*iter).compare(id)==0){
+			locksVec.erase(iter);
+			locks--;
+			if(locks<0){
+				locks=0;
+			}
+			pthread_cond_signal(&qready);
+			break;
+		}
+	}
+}
+void SyncWorker::IncrementLock(string id){
+	for(vector<string>::iterator iter = locksVec.begin();iter!=locksVec.end();iter++){
+		if((*iter).compare(id)==0){
+			locksVec.erase(iter);
+			locks--;
+			if(locks<0){
+				locks=0;
+			}
+			pthread_cond_signal(&qready);
+			break;
+		}
+	}
+	//lock the syncworker to avoid missing some log events due to racing
+	pthread_mutex_lock(&qlock);
+	locks++;
+	locksVec.push_back(id);
+	pthread_mutex_unlock(&qlock);
+
+	struct LockCheckParam param= {this,id};
+	pthread_t pid;
+	pthread_create(&pid,NULL,lockCheckCallback,&param);
+
+}
+void SyncWorker::Run(){
+	while(!stop){
+		sleep(sync_interval/1000);
+		pthread_mutex_lock(&qlock);
+		while(locks>0){
+			pthread_cond_wait(&qready,&qlock);
+		}
+		int sz;
+		//get the size first to avoid racing
+		sz = pQueue->size();
+		string msg;
+		for(int i=0;i<sz;i++){
+			msg = pQueue->front();
+			logger->addLog(msg);
+			pQueue->pop_front();
+		}
+		pthread_mutex_unlock(&qlock);
+	}
 }
