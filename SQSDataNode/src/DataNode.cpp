@@ -112,7 +112,7 @@ void DataNode::dispatchCheckLock(const char *remoteNode, int remotePort, const c
 		if(DATANODE_D)fprintf(stderr, "Make request fail...\n");
 	}
 	event_base_dispatch(base);
-	event_base_free(base);
+
 }
 
 bool DataNode::start()
