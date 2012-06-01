@@ -4,6 +4,8 @@
 #include "Logger.h"
 #include "Database.h"
 
+#define DATANODE_D 0
+
 class DataNode
 {
 	friend void ClientCallBack(struct evhttp_request *req, void *arg);

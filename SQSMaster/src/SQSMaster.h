@@ -18,6 +18,9 @@
 
 #include <deque>
 
+
+#define MASTER_D 0
+
 /**
  * @brief
  * DataNode

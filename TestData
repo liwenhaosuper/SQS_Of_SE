@@ -1,0 +1,122 @@
+1. One Data Node, one Master: (localhost)
+    message length:10
+        a ./http_load -parallel 50 -seconds 100 urls  
+		2877 fetches, 50 max parallel, 54282 bytes, in 100.001 seconds
+		18.8676 mean bytes/connection
+		Throughput: 542.815 bytes/sec, 28.7697 fetches/sec
+		msecs/connect: 0.11794 mean, 0.731 max, 0.014 min
+		msecs/first-response: 1724.35 mean, 3455.7 max, 0.08 min
+		599 bad byte counts
+		HTTP response codes:
+		  code 200 -- 2877
+	b ./http_load -parallel 100 -seconds 100 urls
+		2598 fetches, 100 max parallel, 49301 bytes, in 100.001 seconds
+		18.9765 mean bytes/connection
+		Throughput: 493.006 bytes/sec, 25.9798 fetches/sec
+		msecs/connect: 0.166467 mean, 1.191 max, 0.026 min
+		msecs/first-response: 3772.13 mean, 7260.1 max, 0.129 min
+		1147 bad byte counts
+		HTTP response codes:
+		  code 200 -- 2598
+
+	c. ./http_load -parallel 150 -seconds 100 urls
+		2807 fetches, 150 max parallel, 50732 bytes, in 100 seconds
+		18.0734 mean bytes/connection
+		Throughput: 507.318 bytes/sec, 28.0699 fetches/sec
+		msecs/connect: 3.38594 mean, 1002.19 max, 0.033 min
+		msecs/first-response: 5196.23 mean, 8377.59 max, 0.119 min
+		632 bad byte counts
+		HTTP response codes:
+		  code 200 -- 2807
+
+	d. ./http_load -parallel 200 -seconds 100 urls
+		2727 fetches, 200 max parallel, 48549 bytes, in 100 seconds
+		17.8031 mean bytes/connection
+		Throughput: 485.488 bytes/sec, 27.2699 fetches/sec
+		msecs/connect: 5.71198 mean, 1003.66 max, 0.036 min
+		msecs/first-response: 6985.67 mean, 10660.8 max, 0.17 min
+		574 bad byte counts
+		HTTP response codes:
+		  code 200 -- 2727
+
+2. Three Data Node, one Master: (localhost)
+    message length:10
+	a ./http_load -parallel 50 -seconds 100 url2
+		10766 fetches, 50 max parallel, 158142 bytes, in 100 seconds
+		14.689 mean bytes/connection
+		Throughput: 1581.42 bytes/sec, 107.66 fetches/sec
+		msecs/connect: 0.140172 mean, 3.315 max, 0.019 min
+		msecs/first-response: 548.867 mean, 3307.51 max, 0.07 min
+		3625 bad byte counts
+		HTTP response codes:
+		  code 200 -- 9020
+
+	b ./http_load -parallel 100 -seconds 100 url2
+		11599 fetches, 100 max parallel, 200345 bytes, in 100.005 seconds
+		17.2726 mean bytes/connection
+		Throughput: 2003.36 bytes/sec, 115.985 fetches/sec
+		msecs/connect: 0.139628 mean, 3.547 max, 0.022 min
+		msecs/first-response: 829.363 mean, 4902.53 max, 0.06 min
+		1922 bad byte counts
+		HTTP response codes:
+		  code 200 -- 11599
+	c ./http_load -parallel 150 -seconds 100 url2
+		12201 fetches, 150 max parallel, 211419 bytes, in 100 seconds
+		17.328 mean bytes/connection
+		Throughput: 2114.18 bytes/sec, 122.01 fetches/sec
+		msecs/connect: 27.6828 mean, 1006.75 max, 0.022 min
+		msecs/first-response: 1185.8 mean, 6554.57 max, 0.08 min
+		2564 bad byte counts
+		HTTP response codes:
+		  code 200 -- 12201
+	d ./http_load -parallel 200 -seconds 100 url2
+		16188 fetches, 200 max parallel, 280329 bytes, in 100.002 seconds
+		17.3171 mean bytes/connection
+		Throughput: 2803.23 bytes/sec, 161.876 fetches/sec
+		msecs/connect: 79.0439 mean, 1007.13 max, 0.032 min
+		msecs/first-response: 1115.08 mean, 7440.97 max, 0.085 min
+		1527 bad byte counts
+		HTTP response codes:
+		  code 200 -- 16188
+
+3. One Data Node, one Master: (localhost)
+    message length:100
+        a ./http_load -parallel 50 -seconds 100 urls_long  
+		2877 fetches, 50 max parallel, 54282 bytes, in 100.001 seconds
+		18.8676 mean bytes/connection
+		Throughput: 542.815 bytes/sec, 28.7697 fetches/sec
+		msecs/connect: 0.11794 mean, 0.731 max, 0.014 min
+		msecs/first-response: 1724.35 mean, 3455.7 max, 0.08 min
+		599 bad byte counts
+		HTTP response codes:
+		  code 200 -- 2877
+	b ./http_load -parallel 100 -seconds 100 urls
+		2598 fetches, 100 max parallel, 49301 bytes, in 100.001 seconds
+		18.9765 mean bytes/connection
+		Throughput: 493.006 bytes/sec, 25.9798 fetches/sec
+		msecs/connect: 0.166467 mean, 1.191 max, 0.026 min
+		msecs/first-response: 3772.13 mean, 7260.1 max, 0.129 min
+		1147 bad byte counts
+		HTTP response codes:
+		  code 200 -- 2598
+
+	c. ./http_load -parallel 150 -seconds 100 urls
+		2807 fetches, 150 max parallel, 50732 bytes, in 100 seconds
+		18.0734 mean bytes/connection
+		Throughput: 507.318 bytes/sec, 28.0699 fetches/sec
+		msecs/connect: 3.38594 mean, 1002.19 max, 0.033 min
+		msecs/first-response: 5196.23 mean, 8377.59 max, 0.119 min
+		632 bad byte counts
+		HTTP response codes:
+		  code 200 -- 2807
+
+	d. ./http_load -parallel 200 -seconds 100 urls
+		2727 fetches, 200 max parallel, 48549 bytes, in 100 seconds
+		17.8031 mean bytes/connection
+		Throughput: 485.488 bytes/sec, 27.2699 fetches/sec
+		msecs/connect: 5.71198 mean, 1003.66 max, 0.036 min
+		msecs/first-response: 6985.67 mean, 10660.8 max, 0.17 min
+		574 bad byte counts
+		HTTP response codes:
+		  code 200 -- 2727
+

@@ -37,23 +37,23 @@ bool DataNode::IsAlive(){
 
 void* RegularCheck(void* arg){
 	if(arg==NULL){
-		cout<<"arg is null..."<<endl;
+		if(MASTER_D) cout<<"arg is null..."<<endl;
 		return (void*)0;
 	}
 	Param* param = (Param*) arg;
 	if(param==NULL){
-		cout<<"param is null"<<endl;
+		if(MASTER_D) cout<<"param is null"<<endl;
 	}
 	HeartBeat* instance = (HeartBeat*)param->instance;
 	DataNode* node = param->node;
 	if(instance==NULL){
-		cout<<"instance is null"<<endl;
+		if(MASTER_D)cout<<"instance is null"<<endl;
 	}
 	int cnt = 0;
 	while(true){
 		char *rsp = instance->doRequest(node->getNodeNameFormaster(),node->getNodePortFormaster());
 		if(rsp==NULL){
-			cout<<"Rsp is NULL or connection fail..."<<endl;
+			if(MASTER_D) cout<<"Rsp is NULL or connection fail..."<<endl;
 			cnt++;
 		}else{
 			cnt = 0;
@@ -145,7 +145,7 @@ void HeartBeat::AddDataNode(DataNode node){
 	param->node = newNode;
 	pthread_t pid;
 	if(pthread_create(&pid,NULL,RegularCheck,param)!=0){
-		cout<<"Error in starting heart beat..."<<endl;
+		if(MASTER_D) cout<<"Error in starting heart beat..."<<endl;
 	}
 }
 bool HeartBeat::IsNodeAlive(DataNode node){
@@ -186,8 +186,8 @@ void dispatchMsgCallBack(struct evhttp_request* req, void* arg){
 }
 
 void SQSMaster::dispatchMessage(std::string remoteNode,int remotePort,std::string request){
-	cout << "request: " << request << endl;
-	cout << strcmp("/createQueue?queueName=value3\r\n", request.c_str()) << endl;
+	if(MASTER_D) cout << "request: " << request << endl;
+	if(MASTER_D) cout << strcmp("/createQueue?queueName=value3\r\n", request.c_str()) << endl;
 	struct event_base *base = event_base_new();
 	struct evhttp_connection *cn = evhttp_connection_base_new(
 			base, NULL,
@@ -195,14 +195,14 @@ void SQSMaster::dispatchMessage(std::string remoteNode,int remotePort,std::strin
 			remotePort);
 	struct evhttp_request *req = evhttp_request_new(dispatchMsgCallBack, base);
 	if(evhttp_make_request(cn,req,EVHTTP_REQ_GET,request.c_str())==-1){
-		cout<<"Make request fail..."<<endl;
+		if(MASTER_D) cout<<"Make request fail..."<<endl;
 	}
 	event_base_dispatch(base);
 	event_base_free(base);
 }
 
 void SQSMaster::onDataNodeRecv (struct evhttp_request* req) {
-	cout<<"Receive msg from data node.path:"<<req->uri<<endl;
+	if(MASTER_D) cout<<"Receive msg from data node.path:"<<req->uri<<endl;
 	struct evbuffer *buf;
 	buf = evbuffer_new();
 	/* parse path and URL paramter */
@@ -593,7 +593,7 @@ void SQSMaster::onDataNodeRecv (struct evhttp_request* req) {
 }
 
 void SQSMaster::onClientReqRecv (struct evhttp_request* req) {
-	cout<<"Receive msg from client.path:"<<req->uri<<endl;
+	if(MASTER_D)cout<<"Receive msg from client.path:"<<req->uri<<endl;
     struct evbuffer *buf;
     buf = evbuffer_new();
 

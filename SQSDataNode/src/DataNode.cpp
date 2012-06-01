@@ -47,9 +47,9 @@ void dispatchMsgCallBack(struct evhttp_request *req, void *arg)
 void* recover_and_join(void *ptr)
 {
 	DataNode *node = (DataNode *)ptr;
-	printf("start recovery\n");
+	if(DATANODE_D)printf("start recovery\n");
 	node->recovery();
-	printf("start join\n");
+	if(DATANODE_D)printf("start join\n");
 	node->join();
 	return (void *)0;
 }
@@ -62,7 +62,7 @@ void DataNode::dispatchMessage(const char *remoteNode, int remotePort, const cha
 	);
 	struct evhttp_request *req = evhttp_request_new(dispatchMsgCallBack, base);
 	if (evhttp_make_request(cn, req, EVHTTP_REQ_GET, request) == -1) {
-		fprintf(stderr, "Make request fail...\n");
+		if(DATANODE_D)fprintf(stderr, "Make request fail...\n");
 	}
 	event_base_dispatch(base);
 	event_base_free(base);
@@ -124,7 +124,7 @@ void DataNode::join()
 
 void DataNode::onClientRecv(evhttp_request *req)
 {
-	printf("Receive msg from client.path:%s\n", req->uri);
+	if(DATANODE_D)printf("Receive msg from client.path:%s\n", req->uri);
 	struct evbuffer *buf;
 	buf = evbuffer_new();
 	/* parse path and URL paramter */
@@ -372,7 +372,7 @@ void DataNode::onClientRecv(evhttp_request *req)
 
 void DataNode::onMasterRecv(evhttp_request *req)
 {
-	printf("Receive msg from master:%s\n", req->uri);
+	if(DATANODE_D) printf("Receive msg from master:%s\n", req->uri);
 	struct evbuffer *buf;
 	buf = evbuffer_new();
 	/* parse path and URL paramter */

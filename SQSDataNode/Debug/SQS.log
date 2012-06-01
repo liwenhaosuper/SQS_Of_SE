@@ -338,6 +338,10 @@
 /deleteQueue?queueName=test4
 /deleteQueue?queueName=test9
 /createQueue?queueName=test6
+/createQueue?queueName=test5
+/deleteQueue?queueName=test4
+/deleteQueue?queueName=test9
+/createQueue?queueName=test6
 /putMessage?queueName=test3&message=helloWorld&mId=1
 /deleteQueue?queueName=test8
 /createQueue?queueName=test9
@@ -2856,6 +2860,7 @@
 /createQueue?queueName=test3
 /createQueue?queueName=test9
 /createQueue?queueName=test4
+/createQueue?queueName=test7
 /createQueue?queueName=test7
 /createQueue?queueName=test10
 /putMessage?queueName=test2&message=helloWorld&mId=233
