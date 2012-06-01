@@ -7,7 +7,7 @@
 #include "evhttp.h"
 
 #include <cstdlib>
-
+#include <cstdio>
 #include "SQSClient.h"
 
 #include <map>
@@ -127,7 +127,8 @@ bool SQSClient::CreateQueue(std::string QueueName){
     char* rsp;
     rsp = doRequest(this->dataNodeName,this->dataNodePort,"/createQueue?queueName="+QueueName);
     cnt = 0;
-    while(rsp==NULL||strcmp(rsp,"")==0){
+    int total = 0;
+    while(rsp==NULL){
         cnt++;
         if(cnt>3){
             this->isDataNodeReady = false;
@@ -137,6 +138,10 @@ bool SQSClient::CreateQueue(std::string QueueName){
             }else{
                 return false;
             }
+        }
+        total++;
+        if(total>10){
+            break;
         }
         rsp = doRequest(this->dataNodeName,this->dataNodePort,"/createQueue?queueName="+QueueName);
     }
@@ -170,7 +175,8 @@ vector<string> *SQSClient::ListQueues(){
     char* rsp;
     rsp = doRequest(this->dataNodeName,this->dataNodePort,"/listQueues");
     cnt = 0;
-    while(rsp==NULL||strcmp(rsp,"")==0){
+    int total = 0;
+    while(rsp==NULL){
         cnt++;
         if(cnt>3){
             this->isDataNodeReady = false;
@@ -181,6 +187,10 @@ vector<string> *SQSClient::ListQueues(){
                 return NULL;
             }
         }
+        total++;
+        if(total>10){
+            break;
+        }
         rsp = doRequest(this->dataNodeName,this->dataNodePort,"/listQueues");
     }
     if(rsp==NULL){
@@ -189,7 +199,7 @@ vector<string> *SQSClient::ListQueues(){
     }
     vector<string>* res = new vector<string>;
     //TODO: parse the results
-    //cout<<"Rsp:"<<rsp<<":"<<endl;
+    cout<<"Rsp:"<<rsp<<":"<<endl;
     string container = rsp;
     int begin = 0,end=0;
     if((end = container.find_first_of("\r\n",begin))>=0){
@@ -222,7 +232,8 @@ bool SQSClient::DeleteQueue(std::string QueueName){
     char* rsp;
     rsp = doRequest(this->dataNodeName,this->dataNodePort,"/deleteQueue?queueName="+QueueName);
     cnt = 0;
-    while(rsp==NULL||strcmp(rsp,"")==0){
+    int total = 0;
+    while(rsp==NULL){
         cnt++;
         if(cnt>3){
             this->isDataNodeReady = false;
@@ -232,6 +243,10 @@ bool SQSClient::DeleteQueue(std::string QueueName){
             }else{
                 return false;
             }
+        }
+        total++;
+        if(total>10){
+            break;
         }
         rsp = doRequest(this->dataNodeName,this->dataNodePort,"/deleteQueue?queueName="+QueueName);
     }
@@ -271,7 +286,8 @@ bool SQSClient::SendMessage(std::string QueueName, std::string Message){
     char* rsp;
     rsp = doRequest(this->dataNodeName,this->dataNodePort,"/putMessage?queueName="+QueueName+"&message="+Message);
     cnt = 0;
-    while(rsp==NULL||strcmp(rsp,"")==0){
+    int total =0;
+    while(rsp==NULL){
         cnt++;
         if(cnt>3){
             this->isDataNodeReady = false;
@@ -281,6 +297,10 @@ bool SQSClient::SendMessage(std::string QueueName, std::string Message){
             }else{
                 return false;
             }
+        }
+        total++;
+        if(total>10){
+            break;
         }
         rsp = doRequest(this->dataNodeName,this->dataNodePort,"/putMessage?queueName="+QueueName+"&message="+Message);
     }
@@ -314,7 +334,8 @@ std::string SQSClient::ReceiveMessage(std::string QueueName, int &MessageID){
     char* rsp;
     rsp = doRequest(this->dataNodeName,this->dataNodePort,"/getMessage?queueName="+QueueName);
     cnt = 0;
-    while(rsp==NULL||strcmp(rsp,"")==0){
+    int total = 0;
+    while(rsp==NULL){
         cnt++;
         if(cnt>3){
             this->isDataNodeReady = false;
@@ -325,6 +346,10 @@ std::string SQSClient::ReceiveMessage(std::string QueueName, int &MessageID){
                 return "";
             }
         }
+        total++;
+        if(total>10){
+            break;
+        }
         rsp = doRequest(this->dataNodeName,this->dataNodePort,"/getMessage?queueName="+QueueName);
     }
     //do the parsing
@@ -332,7 +357,7 @@ std::string SQSClient::ReceiveMessage(std::string QueueName, int &MessageID){
         cout<<"Wow!ReceiveMessage receive NULL"<<endl;
         return "";
     }
-
+    return "OK";
 
 }
 
@@ -356,10 +381,13 @@ bool SQSClient::DeleteMessage(std::string QueueName,int MessageID){
             return false;
         }
     }
+    char tmp[16];
+    sprintf(tmp,"%d",MessageID);
     char* rsp;
-    rsp = doRequest(this->dataNodeName,this->dataNodePort,"/deleteQueue?&queueName="+QueueName);
+    rsp = doRequest(this->dataNodeName,this->dataNodePort,"/deleteMessage?queueName="+QueueName+"&mId="+tmp);
     cnt = 0;
-    while(rsp==NULL||strcmp(rsp,"")==0){
+    int total = 0;
+    while(rsp==NULL){
         cnt++;
         if(cnt>3){
             this->isDataNodeReady = false;
@@ -370,8 +398,16 @@ bool SQSClient::DeleteMessage(std::string QueueName,int MessageID){
                 return false;
             }
         }
-        rsp = doRequest(this->dataNodeName,this->dataNodePort,"/deleteQueue?&queueName="+QueueName);
+        total++;
+        if(total>10){
+            break;
+        }
+        rsp = doRequest(this->dataNodeName,this->dataNodePort,"/deleteQueue?queueName="+QueueName);
     }
     //TODO: some more parsing
+    if(rsp==NULL){
+        cout<<"Wow!ReceiveMessage receive NULL"<<endl;
+        return false;
+    }
     return true;
 }

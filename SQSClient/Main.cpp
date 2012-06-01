@@ -16,8 +16,8 @@ int main(){
     time(&t1);
     SQSClient* client = new SQSClient("localhost",1200);
     //client->getRemoteHost();
-    //client->CreateQueue("helloWorld");
-    //client->SendMessage("helloWorld","msg1");
+    client->CreateQueue("helloWorld");
+    client->SendMessage("helloWorld","msg1");
     client->ListQueues();
     //client->DeleteQueue("helloWorld");
     //client->ListQueues();
