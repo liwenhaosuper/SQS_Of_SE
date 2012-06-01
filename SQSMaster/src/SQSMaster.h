@@ -12,6 +12,7 @@
 #include "event.h"
 #include "evhttp.h"
 #include <string>
+#include <cstring>
 #include <vector>
 #include "MsgLock.h"
 #include "Logger.h"
@@ -28,6 +29,10 @@
  */
 class DataNode{
 private:
+	/**
+	 * whether it has been cancel or not.
+	 */
+	bool cancel;
 	/**
 	 * node name for client connection
 	 */
@@ -52,10 +57,7 @@ private:
 	 * the time it joins the data node list, in milliseconds
 	 */
 	long startTime;
-	/**
-	 * whether it has been cancel or not.
-	 */
-	bool cancel;
+
 public:
 	DataNode(std::string nm,int port,std::string masterNM,int masterPort,long timeout):cancel(false),
 		nodeName_public(nm),nodePort_public(port),nodeName_formaster(masterNM),nodePort_formaster(masterPort),defaultTimeout(timeout){}
@@ -182,8 +184,12 @@ class SyncWorker{
 public:
 	SyncWorker(long interval,std::deque<std::string>* p,Logger* log):
 		sync_interval(interval),locks(0),stop(true),
-		qready(PTHREAD_COND_INITIALIZER),qlock(PTHREAD_MUTEX_INITIALIZER),
-	    pQueue(p),logger(log){}
+	    pQueue(p),logger(log){
+		//qready = PTHREAD_COND_INITIALIZER;
+		//qlock = PTHREAD_COND_INITIALIZER;
+		memset(&qlock,0,sizeof(qlock));
+		memset(&qready,0,sizeof(qready));
+	}
 	/**
 	 * @brief call to start the SyncWorker
 	 */
@@ -203,6 +209,23 @@ public:
 
 private:
 	/**
+	 *  synchronize interval in milliseconds
+	 */
+	long sync_interval;
+	/**
+	 * number of locks
+	 */
+	int locks;
+
+	/**
+	 *  flag to stop the worker
+	 */
+	volatile bool stop;
+	/**
+	 * message queue
+	 */
+	std::deque<std::string>* pQueue;
+	/**
 	 * list of locks waiting for time out
 	 */
 	std::vector<std::string> locksVec;
@@ -210,22 +233,9 @@ private:
 	 *  logger for message processing
 	 */
 	Logger* logger;
-	/**
-	 * message queue
-	 */
-	std::deque<std::string>* pQueue;
-	/**
-	 * number of locks
-	 */
-	int locks;
-	/**
-	 *  synchronize interval in milliseconds
-	 */
-	long sync_interval;
-	/**
-	 *  flag to stop the worker
-	 */
-	volatile bool stop;
+
+
+
 
 	pthread_cond_t qready;
 	pthread_mutex_t qlock;

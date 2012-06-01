@@ -8,6 +8,7 @@
 #define MSGLOCK_H
 
 #include <string>
+#include <cstring>
 #include <pthread.h>
 #include <map>
 
@@ -93,7 +94,9 @@ private:
 	 */
 	friend void Cleanup(void* arg);
 public:
-	EventChain():head(NULL),pid(0),qready(PTHREAD_COND_INITIALIZER),qlock(PTHREAD_MUTEX_INITIALIZER){
+	EventChain():head(NULL),pid(0){
+		memset(&qlock,0,sizeof(qlock));
+		memset(&qready,0,sizeof(qready));
 	}
 	virtual ~EventChain(){
 		if(head){
@@ -149,7 +152,7 @@ public:
  */
 class MsgLock{
 private:
-	EventChain* chain_core;
+
 	/**
 	 * locked messages,i.e.{queue name: { id1,id2,id3}}
 	 */
@@ -158,6 +161,7 @@ private:
      * default time out for the message lock, 5s in default
      */
     long defaultTmout;
+    EventChain* chain_core;
 	pthread_cond_t qready;
 	pthread_mutex_t qlock;
 	/**
@@ -182,8 +186,14 @@ private:
      */
     bool Del(std::string queueName,int msgId);
 public:
-	MsgLock():defaultTmout(5000),chain_core(new EventChain()),qready(PTHREAD_COND_INITIALIZER),qlock(PTHREAD_MUTEX_INITIALIZER){ }
-	MsgLock(long tmout):defaultTmout(tmout),chain_core(new EventChain()),qready(PTHREAD_COND_INITIALIZER),qlock(PTHREAD_MUTEX_INITIALIZER){}
+	MsgLock():defaultTmout(5000),chain_core(new EventChain()){
+		memset(&qlock,0,sizeof(qlock));
+		memset(&qready,0,sizeof(qready));
+	}
+	MsgLock(long tmout):defaultTmout(tmout),chain_core(new EventChain()){
+		memset(&qlock,0,sizeof(qlock));
+		memset(&qready,0,sizeof(qready));
+	}
 	/**
 	 * @brief lock the message
 	 * returns true if successfully lock, false if the message is already locked by others
