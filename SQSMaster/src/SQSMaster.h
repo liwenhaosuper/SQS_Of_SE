@@ -19,7 +19,7 @@
 #include <deque>
 
 
-#define MASTER_D 0
+#define MASTER_D 1
 
 /**
  * @brief
@@ -172,8 +172,6 @@ public:
 struct RspParam{
     char* rsp;
     struct event_base* base;
-    struct evhttp_connection *conn;
-    struct evhttp_request *req;
 };
 
 /**
