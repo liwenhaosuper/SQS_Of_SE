@@ -23,9 +23,11 @@ int main(){
     //client->ListQueues();
     int id;
     cout<<"Recv Msg:"<<client->ReceiveMessage("helloWorld",id)<<endl;
-
+    cout<<"Msg id:"<<id<<endl;
+    //client->DeleteMessage("helloWorld",id);
+    //cout<<"Recv Msg:"<<client->ReceiveMessage("helloWorld",id)<<endl;
     time(&t2);
-    cout<<"time cost:(s)"<<t2-t1<<endl;
+    cout<<"time cost:(s)    "<<t2-t1<<endl;
     cout<<"SQSClient stoped..."<<endl;
     return 0;
 }

@@ -51,6 +51,7 @@ char* SQSClient::doRequest(std::string dataNode,int port,std::string path){
     struct evhttp_request *req = evhttp_request_new(response_callback,param);
     evhttp_make_request(cn,req,EVHTTP_REQ_GET,path.c_str());
     event_base_dispatch(base);
+    event_base_free(base);
     if(param->rsp==NULL){
         free(param);
         return NULL;
@@ -146,6 +147,10 @@ bool SQSClient::CreateQueue(std::string QueueName){
         rsp = doRequest(this->dataNodeName,this->dataNodePort,"/createQueue?queueName="+QueueName);
     }
     //TODO: do more parsing
+    if(rsp==NULL){
+        cout<<"Wow!Get NULL when creating queues"<<endl;
+        return NULL;
+    }
     cout<<"Return rsp:"<<rsp<<endl;
     if(strcmp(rsp,"Create queue successfully")==0){
         cout<<"Create queue OK"<<endl;
@@ -357,7 +362,23 @@ std::string SQSClient::ReceiveMessage(std::string QueueName, int &MessageID){
         cout<<"Wow!ReceiveMessage receive NULL"<<endl;
         return "";
     }
-    return "OK";
+    //cout<<"Recv message:"<<rsp<<endl;
+    if(strcmp(rsp,"Get message fail")==0||strcmp(rsp,"Unrecognized request")==0){
+        return "";
+    }
+
+    string container = rsp;
+    int begin = 0,end = 0;
+    if((end = container.find_first_of(":",begin))>=0){
+        string str = container.substr(begin,end-begin);
+        //cout<<str<<endl;
+        MessageID = atoi(str.c_str());
+        cout<<MessageID<<endl;
+        str = container.substr(end+1);
+
+        return str;
+    }
+    return "";
 
 }
 
@@ -409,5 +430,6 @@ bool SQSClient::DeleteMessage(std::string QueueName,int MessageID){
         cout<<"Wow!ReceiveMessage receive NULL"<<endl;
         return false;
     }
+
     return true;
 }

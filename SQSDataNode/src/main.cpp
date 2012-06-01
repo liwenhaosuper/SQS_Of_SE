@@ -97,8 +97,6 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Fail to start service. Bye\n");
 		return 1;
 	}
-	dataNode->recovery();
-	dataNode->join();
 	return 0;
 }
 

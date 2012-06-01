@@ -65,6 +65,7 @@ void DataNode::dispatchMessage(const char *remoteNode, int remotePort, const cha
 		fprintf(stderr, "Make request fail...\n");
 	}
 	event_base_dispatch(base);
+	event_base_free(base);
 }
 
 bool DataNode::start()

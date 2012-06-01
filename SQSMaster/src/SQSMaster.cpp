@@ -115,6 +115,7 @@ char* HeartBeat::doRequest(std::string dataNode,int port){
 	param->base = base;param->rsp = NULL;param->conn = cn;param->req = req;
 	evhttp_make_request(cn,req,EVHTTP_REQ_GET,HEARTBEAT.c_str());
 	event_base_dispatch(base);
+	event_base_free(base);
 // 	if(param->rsp==NULL){
 // 	    free(param);
 // 	    return NULL;
@@ -197,6 +198,7 @@ void SQSMaster::dispatchMessage(std::string remoteNode,int remotePort,std::strin
 		cout<<"Make request fail..."<<endl;
 	}
 	event_base_dispatch(base);
+	event_base_free(base);
 }
 
 void SQSMaster::onDataNodeRecv (struct evhttp_request* req) {

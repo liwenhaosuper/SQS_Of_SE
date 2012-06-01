@@ -1,17 +1,3 @@
-/createQueue?queueName=hi
-/deleteQueue?queueName=queue
-/createQueue?queueName=helloWorld
-/putMessage?queueName=helloWorld&message=msg1&mId=3
-/putMessage?queueName=helloWorld&message=msg1&mId=4
-/putMessage?queueName=helloWorld&message=msg1&mId=5
-/putMessage?queueName=helloWorld&message=msg1&mId=6
-/deleteQueue?queueName=helloWorld
-/deleteQueue?queueName=helloWorld
-/createQueue?queueName=helloWorld
-/putMessage?queueName=helloWorld&message=msg1&mId=1
-/putMessage?queueName=helloWorld&message=msg1&mId=2
-/putMessage?queueName=helloWorld&message=msg1&mId=3
-/putMessage?queueName=helloWorld&message=msg1&mId=4
 /putMessage?queueName=helloWorld&message=msg1&mId=5
 /putMessage?queueName=helloWorld&message=msg1&mId=6
 /putMessage?queueName=helloWorld&message=msg1&mId=7
