@@ -97,13 +97,15 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Fail to start service. Bye\n");
 		return 1;
 	}
-	cout << "recovery" << endl;
 	dataNode->recovery();
-	cout << "join" << endl;
 	dataNode->join();
 	return 0;
 }
 
+// #include <vector>
+// #include <list>
+// #include <iostream>
+// using namespace std;
 // int main()
 // {
 // 	Database db;
@@ -126,11 +128,14 @@ int main(int argc, char *argv[])
 // 	cout << "num is: " << num << endl;
 // 
 // 	bool result;
-// 	cout << "message: " << db.getMessage("queueA", 1, result) << " result: " << result << endl
-// 	     << "message: " << db.getMessage("queueA", 3, result) << " result: " << result << endl;
+// 	cout << "message: " << db.getMessage("queueA", result) << " result: " << result << endl
+// 	     << "message: " << db.getMessage("queueb", result) << " result: " << result << endl;
 // 
 // 	cout << "result is: " << db.deleteMessage("queueb", 3) << endl
-// 	     << "result is: " << db.deleteMessage("queueA", 124) << endl;
+// 	     << "result is: " << db.deleteMessage("queueA", 124) << endl
+// 	     << "result is: " << db.deleteMessage("queueA", 1) << endl;
+// 
+// 	cout << "message: " << db.getMessage("queueA", result) << " result: " << result << endl;
 // 
 // 	return 0;
 // }

@@ -7,9 +7,6 @@
 
 using namespace std;
 
-static int listQueueCallback(void *data, int n_columns, char **col_values, char **col_names);
-static int getMessageCallback(void *data, int n_columns, char **col_values, char **col_names);
-
 Database::Database(const char *dbname) : m_dbname(dbname)
 {
 	if (sqlite3_open(m_dbname.c_str(), &conn) != SQLITE_OK) {
@@ -35,6 +32,18 @@ bool Database::createQueue(const char *queueName)
 		return false;
 	else
 		return true;
+}
+
+int listQueueCallback(void *data, int n_columns, char **col_values, char **col_names)
+{
+	vector<string> *lists = (vector<string> *)data;
+
+	string str(col_values[0]);
+	if (str == "sqlite_sequence")
+		return 0;
+	lists->push_back(str);
+
+	return 0;
 }
 
 vector<string> Database::listQueues()
@@ -76,7 +85,29 @@ int Database::putMessage(const char *queueName, const char *message, int message
 		return sqlite3_last_insert_rowid(conn);
 }
 
-string Database::getMessage(const char *queueName, int messageID, bool &ok)
+string Database::getMessage(const char *queueName, int &messageID, bool &ok)
+{
+	int count = messageCount(queueName);
+	if (count == 0) {
+		ok = false;
+		string error;
+		return error;
+	}
+
+	messageID = minMessageNumber(queueName);
+	return getMessageById(queueName, messageID, ok);
+}
+
+int getMessageByIdCallback(void *data, int n_columns, char **col_values, char **col_names)
+{
+	string *message = (string *)data;
+
+	*message = col_values[1];
+
+	return 0;
+}
+
+string Database::getMessageById(const char *queueName, int messageID, bool &ok)
 {
 	if (!hasMessage(queueName, messageID)) {
 		ok = false;
@@ -89,7 +120,7 @@ string Database::getMessage(const char *queueName, int messageID, bool &ok)
 
 	char sql[128];
 	sprintf(sql, "SELECT * FROM %s WHERE id=%d;", queueName, messageID);
-	if (sqlite3_exec(conn, sql, &getMessageCallback, &result, &err_msg) != SQLITE_OK) {
+	if (sqlite3_exec(conn, sql, &getMessageByIdCallback, &result, &err_msg) != SQLITE_OK) {
 		ok = false;
 		string error;
 		return error;
@@ -136,23 +167,48 @@ bool Database::hasMessage(const char *queueName, int messageID)
 	}
 }
 
-int listQueueCallback(void *data, int n_columns, char **col_values, char **col_names)
+int messageCountCallback(void *data, int n_columns, char **col_values, char **col_names)
 {
-	vector<string> *lists = (vector<string> *)data;
+	int *count = (int *)data;
 
-	string str(col_values[0]);
-	if (str == "sqlite_sequence")
-		return 0;
-	lists->push_back(str);
+	*count = atoi(col_values[0]);
 
 	return 0;
 }
 
-int getMessageCallback(void *data, int n_columns, char **col_values, char **col_names)
+int Database::messageCount(const char *queueName)
 {
-	string *message = (string *)data;
+	char *err_msg = NULL;
+	int result;
 
-	*message = col_values[1];
+	char sql[128];
+	sprintf(sql, "SELECT COUNT(id) FROM %s;", queueName);
+	if (sqlite3_exec(conn, sql, &messageCountCallback, &result, &err_msg) != SQLITE_OK) {
+		return result;
+	} else {
+		return result;
+	}
+}
+
+int minMessageNumberCallback(void *data, int n_columns, char **col_values, char **col_names)
+{
+	int *min = (int *)data;
+
+	*min = atoi(col_values[0]);
 
 	return 0;
+}
+
+int Database::minMessageNumber(const char *queueName)
+{
+	char *err_msg = NULL;
+	int result;
+
+	char sql[128];
+	sprintf(sql, "SELECT MIN(id) FROM %s;", queueName);
+	if (sqlite3_exec(conn, sql, &minMessageNumberCallback, &result, &err_msg) != SQLITE_OK) {
+		return result;
+	} else {
+		return result;
+	}
 }

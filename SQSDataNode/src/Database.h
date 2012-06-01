@@ -16,12 +16,15 @@ public:
 	std::vector<std::string> listQueues();
 	bool deleteQueue(const char *queueName);
 	int putMessage(const char *queueName, const char *message, int messageID = -1);
-	std::string getMessage(const char *queueName, int messageID, bool &ok);
+	std::string getMessageById(const char *queueName, int messageID, bool &ok);
+	std::string getMessage(const char *queueName, int &messageID, bool &ok);
 	bool deleteMessage(const char *queueName, int messageID);
 
 private:
 	Database(const Database& other);
 	bool hasMessage(const char *queueName, int messageID);
+	int messageCount(const char *queueName);
+	int minMessageNumber(const char *queueName);
 
 	std::string m_dbname;
 	sqlite3 *conn;

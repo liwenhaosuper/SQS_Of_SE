@@ -13,3 +13,4 @@ set(DataNode_SRCS
 add_executable(SQSDataNode ${DataNode_SRCS})
 target_link_libraries(SQSDataNode ${LIBEVENT_LIBRARIES} ${SQLITE_LIBRARIES})
 # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+install(TARGETS SQSDataNode DESTINATION bin)

@@ -327,8 +327,8 @@ void DataNode::onClientRecv(evhttp_request *req)
 		return;
 	} else if (strcmp(url_path, GET_MSG.c_str()) == 0) { /*get message*/
 		const char *queueName = evhttp_find_header(url_parameters, QUEUE_NAME.c_str());
-		const char *msgIdStr = evhttp_find_header(url_parameters, MSG_ID.c_str());
-		if (!queueName || !msgIdStr) {
+// 		const char *msgIdStr = evhttp_find_header(url_parameters, MSG_ID.c_str());
+		if (!queueName) {
 			evbuffer_add_printf(buf, "%s", "Unrecognized request");
 			evhttp_send_reply(req, HTTP_OK, "OK", buf);
 			evbuffer_free(buf);
@@ -336,7 +336,8 @@ void DataNode::onClientRecv(evhttp_request *req)
 			return;
 		}
 
-		int msgId = atoi(msgIdStr);
+// 		int msgId = atoi(msgIdStr);
+		int msgId = -1;
 
 		// store the change
 		bool ok = false;
@@ -346,16 +347,16 @@ void DataNode::onClientRecv(evhttp_request *req)
 			evhttp_send_reply(req, HTTP_OK, "OK", buf);
 			evbuffer_free(buf);
 			safe_delete(queueName);
-			safe_delete(msgIdStr);
+// 			safe_delete(msgIdStr);
 			safe_delete(url_parameters);
 			return;
 		}
 
-		evbuffer_add_printf(buf, "%s", msg.c_str());
+		evbuffer_add_printf(buf, "%d: %s", msgId, msg.c_str());
 		evhttp_send_reply(req, HTTP_OK, "OK", buf);
 		evbuffer_free(buf);
 		safe_delete(queueName);
-		safe_delete(msgIdStr);
+// 		safe_delete(msgIdStr);
 		safe_delete(url_parameters);
 		return;
 	} else {

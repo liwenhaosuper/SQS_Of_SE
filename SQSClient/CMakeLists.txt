@@ -9,3 +9,4 @@ set(Client_SRCS
 
 add_executable(SQSClient ${Client_SRCS})
 target_link_libraries(SQSClient ${LIBEVENT_LIBRARIES})
+install(TARGETS SQSClient DESTINATION bin)

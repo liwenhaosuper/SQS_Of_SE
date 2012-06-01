@@ -9,6 +9,7 @@ set(SQS_SRCS
    Logger.cpp
 )
 
-add_executable(SQS ${SQS_SRCS})
-target_link_libraries(SQS ${LIBEVENT_LIBRARIES})
+add_executable(SQSMaster ${SQS_SRCS})
+target_link_libraries(SQSMaster ${LIBEVENT_LIBRARIES})
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+install(TARGETS SQSMaster DESTINATION bin)

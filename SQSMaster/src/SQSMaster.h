@@ -169,6 +169,8 @@ public:
 struct RspParam{
     char* rsp;
     struct event_base* base;
+    struct evhttp_connection *conn;
+    struct evhttp_request *req;
 };
 
 /**

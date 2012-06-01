@@ -111,17 +111,19 @@ char* HeartBeat::doRequest(std::string dataNode,int port){
 	        dataNode.c_str(),
 	        port);
 	RspParam* param = (struct RspParam*)malloc(sizeof(struct RspParam));
-	param->base = base;param->rsp = NULL;
 	struct evhttp_request *req = evhttp_request_new(heartbeat_callback,param);
+	param->base = base;param->rsp = NULL;param->conn = cn;param->req = req;
 	evhttp_make_request(cn,req,EVHTTP_REQ_GET,HEARTBEAT.c_str());
 	event_base_dispatch(base);
-	if(param->rsp==NULL){
-	    free(param);
-	    return NULL;
-	}
+// 	if(param->rsp==NULL){
+// 	    free(param);
+// 	    return NULL;
+// 	}
 	char* res = param->rsp;
-	param->rsp = NULL;
-	free(param);
+// 	evhttp_request_free(req);
+// 	evhttp_connection_free(cn);
+// 	param->rsp = NULL;
+// 	free(param);
 	return res;
 }
 
