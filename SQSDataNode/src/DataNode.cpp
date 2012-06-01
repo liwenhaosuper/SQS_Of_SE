@@ -69,9 +69,9 @@ void checkLock(struct evhttp_request *req, void *arg)
 	    *unlock = false;
 	}else{
 	    rsp = new char[sz+1];
-	    evbuffer_remove(buf,rsp,sz);
+	    int sz1 = evbuffer_remove(buf,rsp,sz);
+	    rsp[sz1] = '\0';
 	}
-
 	if (strcmp(rsp, "Success") == 0)
 		*unlock = true;
 	else
@@ -185,7 +185,6 @@ void DataNode::onClientRecv(evhttp_request *req)
 		safe_free(url_parameters);
 		return;
 	}
-
 	if (strcmp(url_path, CREATE_QUEUE.c_str()) == 0) { /*create queue*/
 		const char *queueName = evhttp_find_header(url_parameters, QUEUE_NAME.c_str());
 		if (!queueName) {
@@ -422,7 +421,6 @@ void DataNode::onClientRecv(evhttp_request *req)
 // 			safe_delete(url_parameters);
 // 			return;
 // 		}
-
 		evbuffer_add_printf(buf, "%d: %s", msgId, msg.c_str());
 		evhttp_send_reply(req, HTTP_OK, "OK", buf);
 		evbuffer_free(buf);

@@ -4,7 +4,7 @@
 #include "Logger.h"
 #include "Database.h"
 
-#define DATANODE_D 1
+#define DATANODE_D 0
 typedef void(*dispatchCb)(struct evhttp_request *req, void *arg);
 
 void dispatchMsgCallBack(struct evhttp_request *req, void *arg);

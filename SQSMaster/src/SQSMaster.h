@@ -19,7 +19,7 @@
 #include <deque>
 
 
-#define MASTER_D 1
+#define MASTER_D 0
 
 /**
  * @brief

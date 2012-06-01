@@ -5,6 +5,7 @@
 /createQueue?queueName=test0
 /createQueue?queueName=test1
 /createQueue?queueName=test4
+/createQueue?queueName=helloWorld
 /putMessage?queueName=test0&message=helloWorld&mId=1
 /deleteMessage?queueName=test0&mId=1
 /putMessage?queueName=test0&message=helloWorld&mId=2
@@ -17,3 +18,9 @@
 /putMessage?queueName=helloWorld&message=msg1&mId=6
 /putMessage?queueName=helloWorld&message=msg1&mId=7
 /putMessage?queueName=helloWorld&message=msg1&mId=8
+/putMessage?queueName=helloWorld&message=msg1&mId=9
+/putMessage?queueName=helloWorld&message=msg1&mId=10
+/putMessage?queueName=helloWorld&message=msg1&mId=11
+/putMessage?queueName=helloWorld&message=msg1&mId=12
+/putMessage?queueName=helloWorld&message=msg1&mId=13
+/putMessage?queueName=helloWorld&message=msg1&mId=14
