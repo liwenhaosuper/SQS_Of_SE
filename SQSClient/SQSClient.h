@@ -5,6 +5,7 @@
 #include <string>
 
 #define DEBUG 1
+#define SQSCLIENT_D 0
 
 /*!
  *@brief Simple Queue Service Client Class

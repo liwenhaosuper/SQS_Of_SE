@@ -33,7 +33,8 @@ void response_callback(struct evhttp_request *req, void *rsp){
             param->rsp = "";
         }else{
             param->rsp = new char[sz+1];
-            evbuffer_remove(buf,param->rsp,sz);
+            int rtsz = evbuffer_remove(buf,param->rsp,sz);
+            param->rsp[rtsz] = '\0';
         }
     }
     event_base_loopbreak(param->base);
@@ -68,7 +69,7 @@ bool SQSClient::getRemoteHost(){
     char* rsp;
     rsp = doRequest(this->masterName,this->masterPort,"/getavailablehost");
     if(rsp==NULL){
-        cout<<"WOW!rsp is null..."<<endl;
+        if(SQSCLIENT_D) cout<<"WOW!rsp is null..."<<endl;
         return false;
     }else{
         if(strcmp(rsp,"No Data Node available")==0){
@@ -98,7 +99,7 @@ bool SQSClient::getRemoteHost(){
                 this->dataNodeName = key;
                 this->dataNodePort = atoi(value.c_str());
                 this->isDataNodeReady = true;
-                cout<<"master:"<<dataNodeName<<":"<<dataNodePort<<endl;
+                if(SQSCLIENT_D)cout<<"master:"<<dataNodeName<<":"<<dataNodePort<<endl;
                 return true;
             }
             return false;
@@ -148,15 +149,15 @@ bool SQSClient::CreateQueue(std::string QueueName){
     }
     //TODO: do more parsing
     if(rsp==NULL){
-        cout<<"Wow!Get NULL when creating queues"<<endl;
+        if(SQSCLIENT_D)cout<<"Wow!Get NULL when creating queues"<<endl;
         return NULL;
     }
-    cout<<"Return rsp:"<<rsp<<endl;
+    if(SQSCLIENT_D)cout<<"Return rsp:"<<rsp<<endl;
     if(strcmp(rsp,"Create queue successfully")==0){
-        cout<<"Create queue OK"<<endl;
+        if(SQSCLIENT_D)cout<<"Create queue OK"<<endl;
         return true;
     }
-    cout<<"Create queue fail"<<endl;
+    if(SQSCLIENT_D)cout<<"Create queue fail"<<endl;
     return true;
 }
 
@@ -199,12 +200,12 @@ vector<string> *SQSClient::ListQueues(){
         rsp = doRequest(this->dataNodeName,this->dataNodePort,"/listQueues");
     }
     if(rsp==NULL){
-        cout<<"Wow!Get NULL when listing queues"<<endl;
+        if(SQSCLIENT_D)cout<<"Wow!Get NULL when listing queues"<<endl;
         return NULL;
     }
     vector<string>* res = new vector<string>;
     //TODO: parse the results
-    cout<<"Rsp:"<<rsp<<":"<<endl;
+    if(SQSCLIENT_D) cout<<"Rsp:"<<rsp<<":"<<endl;
     string container = rsp;
     int begin = 0,end=0;
     if((end = container.find_first_of("\r\n",begin))>=0){
@@ -213,7 +214,7 @@ vector<string> *SQSClient::ListQueues(){
         begin = end+1;
     }
     for(int i=0;i<res->size();i++){
-        cout<<"List queue:"<<res->at(i)<<endl;
+        if(SQSCLIENT_D)cout<<"List queue:"<<res->at(i)<<endl;
     }
     return res;
 }
@@ -257,14 +258,14 @@ bool SQSClient::DeleteQueue(std::string QueueName){
     }
     //TODO: some more parsing
     if(rsp==NULL){
-        cout<<"Wow!Get NULL when deleteQueue"<<endl;
+        if(SQSCLIENT_D) cout<<"Wow!Get NULL when deleteQueue"<<endl;
         return false;
     }
     if(strcmp(rsp,"Delete queue successfully")==0){
-        cout<<"Ok deleting queue"<<endl;
+        if(SQSCLIENT_D) cout<<"Ok deleting queue"<<endl;
         return true;
     }else{
-        cout<<"Fail to delete queue"<<endl;
+        if(SQSCLIENT_D) cout<<"Fail to delete queue"<<endl;
         return false;
     }
 
@@ -311,10 +312,10 @@ bool SQSClient::SendMessage(std::string QueueName, std::string Message){
     }
     //TODO: some more parsing
     if(strcmp(rsp,"Put message fail")==0||strcmp(rsp,"Unrecognized request")==0){
-        cout<<"Fail to put message"<<endl;
+        if(SQSCLIENT_D)cout<<"Fail to put message"<<endl;
         return false;
     }
-    cout<<"Success putting message"<<endl;
+    if(SQSCLIENT_D) cout<<"Success putting message"<<endl;
     return true;
 }
 
@@ -359,7 +360,7 @@ std::string SQSClient::ReceiveMessage(std::string QueueName, int &MessageID){
     }
     //do the parsing
     if(rsp==NULL){
-        cout<<"Wow!ReceiveMessage receive NULL"<<endl;
+        if(SQSCLIENT_D)cout<<"Wow!ReceiveMessage receive NULL"<<endl;
         return "";
     }
     //cout<<"Recv message:"<<rsp<<endl;
@@ -373,7 +374,7 @@ std::string SQSClient::ReceiveMessage(std::string QueueName, int &MessageID){
         string str = container.substr(begin,end-begin);
         //cout<<str<<endl;
         MessageID = atoi(str.c_str());
-        cout<<MessageID<<endl;
+        if(SQSCLIENT_D)cout<<MessageID<<endl;
         str = container.substr(end+1);
 
         return str;
@@ -427,7 +428,7 @@ bool SQSClient::DeleteMessage(std::string QueueName,int MessageID){
     }
     //TODO: some more parsing
     if(rsp==NULL){
-        cout<<"Wow!ReceiveMessage receive NULL"<<endl;
+        if(SQSCLIENT_D)cout<<"Wow!ReceiveMessage receive NULL"<<endl;
         return false;
     }
 
