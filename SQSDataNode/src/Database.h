@@ -17,7 +17,7 @@ public:
 	bool deleteQueue(const char *queueName);
 	int putMessage(const char *queueName, const char *message, int messageID = -1);
 	std::string getMessageById(const char *queueName, int messageID, bool &ok);
-	std::string getMessage(const char *queueName, int &messageID, bool &ok);
+	std::string getMessage(const char *queueName, int &messageID, bool &ok, int skip = 0);
 	bool deleteMessage(const char *queueName, int messageID);
 
 private:

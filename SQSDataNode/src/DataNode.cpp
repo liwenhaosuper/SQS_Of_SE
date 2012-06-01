@@ -42,6 +42,7 @@ void MasterCallBack(struct evhttp_request *req, void *arg)
 void dispatchMsgCallBack(struct evhttp_request *req, void *arg)
 {
 	event_base_loopbreak((struct event_base *)arg);
+	event_base_free((struct event_base *)arg);
 }
 
 void* recover_and_join(void *ptr)
@@ -54,13 +55,59 @@ void* recover_and_join(void *ptr)
 	return (void *)0;
 }
 
-void DataNode::dispatchMessage(const char *remoteNode, int remotePort, const char *request)
+void checkLock(struct evhttp_request *req, void *arg)
+{
+	vector<void *> *param = (vector<void *> *)arg;
+	struct event_base *base = (struct event_base *)(param->at(0));
+	bool *unlock = (bool *)(param->at(1));
+
+	struct evbuffer *buf = evhttp_request_get_input_buffer(req);
+	size_t sz = evbuffer_get_length(buf);
+	char *rsp = NULL;
+	if(sz<=0){
+	    rsp = "";
+	    *unlock = false;
+	}else{
+	    rsp = new char[sz+1];
+	    evbuffer_remove(buf,rsp,sz);
+	}
+
+	if (strcmp(rsp, "Success") == 0)
+		*unlock = true;
+	else
+		*unlock = false;
+	event_base_loopbreak(base);
+	event_base_free(base);
+}
+
+void DataNode::dispatchMessage(const char *remoteNode, int remotePort, const char *request, dispatchCb callback, void *param)
 {
 	struct event_base *base = event_base_new();
 	struct evhttp_connection *cn = evhttp_connection_base_new(
 		base, NULL, remoteNode, remotePort
 	);
-	struct evhttp_request *req = evhttp_request_new(dispatchMsgCallBack, base);
+	struct evhttp_request *req = NULL;
+	if (!param)
+		req = evhttp_request_new(callback, base);
+	else
+		req = evhttp_request_new(callback, param);
+	if (evhttp_make_request(cn, req, EVHTTP_REQ_GET, request) == -1) {
+		fprintf(stderr, "Make request fail...\n");
+	}
+	event_base_dispatch(base);
+}
+
+void DataNode::dispatchCheckLock(const char *remoteNode, int remotePort, const char *request, bool *unlock)
+{
+	struct event_base *base = event_base_new();
+	struct evhttp_connection *cn = evhttp_connection_base_new(
+		base, NULL, remoteNode, remotePort
+	);
+	struct evhttp_request *req = NULL;
+	vector<void *> *param = new vector<void *>;
+	param->push_back(base);
+	param->push_back(unlock);
+	req = evhttp_request_new(checkLock, (void *)param);
 	if (evhttp_make_request(cn, req, EVHTTP_REQ_GET, request) == -1) {
 		fprintf(stderr, "Make request fail...\n");
 	}
@@ -328,7 +375,6 @@ void DataNode::onClientRecv(evhttp_request *req)
 		return;
 	} else if (strcmp(url_path, GET_MSG.c_str()) == 0) { /*get message*/
 		const char *queueName = evhttp_find_header(url_parameters, QUEUE_NAME.c_str());
-// 		const char *msgIdStr = evhttp_find_header(url_parameters, MSG_ID.c_str());
 		if (!queueName) {
 			evbuffer_add_printf(buf, "%s", "Unrecognized request");
 			evhttp_send_reply(req, HTTP_OK, "OK", buf);
@@ -337,27 +383,50 @@ void DataNode::onClientRecv(evhttp_request *req)
 			return;
 		}
 
-// 		int msgId = atoi(msgIdStr);
 		int msgId = -1;
 
 		// store the change
 		bool ok = false;
-		string msg = m_db->getMessage(queueName, msgId, ok);
-		if (!ok) {
-			evbuffer_add_printf(buf, "%s", "Get message fail");
-			evhttp_send_reply(req, HTTP_OK, "OK", buf);
-			evbuffer_free(buf);
-			safe_delete(queueName);
-// 			safe_delete(msgIdStr);
-			safe_delete(url_parameters);
-			return;
+		bool unlock = false;
+		string msg;
+		for (int i = 0; unlock == false; ++i) {
+			msg = m_db->getMessage(queueName, msgId, ok, i);
+			if (!ok) {
+				evbuffer_add_printf(buf, "%s", "Get message fail");
+				evhttp_send_reply(req, HTTP_OK, "OK", buf);
+				evbuffer_free(buf);
+				safe_delete(queueName);
+				safe_delete(url_parameters);
+				return;
+			}
+
+			char msgIdStr[16];
+			sprintf(msgIdStr, "%d", msgId);
+
+			// check if locked
+			char m_portMasterStr[16];
+			sprintf(m_portMasterStr, "%d", m_portMaster);
+			string toMaster = GET_MSG;
+			toMaster += "?" + NODE_NAME + "=" + m_nodeNameMaster
+				  + "&" + NODE_PORT + "=" + m_portMasterStr
+				  + "&" + QUEUE_NAME + "=" + queueName
+				  + "&" + MSG_ID + "=" + msgIdStr;
+			dispatchCheckLock(m_masterName, m_masterPort, toMaster.c_str(), &unlock);
 		}
+// 		string msg = m_db->getMessage(queueName, msgId, ok);
+// 		if (!ok) {
+// 			evbuffer_add_printf(buf, "%s", "Get message fail");
+// 			evhttp_send_reply(req, HTTP_OK, "OK", buf);
+// 			evbuffer_free(buf);
+// 			safe_delete(queueName);
+// 			safe_delete(url_parameters);
+// 			return;
+// 		}
 
 		evbuffer_add_printf(buf, "%d: %s", msgId, msg.c_str());
 		evhttp_send_reply(req, HTTP_OK, "OK", buf);
 		evbuffer_free(buf);
 		safe_delete(queueName);
-// 		safe_delete(msgIdStr);
 		safe_delete(url_parameters);
 		return;
 	} else {

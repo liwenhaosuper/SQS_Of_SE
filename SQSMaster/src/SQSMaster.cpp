@@ -102,6 +102,7 @@ void heartbeat_callback(struct evhttp_request *req, void *rsp){
         }
     }
     event_base_loopbreak(param->base);
+    event_base_free(param->base);
 }
 
 char* HeartBeat::doRequest(std::string dataNode,int port){
@@ -112,7 +113,7 @@ char* HeartBeat::doRequest(std::string dataNode,int port){
 	        port);
 	RspParam* param = (struct RspParam*)malloc(sizeof(struct RspParam));
 	struct evhttp_request *req = evhttp_request_new(heartbeat_callback,param);
-	param->base = base;param->rsp = NULL;param->conn = cn;param->req = req;
+	param->base = base;param->rsp = NULL;
 	evhttp_make_request(cn,req,EVHTTP_REQ_GET,HEARTBEAT.c_str());
 	event_base_dispatch(base);
 	event_base_free(base);

@@ -4,6 +4,10 @@
 #include "Logger.h"
 #include "Database.h"
 
+typedef void(*dispatchCb)(struct evhttp_request *req, void *arg);
+
+void dispatchMsgCallBack(struct evhttp_request *req, void *arg);
+
 class DataNode
 {
 	friend void ClientCallBack(struct evhttp_request *req, void *arg);
@@ -41,7 +45,9 @@ private:
 
 	void onClientRecv(struct evhttp_request *req);
 	void onMasterRecv(struct evhttp_request *req);
-	void dispatchMessage(const char *remoteNode, int remotePort, const char *request);
+	void dispatchMessage(const char *remoteNode, int remotePort, const char *request, dispatchCb callback = dispatchMsgCallBack, void *param = NULL);
+	void dispatchCheckLock(const char *remoteNode, int remotePort, const char *request, bool *unlock);
+
 };
 
 #endif // DATANODE_H

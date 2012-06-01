@@ -85,17 +85,40 @@ int Database::putMessage(const char *queueName, const char *message, int message
 		return sqlite3_last_insert_rowid(conn);
 }
 
-string Database::getMessage(const char *queueName, int &messageID, bool &ok)
+int getMessageCallback(void *data, int n_columns, char **col_values, char **col_names)
+{
+	vector<string> *result = (vector<string> *)data;
+
+	result->push_back(col_values[0]);
+	result->push_back(col_values[1]);
+
+	return 0;
+}
+
+string Database::getMessage(const char *queueName, int &messageID, bool &ok, int skip)
 {
 	int count = messageCount(queueName);
-	if (count == 0) {
+	if (count <= skip) {
 		ok = false;
 		string error;
 		return error;
 	}
 
-	messageID = minMessageNumber(queueName);
-	return getMessageById(queueName, messageID, ok);
+	char *err_msg = NULL;
+	vector<string> result;
+
+	char sql[128];
+	sprintf(sql, "SELECT * FROM %s limit 1 offset %d;", queueName, skip);
+	if (sqlite3_exec(conn, sql, &getMessageCallback, &result, &err_msg) != SQLITE_OK) {
+		ok = false;
+		messageID = -1;
+		string error;
+		return error;
+	} else {
+		ok = true;
+		messageID = atoi(result[0].c_str());
+		return result[1];
+	}
 }
 
 int getMessageByIdCallback(void *data, int n_columns, char **col_values, char **col_names)
