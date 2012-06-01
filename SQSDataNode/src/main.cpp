@@ -1,8 +1,11 @@
 #include <cstdlib>
+#include <iostream>
 #include <cstdio>
-#include <cstring>
+#include <string>
 #include <getopt.h>
 #include "DataNode.h"
+
+using namespace std;
 
 static struct option long_options[] = {
 	{"masterName",     required_argument, 0, 0},
@@ -37,9 +40,9 @@ int main(int argc, char *argv[])
 	const char *masterName = name;
 	int masterPort = 1300;
 	const char *nodeNamePublic = name;
-	int portPublic = 1200;
+	int portPublic = 1500;
 	const char *nodeNameMaster = name;
-	int portMaster = 1300;
+	int portMaster = 1600;
 	int timeout = 60;
 
 	int c;

@@ -15,7 +15,15 @@ int main(){
     time_t t1,t2;
     time(&t1);
     SQSClient* client = new SQSClient("localhost",1200);
-    client->getRemoteHost();
+    //client->getRemoteHost();
+    //client->CreateQueue("helloWorld");
+    //client->SendMessage("helloWorld","msg1");
+    client->ListQueues();
+    //client->DeleteQueue("helloWorld");
+    //client->ListQueues();
+    int id;
+    cout<<"Recv Msg:"<<client->ReceiveMessage("helloWorld",id)<<endl;
+
     time(&t2);
     cout<<"time cost:(s)"<<t2-t1<<endl;
     cout<<"SQSClient stoped..."<<endl;

@@ -599,13 +599,13 @@ void SQSMaster::onClientReqRecv (struct evhttp_request* req) {
 		int cnt = mDataNodes.size();
 		if(cnt>0){
 			int index = rand()%cnt;
-			string res = "nodeName:"+mDataNodes.at(index).getNodeNamePublic()+"\r\n";
+			string res = "nodeName:"+mDataNodes.at(index).getNodeNamePublic();
 			char* tmp = new char[8];
 			memset(tmp,0,sizeof(tmp));
 			sprintf(tmp,"%d",mDataNodes.at(index).getNodePortPublic());
-			res+="nodePort:";
+			res+=":nodePort:";
 			res+=tmp;
-			res+="\r\n";
+			res+=":";
 			evbuffer_add_printf(buf, "%s",res.c_str());
 			evhttp_send_reply(req, HTTP_OK, "OK", buf);
 		}else{

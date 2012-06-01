@@ -258,7 +258,7 @@ void DataNode::onClientRecv(evhttp_request *req)
 		char msgIdStr[16];
 		sprintf(msgIdStr, "%d", msgId);
 		string command = PUT_MSG;
-		command += "?" + QUEUE_NAME + "=" + queueName + "&?" + MSG + "=" + msg + "&" + MSG_ID + "=" + msgIdStr;
+		command += "?" + QUEUE_NAME + "=" + queueName + "&" + MSG + "=" + msg + "&" + MSG_ID + "=" + msgIdStr;
 		m_logger->addLog(command);
 
 		// send message to master
@@ -394,7 +394,10 @@ void DataNode::onMasterRecv(evhttp_request *req)
 			safe_delete(url_parameters);
 			return;
 		}
-
+		// add log
+		string command = CREATE_QUEUE;
+		command += "?" + QUEUE_NAME + "=" + queueName;
+		m_logger->addLog(command);
 		// store the change
 		if (!m_db->createQueue(queueName)) {
 			evbuffer_add_printf(buf, "%s", "Create queue fail");
@@ -404,11 +407,6 @@ void DataNode::onMasterRecv(evhttp_request *req)
 			safe_delete(url_parameters);
 			return;
 		}
-
-		// add log
-		string command = CREATE_QUEUE;
-		command += "?" + QUEUE_NAME + "=" + queueName;
-		m_logger->addLog(command);
 
 		evbuffer_add_printf(buf, "%s", "Create queue successfully");
 		evhttp_send_reply(req, HTTP_OK, "OK", buf);
@@ -426,6 +424,12 @@ void DataNode::onMasterRecv(evhttp_request *req)
 			return;
 		}
 
+		// add log
+		string command = DEL_QUEUE;
+		command += "?" + QUEUE_NAME + "=" + queueName;
+		m_logger->addLog(command);
+
+
 		// store the change
 		if (!m_db->deleteQueue(queueName)) {
 			evbuffer_add_printf(buf, "%s", "Delete queue fail");
@@ -435,11 +439,6 @@ void DataNode::onMasterRecv(evhttp_request *req)
 			safe_delete(url_parameters);
 			return;
 		}
-
-		// add log
-		string command = DEL_QUEUE;
-		command += "?" + QUEUE_NAME + "=" + queueName;
-		m_logger->addLog(command);
 
 		evbuffer_add_printf(buf, "%s", "Delete queue successfully");
 		evhttp_send_reply(req, HTTP_OK, "OK", buf);
@@ -461,6 +460,12 @@ void DataNode::onMasterRecv(evhttp_request *req)
 
 		int msgId = atoi(msgIdStr);
 
+		// add log
+		string command = PUT_MSG;
+		command += "?" + QUEUE_NAME + "=" + queueName + "&" + MSG + "=" + msg + "&" + MSG_ID + "=" + msgIdStr;
+		m_logger->addLog(command);
+
+
 		// store the change
 		int msgIdResult = m_db->putMessage(queueName, msg, msgId);
 		if (msgId != msgIdResult) {
@@ -473,10 +478,6 @@ void DataNode::onMasterRecv(evhttp_request *req)
 			return;
 		}
 
-		// add log
-		string command = PUT_MSG;
-		command += "?" + QUEUE_NAME + "=" + queueName + "&?" + MSG + "=" + msg + "&" + MSG_ID + "=" + msgIdStr;
-		m_logger->addLog(command);
 
 		evbuffer_add_printf(buf, "%d", msgId);
 		evhttp_send_reply(req, HTTP_OK, "OK", buf);
@@ -498,6 +499,11 @@ void DataNode::onMasterRecv(evhttp_request *req)
 
 		int msgId = atoi(msgIdStr);
 
+		// add log
+		string command = DELETE_MSG;
+		command += "?" + QUEUE_NAME + "=" + queueName + "&" + MSG_ID + "=" + msgIdStr;
+		m_logger->addLog(command);
+
 		// store the change
 		if (!m_db->deleteMessage(queueName, msgId)) {
 			evbuffer_add_printf(buf, "%s", "Delete message fail");
@@ -509,10 +515,6 @@ void DataNode::onMasterRecv(evhttp_request *req)
 			return;
 		}
 
-		// add log
-		string command = DELETE_MSG;
-		command += "?" + QUEUE_NAME + "=" + queueName + "&" + MSG_ID + "=" + msgIdStr;
-		m_logger->addLog(command);
 
 		evbuffer_add_printf(buf, "%s", "Delete message successfully");
 		evhttp_send_reply(req, HTTP_OK, "OK", buf);

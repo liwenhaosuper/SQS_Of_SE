@@ -13,6 +13,7 @@
 #include "evhttp.h"
 #include "SQSMaster.h"
 #include <string>
+#include <cstdlib>
 
 
 #include <event2/event.h>

@@ -51,7 +51,7 @@ Client to DataNode:
       3. "Unrecognized request"
 
   * Get Message
-    http://datanode:publicPort/getMessage?queueName=%s&mId=%s
+    http://datanode:publicPort/getMessage?queueName=%s
     RETURN:
       1. "blahblah" <-- just return the Message
       2. "Get message fail"

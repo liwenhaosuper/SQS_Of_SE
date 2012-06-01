@@ -70,7 +70,6 @@ bool SQSClient::getRemoteHost(){
         cout<<"WOW!rsp is null..."<<endl;
         return false;
     }else{
-        cout<<rsp<<endl;
         if(strcmp(rsp,"No Data Node available")==0){
             return false;
         }else{
@@ -78,24 +77,27 @@ bool SQSClient::getRemoteHost(){
             string container = rsp;
             map<string,string> data;
             int begin = 0,end=0;
-            while((end = container.find_first_of(":",begin))>=0){
+            if((end = container.find_first_of(":",begin))>=0){
                 string key = container.substr(begin,end-begin);
-                begin = end;
+                if(key.compare("nodeName")==0){
+                    begin = end+1;
+                    end = container.find_first_of(":",begin);
+                    key = container.substr(begin,end-begin);
+                }
+                begin = end+1;
                 end = container.find_first_of(":",begin);
                 string value;
-                if(end<=0){
-                    value = container.substr(end);
-                }else{
+                value = container.substr(begin,end-begin);
+
+                if(value.compare("nodePort")==0){
+                    begin = end+1;
+                    end = container.find_first_of(":",begin);
                     value = container.substr(begin,end-begin);
-                    begin = end;
                 }
-                data.insert(make_pair(key,value));
-            }
-            map<string,string>::iterator iter = data.find("nodeName");
-            if(iter!=data.end()){
-                this->dataNodeName = iter->first;
-                this->dataNodePort = atoi(iter->second.c_str());
+                this->dataNodeName = key;
+                this->dataNodePort = atoi(value.c_str());
                 this->isDataNodeReady = true;
+                cout<<"master:"<<dataNodeName<<":"<<dataNodePort<<endl;
                 return true;
             }
             return false;
@@ -123,7 +125,7 @@ bool SQSClient::CreateQueue(std::string QueueName){
         }
     }
     char* rsp;
-    rsp = doRequest(this->dataNodeName,this->dataNodePort,"/createQueue?&queueName="+QueueName);
+    rsp = doRequest(this->dataNodeName,this->dataNodePort,"/createQueue?queueName="+QueueName);
     cnt = 0;
     while(rsp==NULL||strcmp(rsp,"")==0){
         cnt++;
@@ -136,9 +138,15 @@ bool SQSClient::CreateQueue(std::string QueueName){
                 return false;
             }
         }
-        rsp = doRequest(this->dataNodeName,this->dataNodePort,"/createQueue?&queueName="+QueueName);
+        rsp = doRequest(this->dataNodeName,this->dataNodePort,"/createQueue?queueName="+QueueName);
     }
     //TODO: do more parsing
+    cout<<"Return rsp:"<<rsp<<endl;
+    if(strcmp(rsp,"Create queue successfully")==0){
+        cout<<"Create queue OK"<<endl;
+        return true;
+    }
+    cout<<"Create queue fail"<<endl;
     return true;
 }
 
@@ -175,9 +183,23 @@ vector<string> *SQSClient::ListQueues(){
         }
         rsp = doRequest(this->dataNodeName,this->dataNodePort,"/listQueues");
     }
+    if(rsp==NULL){
+        cout<<"Wow!Get NULL when listing queues"<<endl;
+        return NULL;
+    }
     vector<string>* res = new vector<string>;
     //TODO: parse the results
-    //TO BE CONTINUED...
+    //cout<<"Rsp:"<<rsp<<":"<<endl;
+    string container = rsp;
+    int begin = 0,end=0;
+    if((end = container.find_first_of("\r\n",begin))>=0){
+        string key = container.substr(begin,end-begin);
+        res->push_back(key);
+        begin = end+1;
+    }
+    for(int i=0;i<res->size();i++){
+        cout<<"List queue:"<<res->at(i)<<endl;
+    }
     return res;
 }
 
@@ -198,7 +220,7 @@ bool SQSClient::DeleteQueue(std::string QueueName){
         }
     }
     char* rsp;
-    rsp = doRequest(this->dataNodeName,this->dataNodePort,"/deleteQueue?&queueName="+QueueName);
+    rsp = doRequest(this->dataNodeName,this->dataNodePort,"/deleteQueue?queueName="+QueueName);
     cnt = 0;
     while(rsp==NULL||strcmp(rsp,"")==0){
         cnt++;
@@ -211,10 +233,21 @@ bool SQSClient::DeleteQueue(std::string QueueName){
                 return false;
             }
         }
-        rsp = doRequest(this->dataNodeName,this->dataNodePort,"/deleteQueue?&queueName="+QueueName);
+        rsp = doRequest(this->dataNodeName,this->dataNodePort,"/deleteQueue?queueName="+QueueName);
     }
     //TODO: some more parsing
-    return true;
+    if(rsp==NULL){
+        cout<<"Wow!Get NULL when deleteQueue"<<endl;
+        return false;
+    }
+    if(strcmp(rsp,"Delete queue successfully")==0){
+        cout<<"Ok deleting queue"<<endl;
+        return true;
+    }else{
+        cout<<"Fail to delete queue"<<endl;
+        return false;
+    }
+
 }
 
 /*!
@@ -236,7 +269,7 @@ bool SQSClient::SendMessage(std::string QueueName, std::string Message){
         }
     }
     char* rsp;
-    rsp = doRequest(this->dataNodeName,this->dataNodePort,"/putMessage?&queueName="+QueueName+"&message="+Message);
+    rsp = doRequest(this->dataNodeName,this->dataNodePort,"/putMessage?queueName="+QueueName+"&message="+Message);
     cnt = 0;
     while(rsp==NULL||strcmp(rsp,"")==0){
         cnt++;
@@ -249,9 +282,14 @@ bool SQSClient::SendMessage(std::string QueueName, std::string Message){
                 return false;
             }
         }
-        rsp = doRequest(this->dataNodeName,this->dataNodePort,"/putMessage?&queueName="+QueueName+"&message="+Message);
+        rsp = doRequest(this->dataNodeName,this->dataNodePort,"/putMessage?queueName="+QueueName+"&message="+Message);
     }
     //TODO: some more parsing
+    if(strcmp(rsp,"Put message fail")==0||strcmp(rsp,"Unrecognized request")==0){
+        cout<<"Fail to put message"<<endl;
+        return false;
+    }
+    cout<<"Success putting message"<<endl;
     return true;
 }
 
@@ -274,7 +312,7 @@ std::string SQSClient::ReceiveMessage(std::string QueueName, int &MessageID){
         }
     }
     char* rsp;
-    rsp = doRequest(this->dataNodeName,this->dataNodePort,"/getMessage?&queueName="+QueueName);
+    rsp = doRequest(this->dataNodeName,this->dataNodePort,"/getMessage?queueName="+QueueName);
     cnt = 0;
     while(rsp==NULL||strcmp(rsp,"")==0){
         cnt++;
@@ -287,32 +325,15 @@ std::string SQSClient::ReceiveMessage(std::string QueueName, int &MessageID){
                 return "";
             }
         }
-        rsp = doRequest(this->dataNodeName,this->dataNodePort,"/getMessage?&queueName="+QueueName);
+        rsp = doRequest(this->dataNodeName,this->dataNodePort,"/getMessage?queueName="+QueueName);
     }
-    string container = rsp;
-    map<string,string> data;
-    int begin = 0,end=0;
-    while((end = container.find_first_of(":",begin))>=0){
-        string key = container.substr(begin,end-begin);
-        begin = end;
-        end = container.find_first_of(":",begin);
-        string value;
-        if(end<=0){
-            value = container.substr(end);
-        }else{
-            value = container.substr(begin,end-begin);
-            begin = end;
-        }
-        data.insert(make_pair(key,value));
+    //do the parsing
+    if(rsp==NULL){
+        cout<<"Wow!ReceiveMessage receive NULL"<<endl;
+        return "";
     }
-    map<string,string>::iterator iter = data.find("mId");
-    if(iter!=data.end()){
-        MessageID = atoi(iter->second.c_str());
-    }
-    iter = data.find("message");
-    if(iter!=data.end()){
-       return iter->second;
-    }
+
+
 }
 
 
